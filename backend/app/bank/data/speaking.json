@@ -1,167 +1,2771 @@
 {
-  "personal_introduction": [
-    {"id": "pi-001", "title": "Introduce yourself", "prompt": "Please introduce yourself. For example, you could talk about one of the following: your interests, your plans for future study, why you want to study abroad, why you need to learn English, why you chose this test."}
-  ],
-  "read_aloud": [
-    {"id": "ra-001", "title": "Urban heat islands", "difficulty": "medium", "text": "Cities are often several degrees warmer than the surrounding countryside, a phenomenon known as the urban heat island effect. Concrete and asphalt absorb sunlight during the day and release it slowly at night, while the lack of vegetation reduces natural cooling. Planting trees and installing reflective roofs are two practical ways to reduce this effect."},
-    {"id": "ra-002", "title": "The printing press", "difficulty": "medium", "text": "The invention of the printing press in the fifteenth century transformed the way knowledge was shared. Books, which had previously been copied by hand, could suddenly be produced quickly and cheaply. As a result, literacy rates rose across Europe, and new ideas in science and religion spread far beyond the universities and monasteries."},
-    {"id": "ra-003", "title": "Sleep and memory", "difficulty": "hard", "text": "Research suggests that sleep plays a crucial role in consolidating memories. During deep sleep, the brain appears to replay experiences from the day, strengthening the neural connections associated with new information. Students who sacrifice sleep to study late into the night may therefore remember less than those who rest properly."},
-    {"id": "ra-004", "title": "Coral reefs", "difficulty": "easy", "text": "Coral reefs cover less than one percent of the ocean floor, yet they support about a quarter of all marine species. These fragile ecosystems are threatened by rising sea temperatures, pollution and overfishing, and scientists warn that many reefs could disappear within a few decades."},
-    {"id": "ra-005", "title": "Remote work", "difficulty": "medium", "text": "The shift towards remote work has changed the relationship between employers and employees. Many workers value the flexibility of choosing where they work, while managers have had to develop new methods of measuring productivity. Some companies now combine office and home working in a hybrid arrangement."}
-  ],
-  "repeat_sentence": [
-    {"id": "rs-001", "difficulty": "easy", "text": "The library will be closed for maintenance next weekend."},
-    {"id": "rs-002", "difficulty": "medium", "text": "Students must submit their assignments through the online portal before midnight."},
-    {"id": "rs-003", "difficulty": "medium", "text": "The professor recommended reading the first three chapters before the seminar."},
-    {"id": "rs-004", "difficulty": "hard", "text": "Most of the experimental results were consistent with the original hypothesis."},
-    {"id": "rs-005", "difficulty": "easy", "text": "Please remember to bring your student card to the examination."},
-    {"id": "rs-006", "difficulty": "hard", "text": "Climate models suggest that coastal regions will face more frequent flooding."}
-  ],
-  "describe_image": [
-    {"id": "di-001", "title": "Household energy sources", "difficulty": "medium",
-     "chart": {"type": "bar", "title": "Household energy sources in Country X, 2000 vs 2020 (%)", "unit": "%",
-               "labels": ["Coal", "Natural gas", "Solar", "Wind", "Hydro"],
-               "series": [{"name": "2000", "values": [45, 30, 2, 3, 20]}, {"name": "2020", "values": [20, 32, 18, 15, 15]}]},
-     "key_points": [
-       {"label": "the topic: household energy sources in 2000 and 2020", "keywords": [["energy", "power", "electricity"], ["source", "sources"], ["2000", "2020", "two thousand", "twenty years"]], "min": 2},
-       {"label": "coal fell sharply from 45% to 20%", "keywords": ["coal", ["fell", "decreased", "declined", "dropped", "drop", "decline", "decrease", "reduced"], ["45", "forty five", "20", "twenty", "half"]], "min": 2},
-       {"label": "solar and wind grew strongly", "keywords": [["solar"], ["wind"], ["increase", "increased", "rose", "grew", "growth", "rise", "risen"]], "min": 2},
-       {"label": "natural gas stayed roughly stable", "keywords": [["gas", "natural gas"], ["stable", "steady", "similar", "same", "slightly", "remained", "constant"]], "min": 2},
-       {"label": "overall shift from fossil fuels to renewables", "keywords": [["renewable", "renewables", "clean", "green", "fossil"], ["shift", "move", "transition", "change", "trend", "overall"]], "min": 2}
-     ]},
-    {"id": "di-002", "title": "Monthly rainfall", "difficulty": "easy",
-     "chart": {"type": "line", "title": "Average monthly rainfall in City Y (mm)", "unit": "mm",
-               "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-               "series": [{"name": "Rainfall", "values": [80, 70, 60, 40, 25, 10, 5, 8, 30, 65, 95, 110]}]},
-     "key_points": [
-       {"label": "the topic: average monthly rainfall", "keywords": [["rain", "rainfall", "precipitation"], ["month", "monthly", "year", "average"]], "min": 2},
-       {"label": "wettest month is December (about 110 mm)", "keywords": [["december"], ["highest", "peak", "peaks", "maximum", "most", "wettest", "110", "hundred"]], "min": 2},
-       {"label": "driest month is July (about 5 mm)", "keywords": [["july"], ["lowest", "least", "minimum", "driest", "5", "five"]], "min": 2},
-       {"label": "rainfall falls from January to July then rises again", "keywords": [["decrease", "decreased", "fell", "decline", "declined", "drop", "dropped", "falls"], ["increase", "increased", "rose", "rises", "climbed", "rise", "grew"]], "min": 2},
-       {"label": "dry summer, wet winter pattern", "keywords": [["summer", "middle", "mid"], ["winter", "end", "beginning"], ["dry", "wet", "pattern", "seasonal", "season"]], "min": 2}
-     ]},
-    {"id": "di-003", "title": "University budget", "difficulty": "medium",
-     "chart": {"type": "pie", "title": "How a university spends its annual budget", "unit": "%",
-               "labels": ["Staff salaries", "Research", "Buildings & maintenance", "Student services", "Technology", "Other"],
-               "series": [{"name": "Share", "values": [48, 18, 14, 9, 7, 4]}]},
-     "key_points": [
-       {"label": "the topic: university annual spending", "keywords": [["university", "institution"], ["budget", "spending", "spends", "expenditure", "money"]], "min": 2},
-       {"label": "salaries are the largest share at almost half (48%)", "keywords": [["salaries", "salary", "staff", "wages"], ["largest", "biggest", "most", "highest", "half", "48", "forty eight", "majority"]], "min": 2},
-       {"label": "research is second at 18%", "keywords": [["research"], ["second", "18", "eighteen"]], "min": 2},
-       {"label": "buildings 14%, student services 9%", "keywords": [["building", "buildings", "maintenance"], ["student", "services"]], "min": 1},
-       {"label": "technology and other are the smallest", "keywords": [["technology", "other"], ["smallest", "least", "lowest", "minor", "only", "7", "4", "seven", "four"]], "min": 2}
-     ]},
-    {"id": "di-004", "title": "Making paper", "difficulty": "hard",
-     "chart": {"type": "process", "title": "How recycled paper is made",
-               "labels": ["Collection", "Sorting", "Pulping with water", "Cleaning & de-inking", "Pressing & drying", "New paper rolls"],
-               "series": []},
-     "key_points": [
-       {"label": "the topic: the recycled paper process", "keywords": [["recycle", "recycled", "recycling"], ["paper"], ["process", "stages", "steps"]], "min": 2},
-       {"label": "paper is collected and sorted", "keywords": [["collect", "collected", "collection"], ["sort", "sorted", "sorting"]], "min": 2},
-       {"label": "it is mixed with water to make pulp", "keywords": [["pulp", "pulped", "pulping"], ["water"]], "min": 1},
-       {"label": "pulp is cleaned and de-inked", "keywords": [["clean", "cleaned", "cleaning"], ["ink", "de-inked", "deinking", "inking"]], "min": 1},
-       {"label": "pressed and dried into new rolls", "keywords": [["press", "pressed", "pressing"], ["dry", "dried", "drying"], ["roll", "rolls", "new"]], "min": 2}
-     ]}
-  ],
-  "retell_lecture": [
-    {"id": "rl-001", "title": "Why bees matter", "difficulty": "medium",
-     "transcript": "Today I want to talk about why bees are so important. Around three quarters of the crops we grow for food depend, at least partly, on pollinators, and bees are the most efficient of them. When a bee visits a flower to collect nectar, pollen sticks to its body and is carried to the next flower, allowing the plant to reproduce. Unfortunately, bee populations have declined dramatically in many countries. Researchers point to three main causes: the widespread use of pesticides, the loss of wild flowers due to intensive farming, and diseases spread by parasites. If this decline continues, food prices could rise and our diets could become far less varied. The good news is that solutions exist. Farmers can plant strips of wild flowers alongside fields, governments can restrict the most harmful pesticides, and even individuals can help by growing bee-friendly plants in their gardens.",
-     "key_points": [
-       {"label": "bees are vital pollinators for most food crops", "keywords": [["bee", "bees"], ["pollinate", "pollinator", "pollinators", "pollination", "pollen"], ["crop", "crops", "food"]], "min": 2},
-       {"label": "how pollination works (pollen carried between flowers)", "keywords": [["pollen"], ["flower", "flowers"], ["carry", "carried", "transfer", "reproduce"]], "min": 2},
-       {"label": "bee populations are declining", "keywords": [["decline", "declined", "declining", "decrease", "fall", "drop", "dying", "loss"], ["population", "populations", "numbers", "bees"]], "min": 2},
-       {"label": "causes: pesticides, habitat loss, disease", "keywords": [["pesticide", "pesticides", "chemicals"], ["farming", "flowers", "habitat"], ["disease", "diseases", "parasite", "parasites"]], "min": 2},
-       {"label": "consequences: higher food prices, less varied diets", "keywords": [["price", "prices", "cost", "expensive"], ["diet", "diets", "variety", "varied", "food"]], "min": 1},
-       {"label": "solutions: wildflower strips, regulation, gardens", "keywords": [["solution", "solutions", "help", "plant", "planting"], ["government", "governments", "restrict", "ban", "farmers", "garden", "gardens"]], "min": 2}
-     ]},
-    {"id": "rl-002", "title": "The history of money", "difficulty": "medium",
-     "transcript": "Money, as we know it, is a relatively recent invention. For thousands of years, people relied on barter, directly exchanging goods such as grain for livestock. The problem with barter is that it requires what economists call a double coincidence of wants: you must find someone who has what you want and who also wants what you have. To solve this, societies began using commodity money, such as shells, salt, and later precious metals like gold and silver. Coins appeared in the kingdom of Lydia around the seventh century BC, and paper money was first widely used in China. Today, most money exists only as digital records in bank computers, and the value of a currency depends not on metal, but on trust in the government that issues it.",
-     "key_points": [
-       {"label": "before money people used barter", "keywords": [["barter", "exchange", "exchanging", "trade", "traded"], ["goods", "grain", "livestock"]], "min": 1},
-       {"label": "barter needs a double coincidence of wants", "keywords": [["coincidence", "problem", "difficult", "limitation"], ["want", "wants", "need", "needs"]], "min": 2},
-       {"label": "commodity money: shells, salt, gold and silver", "keywords": [["commodity", "shells", "salt"], ["gold", "silver", "metal", "metals"]], "min": 1},
-       {"label": "coins from Lydia, paper money from China", "keywords": [["coin", "coins", "lydia"], ["paper"], ["china", "chinese"]], "min": 2},
-       {"label": "today money is mostly digital and based on trust", "keywords": [["digital", "electronic", "computer", "computers", "bank"], ["trust", "government", "confidence"]], "min": 2}
-     ]},
-    {"id": "rl-003", "title": "Urban vertical farming", "difficulty": "hard",
-     "transcript": "Vertical farming means growing crops in stacked layers, usually indoors, under artificial light. Supporters argue that it could transform food production in crowded cities. Because the environment is fully controlled, crops can be harvested all year round, pesticides are rarely needed, and some systems use up to ninety percent less water than traditional agriculture. Food can also be grown close to consumers, which reduces transport emissions. However, the approach has serious drawbacks. The electricity needed for lighting and climate control is expensive, and unless it comes from renewable sources, the carbon footprint can actually be higher than that of conventional farms. At present, vertical farms are profitable mainly for leafy greens and herbs, not for staple crops like wheat or rice. So, while promising, vertical farming is likely to complement rather than replace traditional agriculture.",
-     "key_points": [
-       {"label": "definition: crops grown indoors in stacked layers", "keywords": [["vertical"], ["layer", "layers", "stacked", "indoor", "indoors"], ["light", "artificial", "crop", "crops"]], "min": 2},
-       {"label": "advantages: year-round harvests, fewer pesticides, much less water", "keywords": [["year", "round", "all year"], ["pesticide", "pesticides"], ["water", "ninety", "90"]], "min": 2},
-       {"label": "grown near consumers so lower transport emissions", "keywords": [["transport", "emissions", "close", "near", "local"], ["city", "cities", "consumers"]], "min": 1},
-       {"label": "drawback: high electricity cost and possible high carbon footprint", "keywords": [["electricity", "energy", "power"], ["expensive", "cost", "costly", "carbon", "footprint"]], "min": 2},
-       {"label": "only profitable for leafy greens, not staples", "keywords": [["greens", "leafy", "herbs", "lettuce"], ["wheat", "rice", "staple", "staples", "profitable"]], "min": 1},
-       {"label": "conclusion: complement, not replace, traditional farming", "keywords": [["complement", "supplement", "replace", "alongside"], ["traditional", "conventional", "agriculture", "farming"]], "min": 2}
-     ]}
-  ],
-  "answer_short_question": [
-    {"id": "asq-001", "question": "What do you call a person who designs buildings?", "answers": ["architect", "an architect"]},
-    {"id": "asq-002", "question": "How many days are there in a leap year?", "answers": ["366", "three hundred and sixty six", "three hundred sixty six"]},
-    {"id": "asq-003", "question": "Which organ in the human body pumps blood?", "answers": ["heart", "the heart"]},
-    {"id": "asq-004", "question": "What is the opposite of the word 'ancient'?", "answers": ["modern", "new", "contemporary"]},
-    {"id": "asq-005", "question": "If you are reading a book's list of chapters at the front, what section are you looking at?", "answers": ["contents", "table of contents", "the contents"]},
-    {"id": "asq-006", "question": "What instrument is used to look at stars and planets?", "answers": ["telescope", "a telescope"]}
-  ],
-  "summarize_group_discussion": [
-    {"id": "sgd-001", "title": "Group project problems", "difficulty": "medium",
-     "turns": [
-       {"speaker": "Maya", "text": "Honestly, I'm worried about our group project. We're halfway through the semester and we still haven't agreed on a research question. Every meeting turns into a debate and nothing gets decided."},
-       {"speaker": "Leo", "text": "I agree that it's frustrating, but I think the real problem is communication. Half of us don't read the group chat, so we keep repeating the same discussions. Maybe we should use a shared document where every decision is written down."},
-       {"speaker": "Priya", "text": "A shared document is a good idea, but we also need someone to lead. I'd suggest we vote on a coordinator who sets deadlines. And if we still can't choose a question by Friday, we should ask the tutor for guidance during office hours."},
-       {"speaker": "Maya", "text": "That sounds reasonable. I'd be happy if Priya coordinated, actually. Let's set up the document tonight and try to finalise the question before Friday."},
-       {"speaker": "Leo", "text": "Fine by me. I'll create the document and share the link with everyone."}
+ "personal_introduction": [
+  {
+   "id": "pi-001",
+   "title": "Introduce yourself",
+   "prompt": "Please introduce yourself. For example, you could talk about one of the following: your interests, your plans for future study, why you want to study abroad, why you need to learn English, why you chose this test."
+  }
+ ],
+ "read_aloud": [
+  {
+   "id": "ra-001",
+   "title": "Urban heat islands",
+   "difficulty": "medium",
+   "text": "Cities are often several degrees warmer than the surrounding countryside, a phenomenon known as the urban heat island effect. Concrete and asphalt absorb sunlight during the day and release it slowly at night, while the lack of vegetation reduces natural cooling. Planting trees and installing reflective roofs are two practical ways to reduce this effect."
+  },
+  {
+   "id": "ra-002",
+   "title": "The printing press",
+   "difficulty": "medium",
+   "text": "The invention of the printing press in the fifteenth century transformed the way knowledge was shared. Books, which had previously been copied by hand, could suddenly be produced quickly and cheaply. As a result, literacy rates rose across Europe, and new ideas in science and religion spread far beyond the universities and monasteries."
+  },
+  {
+   "id": "ra-003",
+   "title": "Sleep and memory",
+   "difficulty": "hard",
+   "text": "Research suggests that sleep plays a crucial role in consolidating memories. During deep sleep, the brain appears to replay experiences from the day, strengthening the neural connections associated with new information. Students who sacrifice sleep to study late into the night may therefore remember less than those who rest properly."
+  },
+  {
+   "id": "ra-004",
+   "title": "Coral reefs",
+   "difficulty": "easy",
+   "text": "Coral reefs cover less than one percent of the ocean floor, yet they support about a quarter of all marine species. These fragile ecosystems are threatened by rising sea temperatures, pollution and overfishing, and scientists warn that many reefs could disappear within a few decades."
+  },
+  {
+   "id": "ra-005",
+   "title": "Remote work",
+   "difficulty": "medium",
+   "text": "The shift towards remote work has changed the relationship between employers and employees. Many workers value the flexibility of choosing where they work, while managers have had to develop new methods of measuring productivity. Some companies now combine office and home working in a hybrid arrangement."
+  },
+  {
+   "id": "ra-006",
+   "title": "Volcanic islands",
+   "difficulty": "medium",
+   "text": "Many of the world's islands were formed by volcanic activity beneath the ocean. As lava erupts from the sea floor, it cools and hardens, gradually building a mountain that may eventually rise above the surface. Over thousands of years, wind and rain break down the rock into fertile soil, allowing plants and animals to settle."
+  },
+  {
+   "id": "ra-007",
+   "title": "Learning a language",
+   "difficulty": "easy",
+   "text": "Learning a new language takes patience and regular practice. Experts recommend studying for short periods every day rather than for several hours once a week, because frequent review helps the brain store new vocabulary more effectively."
+  },
+  {
+   "id": "ra-008",
+   "title": "The history of maps",
+   "difficulty": "hard",
+   "text": "Early maps were often more symbolic than accurate, reflecting the beliefs and priorities of the societies that produced them. It was only with the development of precise surveying instruments and, later, satellite imaging that cartographers could represent the shape of continents with remarkable precision."
+  },
+  {
+   "id": "ra-009",
+   "title": "Electric vehicles",
+   "difficulty": "medium",
+   "text": "Sales of electric vehicles have increased rapidly in recent years, encouraged by falling battery prices and government incentives. However, the expansion of charging networks has not always kept pace with demand, particularly in rural areas where drivers often travel long distances."
+  },
+  {
+   "id": "ra-010",
+   "title": "Museums online",
+   "difficulty": "easy",
+   "text": "Many museums now offer virtual tours that allow visitors to explore their collections from home. These online exhibitions have attracted new audiences who might never travel to the galleries themselves."
+  },
+  {
+   "id": "ra-011",
+   "title": "Biodiversity",
+   "difficulty": "hard",
+   "text": "Biodiversity refers to the variety of living organisms within a particular habitat or across the entire planet. Ecosystems with greater biodiversity tend to be more resilient, because the loss of one species is less likely to disrupt the functions on which the whole community depends."
+  },
+  {
+   "id": "ra-012",
+   "title": "Student budgets",
+   "difficulty": "medium",
+   "text": "For many students, university is the first time they must manage their own finances. Creating a simple monthly budget, tracking everyday spending and avoiding unnecessary debt can prevent considerable stress later in the academic year."
+  }
+ ],
+ "repeat_sentence": [
+  {
+   "id": "rs-001",
+   "difficulty": "easy",
+   "text": "The library will be closed for maintenance next weekend."
+  },
+  {
+   "id": "rs-002",
+   "difficulty": "medium",
+   "text": "Students must submit their assignments through the online portal before midnight."
+  },
+  {
+   "id": "rs-003",
+   "difficulty": "medium",
+   "text": "The professor recommended reading the first three chapters before the seminar."
+  },
+  {
+   "id": "rs-004",
+   "difficulty": "hard",
+   "text": "Most of the experimental results were consistent with the original hypothesis."
+  },
+  {
+   "id": "rs-005",
+   "difficulty": "easy",
+   "text": "Please remember to bring your student card to the examination."
+  },
+  {
+   "id": "rs-006",
+   "difficulty": "hard",
+   "text": "Climate models suggest that coastal regions will face more frequent flooding."
+  },
+  {
+   "id": "rs-007",
+   "difficulty": "easy",
+   "text": "The bookshop on campus offers discounts to students."
+  },
+  {
+   "id": "rs-008",
+   "difficulty": "easy",
+   "text": "Your timetable is available on the university website."
+  },
+  {
+   "id": "rs-009",
+   "difficulty": "medium",
+   "text": "All laboratory equipment must be returned at the end of the session."
+  },
+  {
+   "id": "rs-010",
+   "difficulty": "medium",
+   "text": "The research team published its findings in an international journal."
+  },
+  {
+   "id": "rs-011",
+   "difficulty": "medium",
+   "text": "Please make sure your mobile phone is switched off during the lecture."
+  },
+  {
+   "id": "rs-012",
+   "difficulty": "hard",
+   "text": "Applicants are required to provide evidence of their English language proficiency."
+  },
+  {
+   "id": "rs-013",
+   "difficulty": "easy",
+   "text": "The cafeteria closes early on Fridays during the summer."
+  },
+  {
+   "id": "rs-014",
+   "difficulty": "medium",
+   "text": "Group presentations will take place in the second half of the semester."
+  },
+  {
+   "id": "rs-015",
+   "difficulty": "hard",
+   "text": "Several factors contributed to the gradual decline of the ancient civilisation."
+  },
+  {
+   "id": "rs-016",
+   "difficulty": "medium",
+   "text": "The deadline for scholarship applications has been extended by two weeks."
+  },
+  {
+   "id": "rs-017",
+   "difficulty": "hard",
+   "text": "Renewable energy sources are becoming increasingly competitive with fossil fuels."
+  },
+  {
+   "id": "rs-018",
+   "difficulty": "easy",
+   "text": "Library books can be renewed online up to three times."
+  },
+  {
+   "id": "rs-019",
+   "difficulty": "medium",
+   "text": "Students who miss the exam must contact the faculty office immediately."
+  },
+  {
+   "id": "rs-020",
+   "difficulty": "hard",
+   "text": "The lecturer emphasised the importance of citing sources accurately."
+  }
+ ],
+ "describe_image": [
+  {
+   "id": "di-001",
+   "title": "Household energy sources",
+   "difficulty": "medium",
+   "chart": {
+    "type": "bar",
+    "title": "Household energy sources in Country X, 2000 vs 2020 (%)",
+    "unit": "%",
+    "labels": [
+     "Coal",
+     "Natural gas",
+     "Solar",
+     "Wind",
+     "Hydro"
+    ],
+    "series": [
+     {
+      "name": "2000",
+      "values": [
+       45,
+       30,
+       2,
+       3,
+       20
+      ]
+     },
+     {
+      "name": "2020",
+      "values": [
+       20,
+       32,
+       18,
+       15,
+       15
+      ]
+     }
+    ]
+   },
+   "key_points": [
+    {
+     "label": "the topic: household energy sources in 2000 and 2020",
+     "keywords": [
+      [
+       "energy",
+       "power",
+       "electricity"
+      ],
+      [
+       "source",
+       "sources"
+      ],
+      [
+       "2000",
+       "2020",
+       "two thousand",
+       "twenty years"
+      ]
      ],
-     "key_points": [
-       {"label": "Maya: worried the group hasn't agreed on a research question; meetings become debates", "keywords": [["maya"], ["worried", "concerned", "frustrated", "problem"], ["question", "agree", "agreed", "decision", "debate"]], "min": 2},
-       {"label": "Leo: the real problem is communication; suggests a shared document", "keywords": [["leo"], ["communication", "chat", "communicate"], ["document", "shared", "write"]], "min": 2},
-       {"label": "Priya: need a coordinator/leader with deadlines; ask the tutor if stuck", "keywords": [["priya"], ["coordinator", "leader", "lead", "deadline", "deadlines", "vote"], ["tutor", "office", "guidance", "help"]], "min": 2},
-       {"label": "outcome: Priya coordinates, Leo creates the document, decide by Friday", "keywords": [["agree", "agreed", "decided", "plan", "outcome", "finally"], ["friday", "tonight", "link", "create", "coordinate"]], "min": 2}
-     ]},
-    {"id": "sgd-002", "title": "Online versus in-person lectures", "difficulty": "hard",
-     "turns": [
-       {"speaker": "Dr Chen", "text": "The faculty is considering moving first-year lectures online permanently. I'd like to hear your views before the committee meets."},
-       {"speaker": "Sam", "text": "Personally, I'd welcome it. I work part-time, and recorded lectures let me study when it suits me. I can also pause and rewatch difficult sections, which really helps with technical subjects."},
-       {"speaker": "Aisha", "text": "I see the benefits, but I think first-year students especially need face-to-face contact. When I started university, the lectures were where I met people and felt part of a community. Online, it's easy to fall behind without anyone noticing."},
-       {"speaker": "Dr Chen", "text": "Both are fair points. One option is a blended model: recorded lectures for content, plus weekly in-person workshops for discussion and support."},
-       {"speaker": "Aisha", "text": "That would be a good compromise, as long as attendance at workshops is encouraged."},
-       {"speaker": "Sam", "text": "I'd support that too, provided the workshops are offered at a few different times."}
+     "min": 2
+    },
+    {
+     "label": "coal fell sharply from 45% to 20%",
+     "keywords": [
+      "coal",
+      [
+       "fell",
+       "decreased",
+       "declined",
+       "dropped",
+       "drop",
+       "decline",
+       "decrease",
+       "reduced"
+      ],
+      [
+       "45",
+       "forty five",
+       "20",
+       "twenty",
+       "half"
+      ]
      ],
-     "key_points": [
-       {"label": "Dr Chen: faculty considering moving first-year lectures online; wants student views", "keywords": [["chen", "lecturer", "professor"], ["online", "faculty", "committee"], ["lecture", "lectures", "views"]], "min": 2},
-       {"label": "Sam: supports online — flexibility for part-time work, can pause and rewatch", "keywords": [["sam"], ["flexible", "flexibility", "work", "part-time", "suits"], ["pause", "rewatch", "recorded", "recordings"]], "min": 2},
-       {"label": "Aisha: first-years need face-to-face contact and community; risk of falling behind", "keywords": [["aisha"], ["face", "person", "contact", "community", "people"], ["behind", "isolated", "first-year", "first"]], "min": 2},
-       {"label": "Dr Chen proposes a blended model with weekly workshops; both students agree with conditions", "keywords": [["chen", "proposes", "suggests", "suggested"], ["blended", "workshop", "workshops", "compromise", "hybrid"], ["agree", "agreed", "support", "attendance", "times"]], "min": 2}
-     ]}
-  ],
-  "respond_to_situation": [
-    {"id": "rts-001", "title": "Missed deadline", "difficulty": "medium",
-     "situation": "You were ill last week and could not submit your essay on time. Your tutor, Dr Morgan, is in her office. Explain what happened and ask for an extension.",
-     "functions": [
-       {"label": "Greet the tutor", "patterns": ["\\b(hello|hi|good (morning|afternoon)|excuse me|dr morgan)\\b"]},
-       {"label": "Explain that you were ill", "patterns": ["\\b(ill|sick|unwell|flu|fever|doctor|hospital)\\b"]},
-       {"label": "Apologise for the late submission", "patterns": ["\\b(sorry|apologi[sz]e)\\b"]},
-       {"label": "Ask for an extension", "patterns": ["\\b(extension|extra time|more time|extend|later date|submit (it )?(by|on|next))\\b"]},
-       {"label": "Offer evidence or a new date", "patterns": ["\\b(certificate|note|evidence|proof|by (monday|tuesday|wednesday|thursday|friday)|next week|in (two|three|a few) days)\\b"]}
+     "min": 2
+    },
+    {
+     "label": "solar and wind grew strongly",
+     "keywords": [
+      [
+       "solar"
+      ],
+      [
+       "wind"
+      ],
+      [
+       "increase",
+       "increased",
+       "rose",
+       "grew",
+       "growth",
+       "rise",
+       "risen"
+      ]
      ],
-     "key_points": [{"label": "essay / deadline", "keywords": [["essay", "assignment", "deadline", "submit"]], "min": 1}]},
-    {"id": "rts-002", "title": "Noisy neighbour", "difficulty": "easy",
-     "situation": "Your neighbour in the student residence plays loud music late at night, and you have an exam tomorrow morning. Knock on their door and ask them politely to turn it down.",
-     "functions": [
-       {"label": "Greet your neighbour", "patterns": ["\\b(hi|hello|hey|sorry to bother|excuse me)\\b"]},
-       {"label": "Explain the problem (the music)", "patterns": ["\\b(music|noise|noisy|loud|sound)\\b"]},
-       {"label": "Give your reason (the exam)", "patterns": ["\\b(exam|test|early|sleep|tomorrow)\\b"]},
-       {"label": "Make a polite request", "patterns": ["\\b(could you|would you|would it be possible|would you mind|please|turn it down|lower)\\b"]},
-       {"label": "Thank them", "patterns": ["\\b(thank|thanks|appreciate)\\b"]}
+     "min": 2
+    },
+    {
+     "label": "natural gas stayed roughly stable",
+     "keywords": [
+      [
+       "gas",
+       "natural gas"
+      ],
+      [
+       "stable",
+       "steady",
+       "similar",
+       "same",
+       "slightly",
+       "remained",
+       "constant"
+      ]
      ],
-     "key_points": [{"label": "music / exam", "keywords": [["music", "noise"], ["exam", "sleep"]], "min": 1}]},
-    {"id": "rts-003", "title": "Library book damaged", "difficulty": "medium",
-     "situation": "You borrowed a book from the university library and accidentally spilled coffee on it. You are now at the library desk. Explain what happened and ask what you should do.",
-     "functions": [
-       {"label": "Greet the librarian", "patterns": ["\\b(hi|hello|good (morning|afternoon)|excuse me)\\b"]},
-       {"label": "Explain the accident", "patterns": ["\\b(spill|spilled|spilt|coffee|damaged|accident|stain)\\b"]},
-       {"label": "Apologise", "patterns": ["\\b(sorry|apologi[sz]e)\\b"]},
-       {"label": "Ask what to do / offer to pay or replace", "patterns": ["\\b(what (should|can|do) i|pay|replace|replacement|fee|cost|fine)\\b"]}
+     "min": 2
+    },
+    {
+     "label": "overall shift from fossil fuels to renewables",
+     "keywords": [
+      [
+       "renewable",
+       "renewables",
+       "clean",
+       "green",
+       "fossil"
+      ],
+      [
+       "shift",
+       "move",
+       "transition",
+       "change",
+       "trend",
+       "overall"
+      ]
      ],
-     "key_points": [{"label": "book / library", "keywords": [["book"], ["library", "borrowed"]], "min": 1}]}
-  ]
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "di-002",
+   "title": "Monthly rainfall",
+   "difficulty": "easy",
+   "chart": {
+    "type": "line",
+    "title": "Average monthly rainfall in City Y (mm)",
+    "unit": "mm",
+    "labels": [
+     "Jan",
+     "Feb",
+     "Mar",
+     "Apr",
+     "May",
+     "Jun",
+     "Jul",
+     "Aug",
+     "Sep",
+     "Oct",
+     "Nov",
+     "Dec"
+    ],
+    "series": [
+     {
+      "name": "Rainfall",
+      "values": [
+       80,
+       70,
+       60,
+       40,
+       25,
+       10,
+       5,
+       8,
+       30,
+       65,
+       95,
+       110
+      ]
+     }
+    ]
+   },
+   "key_points": [
+    {
+     "label": "the topic: average monthly rainfall",
+     "keywords": [
+      [
+       "rain",
+       "rainfall",
+       "precipitation"
+      ],
+      [
+       "month",
+       "monthly",
+       "year",
+       "average"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "wettest month is December (about 110 mm)",
+     "keywords": [
+      [
+       "december"
+      ],
+      [
+       "highest",
+       "peak",
+       "peaks",
+       "maximum",
+       "most",
+       "wettest",
+       "110",
+       "hundred"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "driest month is July (about 5 mm)",
+     "keywords": [
+      [
+       "july"
+      ],
+      [
+       "lowest",
+       "least",
+       "minimum",
+       "driest",
+       "5",
+       "five"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "rainfall falls from January to July then rises again",
+     "keywords": [
+      [
+       "decrease",
+       "decreased",
+       "fell",
+       "decline",
+       "declined",
+       "drop",
+       "dropped",
+       "falls"
+      ],
+      [
+       "increase",
+       "increased",
+       "rose",
+       "rises",
+       "climbed",
+       "rise",
+       "grew"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "dry summer, wet winter pattern",
+     "keywords": [
+      [
+       "summer",
+       "middle",
+       "mid"
+      ],
+      [
+       "winter",
+       "end",
+       "beginning"
+      ],
+      [
+       "dry",
+       "wet",
+       "pattern",
+       "seasonal",
+       "season"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "di-003",
+   "title": "University budget",
+   "difficulty": "medium",
+   "chart": {
+    "type": "pie",
+    "title": "How a university spends its annual budget",
+    "unit": "%",
+    "labels": [
+     "Staff salaries",
+     "Research",
+     "Buildings & maintenance",
+     "Student services",
+     "Technology",
+     "Other"
+    ],
+    "series": [
+     {
+      "name": "Share",
+      "values": [
+       48,
+       18,
+       14,
+       9,
+       7,
+       4
+      ]
+     }
+    ]
+   },
+   "key_points": [
+    {
+     "label": "the topic: university annual spending",
+     "keywords": [
+      [
+       "university",
+       "institution"
+      ],
+      [
+       "budget",
+       "spending",
+       "spends",
+       "expenditure",
+       "money"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "salaries are the largest share at almost half (48%)",
+     "keywords": [
+      [
+       "salaries",
+       "salary",
+       "staff",
+       "wages"
+      ],
+      [
+       "largest",
+       "biggest",
+       "most",
+       "highest",
+       "half",
+       "48",
+       "forty eight",
+       "majority"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "research is second at 18%",
+     "keywords": [
+      [
+       "research"
+      ],
+      [
+       "second",
+       "18",
+       "eighteen"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "buildings 14%, student services 9%",
+     "keywords": [
+      [
+       "building",
+       "buildings",
+       "maintenance"
+      ],
+      [
+       "student",
+       "services"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "technology and other are the smallest",
+     "keywords": [
+      [
+       "technology",
+       "other"
+      ],
+      [
+       "smallest",
+       "least",
+       "lowest",
+       "minor",
+       "only",
+       "7",
+       "4",
+       "seven",
+       "four"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "di-004",
+   "title": "Making paper",
+   "difficulty": "hard",
+   "chart": {
+    "type": "process",
+    "title": "How recycled paper is made",
+    "labels": [
+     "Collection",
+     "Sorting",
+     "Pulping with water",
+     "Cleaning & de-inking",
+     "Pressing & drying",
+     "New paper rolls"
+    ],
+    "series": []
+   },
+   "key_points": [
+    {
+     "label": "the topic: the recycled paper process",
+     "keywords": [
+      [
+       "recycle",
+       "recycled",
+       "recycling"
+      ],
+      [
+       "paper"
+      ],
+      [
+       "process",
+       "stages",
+       "steps"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "paper is collected and sorted",
+     "keywords": [
+      [
+       "collect",
+       "collected",
+       "collection"
+      ],
+      [
+       "sort",
+       "sorted",
+       "sorting"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "it is mixed with water to make pulp",
+     "keywords": [
+      [
+       "pulp",
+       "pulped",
+       "pulping"
+      ],
+      [
+       "water"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "pulp is cleaned and de-inked",
+     "keywords": [
+      [
+       "clean",
+       "cleaned",
+       "cleaning"
+      ],
+      [
+       "ink",
+       "de-inked",
+       "deinking",
+       "inking"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "pressed and dried into new rolls",
+     "keywords": [
+      [
+       "press",
+       "pressed",
+       "pressing"
+      ],
+      [
+       "dry",
+       "dried",
+       "drying"
+      ],
+      [
+       "roll",
+       "rolls",
+       "new"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "di-005",
+   "title": "International students",
+   "difficulty": "medium",
+   "chart": {
+    "type": "line",
+    "title": "International students at University Z, 2016–2024 (thousands)",
+    "unit": "",
+    "labels": [
+     "2016",
+     "2017",
+     "2018",
+     "2019",
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024"
+    ],
+    "series": [
+     {
+      "name": "Undergraduate",
+      "values": [
+       4.2,
+       4.8,
+       5.5,
+       6.1,
+       3.9,
+       4.4,
+       5.9,
+       6.8,
+       7.2
+      ]
+     },
+     {
+      "name": "Postgraduate",
+      "values": [
+       2.1,
+       2.4,
+       2.9,
+       3.3,
+       2.0,
+       2.6,
+       3.8,
+       4.5,
+       5.1
+      ]
+     }
+    ]
+   },
+   "key_points": [
+    {
+     "label": "topic: international students 2016–2024",
+     "keywords": [
+      [
+       "international",
+       "overseas",
+       "foreign"
+      ],
+      [
+       "student",
+       "students"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "both groups grew until 2019",
+     "keywords": [
+      [
+       "increase",
+       "increased",
+       "rose",
+       "grew",
+       "growth",
+       "rise"
+      ],
+      [
+       "2019",
+       "2016"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "sharp fall in 2020",
+     "keywords": [
+      [
+       "2020",
+       "twenty twenty"
+      ],
+      [
+       "fell",
+       "dropped",
+       "drop",
+       "decline",
+       "declined",
+       "decrease",
+       "plummeted",
+       "fall"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "recovery and new highs by 2024",
+     "keywords": [
+      [
+       "recover",
+       "recovered",
+       "recovery",
+       "rebounded",
+       "highest",
+       "peak",
+       "peaked"
+      ],
+      [
+       "2024",
+       "2023"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "undergraduates always outnumber postgraduates",
+     "keywords": [
+      [
+       "undergraduate",
+       "undergraduates"
+      ],
+      [
+       "postgraduate",
+       "postgraduates"
+      ],
+      [
+       "more",
+       "higher",
+       "larger",
+       "outnumber",
+       "than"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "di-006",
+   "title": "Commuting methods",
+   "difficulty": "easy",
+   "chart": {
+    "type": "bar",
+    "title": "How employees commute to work in City Q (%)",
+    "unit": "%",
+    "labels": [
+     "Car",
+     "Bus",
+     "Train",
+     "Bicycle",
+     "Walking"
+    ],
+    "series": [
+     {
+      "name": "Share",
+      "values": [
+       42,
+       23,
+       17,
+       10,
+       8
+      ]
+     }
+    ]
+   },
+   "key_points": [
+    {
+     "label": "topic: commuting methods",
+     "keywords": [
+      [
+       "commute",
+       "commuting",
+       "travel",
+       "transport",
+       "work"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "car is most popular at 42%",
+     "keywords": [
+      [
+       "car",
+       "cars",
+       "driving"
+      ],
+      [
+       "most",
+       "highest",
+       "popular",
+       "42",
+       "forty two",
+       "largest"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "bus second at 23%",
+     "keywords": [
+      [
+       "bus",
+       "buses"
+      ],
+      [
+       "23",
+       "twenty three",
+       "second"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "train 17%",
+     "keywords": [
+      [
+       "train",
+       "trains",
+       "rail"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "bicycle and walking least common",
+     "keywords": [
+      [
+       "bicycle",
+       "cycling",
+       "bike",
+       "walking",
+       "walk"
+      ],
+      [
+       "least",
+       "lowest",
+       "smallest",
+       "only",
+       "10",
+       "8",
+       "ten",
+       "eight"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "di-007",
+   "title": "Water use",
+   "difficulty": "medium",
+   "chart": {
+    "type": "pie",
+    "title": "Household water use in an average home",
+    "unit": "%",
+    "labels": [
+     "Showers",
+     "Toilets",
+     "Laundry",
+     "Kitchen",
+     "Garden",
+     "Other"
+    ],
+    "series": [
+     {
+      "name": "Share",
+      "values": [
+       34,
+       26,
+       15,
+       12,
+       9,
+       4
+      ]
+     }
+    ]
+   },
+   "key_points": [
+    {
+     "label": "topic: household water use",
+     "keywords": [
+      [
+       "water"
+      ],
+      [
+       "household",
+       "home",
+       "domestic",
+       "use",
+       "usage"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "showers use the most (34%)",
+     "keywords": [
+      [
+       "shower",
+       "showers"
+      ],
+      [
+       "most",
+       "largest",
+       "biggest",
+       "highest",
+       "34",
+       "thirty four",
+       "third"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "toilets second (26%)",
+     "keywords": [
+      [
+       "toilet",
+       "toilets"
+      ],
+      [
+       "26",
+       "twenty six",
+       "second",
+       "quarter"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "laundry and kitchen mid-range",
+     "keywords": [
+      [
+       "laundry",
+       "washing",
+       "kitchen"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "garden and other smallest",
+     "keywords": [
+      [
+       "garden",
+       "other"
+      ],
+      [
+       "smallest",
+       "least",
+       "lowest",
+       "9",
+       "4",
+       "nine",
+       "four"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "di-008",
+   "title": "Tea production",
+   "difficulty": "hard",
+   "chart": {
+    "type": "process",
+    "title": "How black tea is produced",
+    "labels": [
+     "Plucking leaves",
+     "Withering",
+     "Rolling",
+     "Oxidation",
+     "Drying",
+     "Sorting & packing"
+    ],
+    "series": []
+   },
+   "key_points": [
+    {
+     "label": "topic: black tea production",
+     "keywords": [
+      [
+       "tea"
+      ],
+      [
+       "process",
+       "produced",
+       "production",
+       "stages",
+       "steps"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "leaves are plucked and withered",
+     "keywords": [
+      [
+       "pluck",
+       "plucked",
+       "plucking",
+       "picked",
+       "harvested"
+      ],
+      [
+       "wither",
+       "withered",
+       "withering"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "rolled then oxidised",
+     "keywords": [
+      [
+       "roll",
+       "rolled",
+       "rolling"
+      ],
+      [
+       "oxidation",
+       "oxidised",
+       "oxidized",
+       "ferment"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "dried",
+     "keywords": [
+      [
+       "dry",
+       "dried",
+       "drying"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "sorted and packed",
+     "keywords": [
+      [
+       "sort",
+       "sorted",
+       "sorting",
+       "graded"
+      ],
+      [
+       "pack",
+       "packed",
+       "packing",
+       "packaged"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  }
+ ],
+ "retell_lecture": [
+  {
+   "id": "rl-001",
+   "title": "Why bees matter",
+   "difficulty": "medium",
+   "transcript": "Today I want to talk about why bees are so important. Around three quarters of the crops we grow for food depend, at least partly, on pollinators, and bees are the most efficient of them. When a bee visits a flower to collect nectar, pollen sticks to its body and is carried to the next flower, allowing the plant to reproduce. Unfortunately, bee populations have declined dramatically in many countries. Researchers point to three main causes: the widespread use of pesticides, the loss of wild flowers due to intensive farming, and diseases spread by parasites. If this decline continues, food prices could rise and our diets could become far less varied. The good news is that solutions exist. Farmers can plant strips of wild flowers alongside fields, governments can restrict the most harmful pesticides, and even individuals can help by growing bee-friendly plants in their gardens.",
+   "key_points": [
+    {
+     "label": "bees are vital pollinators for most food crops",
+     "keywords": [
+      [
+       "bee",
+       "bees"
+      ],
+      [
+       "pollinate",
+       "pollinator",
+       "pollinators",
+       "pollination",
+       "pollen"
+      ],
+      [
+       "crop",
+       "crops",
+       "food"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "how pollination works (pollen carried between flowers)",
+     "keywords": [
+      [
+       "pollen"
+      ],
+      [
+       "flower",
+       "flowers"
+      ],
+      [
+       "carry",
+       "carried",
+       "transfer",
+       "reproduce"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "bee populations are declining",
+     "keywords": [
+      [
+       "decline",
+       "declined",
+       "declining",
+       "decrease",
+       "fall",
+       "drop",
+       "dying",
+       "loss"
+      ],
+      [
+       "population",
+       "populations",
+       "numbers",
+       "bees"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "causes: pesticides, habitat loss, disease",
+     "keywords": [
+      [
+       "pesticide",
+       "pesticides",
+       "chemicals"
+      ],
+      [
+       "farming",
+       "flowers",
+       "habitat"
+      ],
+      [
+       "disease",
+       "diseases",
+       "parasite",
+       "parasites"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "consequences: higher food prices, less varied diets",
+     "keywords": [
+      [
+       "price",
+       "prices",
+       "cost",
+       "expensive"
+      ],
+      [
+       "diet",
+       "diets",
+       "variety",
+       "varied",
+       "food"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "solutions: wildflower strips, regulation, gardens",
+     "keywords": [
+      [
+       "solution",
+       "solutions",
+       "help",
+       "plant",
+       "planting"
+      ],
+      [
+       "government",
+       "governments",
+       "restrict",
+       "ban",
+       "farmers",
+       "garden",
+       "gardens"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "rl-002",
+   "title": "The history of money",
+   "difficulty": "medium",
+   "transcript": "Money, as we know it, is a relatively recent invention. For thousands of years, people relied on barter, directly exchanging goods such as grain for livestock. The problem with barter is that it requires what economists call a double coincidence of wants: you must find someone who has what you want and who also wants what you have. To solve this, societies began using commodity money, such as shells, salt, and later precious metals like gold and silver. Coins appeared in the kingdom of Lydia around the seventh century BC, and paper money was first widely used in China. Today, most money exists only as digital records in bank computers, and the value of a currency depends not on metal, but on trust in the government that issues it.",
+   "key_points": [
+    {
+     "label": "before money people used barter",
+     "keywords": [
+      [
+       "barter",
+       "exchange",
+       "exchanging",
+       "trade",
+       "traded"
+      ],
+      [
+       "goods",
+       "grain",
+       "livestock"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "barter needs a double coincidence of wants",
+     "keywords": [
+      [
+       "coincidence",
+       "problem",
+       "difficult",
+       "limitation"
+      ],
+      [
+       "want",
+       "wants",
+       "need",
+       "needs"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "commodity money: shells, salt, gold and silver",
+     "keywords": [
+      [
+       "commodity",
+       "shells",
+       "salt"
+      ],
+      [
+       "gold",
+       "silver",
+       "metal",
+       "metals"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "coins from Lydia, paper money from China",
+     "keywords": [
+      [
+       "coin",
+       "coins",
+       "lydia"
+      ],
+      [
+       "paper"
+      ],
+      [
+       "china",
+       "chinese"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "today money is mostly digital and based on trust",
+     "keywords": [
+      [
+       "digital",
+       "electronic",
+       "computer",
+       "computers",
+       "bank"
+      ],
+      [
+       "trust",
+       "government",
+       "confidence"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "rl-003",
+   "title": "Urban vertical farming",
+   "difficulty": "hard",
+   "transcript": "Vertical farming means growing crops in stacked layers, usually indoors, under artificial light. Supporters argue that it could transform food production in crowded cities. Because the environment is fully controlled, crops can be harvested all year round, pesticides are rarely needed, and some systems use up to ninety percent less water than traditional agriculture. Food can also be grown close to consumers, which reduces transport emissions. However, the approach has serious drawbacks. The electricity needed for lighting and climate control is expensive, and unless it comes from renewable sources, the carbon footprint can actually be higher than that of conventional farms. At present, vertical farms are profitable mainly for leafy greens and herbs, not for staple crops like wheat or rice. So, while promising, vertical farming is likely to complement rather than replace traditional agriculture.",
+   "key_points": [
+    {
+     "label": "definition: crops grown indoors in stacked layers",
+     "keywords": [
+      [
+       "vertical"
+      ],
+      [
+       "layer",
+       "layers",
+       "stacked",
+       "indoor",
+       "indoors"
+      ],
+      [
+       "light",
+       "artificial",
+       "crop",
+       "crops"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "advantages: year-round harvests, fewer pesticides, much less water",
+     "keywords": [
+      [
+       "year",
+       "round",
+       "all year"
+      ],
+      [
+       "pesticide",
+       "pesticides"
+      ],
+      [
+       "water",
+       "ninety",
+       "90"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "grown near consumers so lower transport emissions",
+     "keywords": [
+      [
+       "transport",
+       "emissions",
+       "close",
+       "near",
+       "local"
+      ],
+      [
+       "city",
+       "cities",
+       "consumers"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "drawback: high electricity cost and possible high carbon footprint",
+     "keywords": [
+      [
+       "electricity",
+       "energy",
+       "power"
+      ],
+      [
+       "expensive",
+       "cost",
+       "costly",
+       "carbon",
+       "footprint"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "only profitable for leafy greens, not staples",
+     "keywords": [
+      [
+       "greens",
+       "leafy",
+       "herbs",
+       "lettuce"
+      ],
+      [
+       "wheat",
+       "rice",
+       "staple",
+       "staples",
+       "profitable"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "conclusion: complement, not replace, traditional farming",
+     "keywords": [
+      [
+       "complement",
+       "supplement",
+       "replace",
+       "alongside"
+      ],
+      [
+       "traditional",
+       "conventional",
+       "agriculture",
+       "farming"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "rl-004",
+   "title": "The science of habits",
+   "difficulty": "medium",
+   "transcript": "Why are habits so hard to change? Neuroscientists explain that when we repeat an action in the same context, control gradually shifts from the decision-making parts of the brain to more automatic regions. That is efficient, because it frees up mental energy, but it also means habits run without our conscious attention. Research suggests that willpower alone is a poor tool for changing them. A more effective strategy is to change the environment: removing the cues that trigger an unwanted habit, and making the desired behaviour easier. For example, people who want to eat more healthily are far more successful when they simply stop keeping snacks at home. It typically takes around two months, not three weeks as is often claimed, for a new behaviour to become automatic.",
+   "key_points": [
+    {
+     "label": "repetition makes behaviour automatic in the brain",
+     "keywords": [
+      [
+       "repeat",
+       "repeated",
+       "repetition"
+      ],
+      [
+       "automatic",
+       "automatically",
+       "brain"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "habits save mental energy but bypass conscious attention",
+     "keywords": [
+      [
+       "energy",
+       "efficient",
+       "effort"
+      ],
+      [
+       "conscious",
+       "attention",
+       "thinking",
+       "automatically"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "willpower alone is ineffective",
+     "keywords": [
+      [
+       "willpower",
+       "will",
+       "power",
+       "self-control"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "change the environment: remove cues, make good behaviour easy",
+     "keywords": [
+      [
+       "environment",
+       "cues",
+       "cue",
+       "trigger",
+       "triggers"
+      ],
+      [
+       "remove",
+       "easier",
+       "change"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "example: not keeping snacks at home",
+     "keywords": [
+      [
+       "snack",
+       "snacks",
+       "food",
+       "eat",
+       "eating"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "about two months to form a habit, not three weeks",
+     "keywords": [
+      [
+       "two",
+       "months",
+       "weeks",
+       "three",
+       "sixty"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "rl-005",
+   "title": "Ocean currents",
+   "difficulty": "hard",
+   "transcript": "Ocean currents act like a global conveyor belt, moving heat from the equator towards the poles. Surface currents are driven mainly by wind, while deep currents are driven by differences in temperature and salinity. In the North Atlantic, warm salty water travels north, cools, becomes denser and sinks, pulling more warm water behind it. This circulation is one reason why western Europe has milder winters than parts of Canada at the same latitude. Scientists are concerned that melting ice in Greenland is adding fresh water to the North Atlantic, which makes the surface water less dense and could slow the entire system. A significant slowdown could bring colder winters to Europe and change rainfall patterns in the tropics.",
+   "key_points": [
+    {
+     "label": "currents carry heat from equator to poles",
+     "keywords": [
+      [
+       "heat",
+       "warm"
+      ],
+      [
+       "equator",
+       "poles",
+       "pole"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "surface currents driven by wind; deep currents by temperature and salinity",
+     "keywords": [
+      [
+       "wind"
+      ],
+      [
+       "temperature",
+       "salinity",
+       "salt",
+       "salty",
+       "density"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "warm water sinks in the North Atlantic and drives circulation",
+     "keywords": [
+      [
+       "sink",
+       "sinks",
+       "dense",
+       "denser",
+       "cools"
+      ],
+      [
+       "atlantic",
+       "north"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "gives western Europe milder winters",
+     "keywords": [
+      [
+       "europe",
+       "european"
+      ],
+      [
+       "milder",
+       "warmer",
+       "mild"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "melting Greenland ice could slow the system",
+     "keywords": [
+      [
+       "greenland",
+       "ice",
+       "melting",
+       "fresh"
+      ],
+      [
+       "slow",
+       "slowdown",
+       "weaken"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "consequences: colder European winters, changed tropical rainfall",
+     "keywords": [
+      [
+       "colder",
+       "cold",
+       "rainfall",
+       "rain",
+       "tropics",
+       "tropical"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "rl-006",
+   "title": "Behavioural economics",
+   "difficulty": "medium",
+   "transcript": "Traditional economics assumes that people make rational decisions to maximise their own benefit. Behavioural economics challenges this idea by showing that our choices are shaped by predictable biases. One example is loss aversion: losing fifty dollars feels roughly twice as painful as gaining fifty dollars feels good. Another is the default effect. When countries changed organ donation from an opt-in to an opt-out system, registration rates rose dramatically, even though people were free to choose either way. Governments now use these insights, sometimes called nudges, to encourage behaviour such as saving for retirement, without restricting anyone's freedom.",
+   "key_points": [
+    {
+     "label": "traditional economics assumes rational decisions",
+     "keywords": [
+      [
+       "rational",
+       "traditional",
+       "maximise",
+       "maximize"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "behavioural economics shows predictable biases",
+     "keywords": [
+      [
+       "bias",
+       "biases",
+       "behavioural",
+       "behavioral",
+       "predictable"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "loss aversion: losses hurt about twice as much as gains",
+     "keywords": [
+      [
+       "loss",
+       "losses",
+       "losing",
+       "aversion"
+      ],
+      [
+       "twice",
+       "double",
+       "painful",
+       "gain",
+       "gaining"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "default effect: opt-out organ donation raised registration",
+     "keywords": [
+      [
+       "default",
+       "opt",
+       "organ",
+       "donation"
+      ],
+      [
+       "rose",
+       "increased",
+       "higher"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "governments use nudges, e.g. retirement saving",
+     "keywords": [
+      [
+       "nudge",
+       "nudges",
+       "government",
+       "governments"
+      ],
+      [
+       "retirement",
+       "saving",
+       "save",
+       "pension"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  }
+ ],
+ "answer_short_question": [
+  {
+   "id": "asq-001",
+   "question": "What do you call a person who designs buildings?",
+   "answers": [
+    "architect",
+    "an architect"
+   ]
+  },
+  {
+   "id": "asq-002",
+   "question": "How many days are there in a leap year?",
+   "answers": [
+    "366",
+    "three hundred and sixty six",
+    "three hundred sixty six"
+   ]
+  },
+  {
+   "id": "asq-003",
+   "question": "Which organ in the human body pumps blood?",
+   "answers": [
+    "heart",
+    "the heart"
+   ]
+  },
+  {
+   "id": "asq-004",
+   "question": "What is the opposite of the word 'ancient'?",
+   "answers": [
+    "modern",
+    "new",
+    "contemporary"
+   ]
+  },
+  {
+   "id": "asq-005",
+   "question": "If you are reading a book's list of chapters at the front, what section are you looking at?",
+   "answers": [
+    "contents",
+    "table of contents",
+    "the contents"
+   ]
+  },
+  {
+   "id": "asq-006",
+   "question": "What instrument is used to look at stars and planets?",
+   "answers": [
+    "telescope",
+    "a telescope"
+   ]
+  },
+  {
+   "id": "asq-007",
+   "question": "What do we call the yearly celebration of the day a person was born?",
+   "answers": [
+    "birthday",
+    "a birthday"
+   ]
+  },
+  {
+   "id": "asq-008",
+   "question": "Which season comes after autumn?",
+   "answers": [
+    "winter"
+   ]
+  },
+  {
+   "id": "asq-009",
+   "question": "What is frozen water called?",
+   "answers": [
+    "ice"
+   ]
+  },
+  {
+   "id": "asq-010",
+   "question": "What do you call a book of maps?",
+   "answers": [
+    "atlas",
+    "an atlas"
+   ]
+  },
+  {
+   "id": "asq-011",
+   "question": "How many sides does a triangle have?",
+   "answers": [
+    "three",
+    "3"
+   ]
+  },
+  {
+   "id": "asq-012",
+   "question": "Which planet is known as the Red Planet?",
+   "answers": [
+    "mars"
+   ]
+  },
+  {
+   "id": "asq-013",
+   "question": "What is the person who treats sick animals called?",
+   "answers": [
+    "vet",
+    "veterinarian",
+    "a vet",
+    "veterinary surgeon"
+   ]
+  },
+  {
+   "id": "asq-014",
+   "question": "If something happens every two years, is it biennial or annual?",
+   "answers": [
+    "biennial"
+   ]
+  },
+  {
+   "id": "asq-015",
+   "question": "What part of a plant is usually underground?",
+   "answers": [
+    "root",
+    "roots",
+    "the roots"
+   ]
+  },
+  {
+   "id": "asq-016",
+   "question": "What do you call the money you pay to live in a flat you don't own?",
+   "answers": [
+    "rent"
+   ]
+  },
+  {
+   "id": "asq-017",
+   "question": "Which instrument measures temperature?",
+   "answers": [
+    "thermometer",
+    "a thermometer"
+   ]
+  },
+  {
+   "id": "asq-018",
+   "question": "What is the name of the document that shows your university results?",
+   "answers": [
+    "transcript",
+    "academic transcript",
+    "a transcript"
+   ]
+  },
+  {
+   "id": "asq-019",
+   "question": "How many minutes are there in an hour and a half?",
+   "answers": [
+    "ninety",
+    "90"
+   ]
+  },
+  {
+   "id": "asq-020",
+   "question": "What do bees produce?",
+   "answers": [
+    "honey"
+   ]
+  }
+ ],
+ "summarize_group_discussion": [
+  {
+   "id": "sgd-001",
+   "title": "Group project problems",
+   "difficulty": "medium",
+   "turns": [
+    {
+     "speaker": "Maya",
+     "text": "Honestly, I'm worried about our group project. We're halfway through the semester and we still haven't agreed on a research question. Every meeting turns into a debate and nothing gets decided."
+    },
+    {
+     "speaker": "Leo",
+     "text": "I agree that it's frustrating, but I think the real problem is communication. Half of us don't read the group chat, so we keep repeating the same discussions. Maybe we should use a shared document where every decision is written down."
+    },
+    {
+     "speaker": "Priya",
+     "text": "A shared document is a good idea, but we also need someone to lead. I'd suggest we vote on a coordinator who sets deadlines. And if we still can't choose a question by Friday, we should ask the tutor for guidance during office hours."
+    },
+    {
+     "speaker": "Maya",
+     "text": "That sounds reasonable. I'd be happy if Priya coordinated, actually. Let's set up the document tonight and try to finalise the question before Friday."
+    },
+    {
+     "speaker": "Leo",
+     "text": "Fine by me. I'll create the document and share the link with everyone."
+    }
+   ],
+   "key_points": [
+    {
+     "label": "Maya: worried the group hasn't agreed on a research question; meetings become debates",
+     "keywords": [
+      [
+       "maya"
+      ],
+      [
+       "worried",
+       "concerned",
+       "frustrated",
+       "problem"
+      ],
+      [
+       "question",
+       "agree",
+       "agreed",
+       "decision",
+       "debate"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "Leo: the real problem is communication; suggests a shared document",
+     "keywords": [
+      [
+       "leo"
+      ],
+      [
+       "communication",
+       "chat",
+       "communicate"
+      ],
+      [
+       "document",
+       "shared",
+       "write"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "Priya: need a coordinator/leader with deadlines; ask the tutor if stuck",
+     "keywords": [
+      [
+       "priya"
+      ],
+      [
+       "coordinator",
+       "leader",
+       "lead",
+       "deadline",
+       "deadlines",
+       "vote"
+      ],
+      [
+       "tutor",
+       "office",
+       "guidance",
+       "help"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "outcome: Priya coordinates, Leo creates the document, decide by Friday",
+     "keywords": [
+      [
+       "agree",
+       "agreed",
+       "decided",
+       "plan",
+       "outcome",
+       "finally"
+      ],
+      [
+       "friday",
+       "tonight",
+       "link",
+       "create",
+       "coordinate"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "sgd-002",
+   "title": "Online versus in-person lectures",
+   "difficulty": "hard",
+   "turns": [
+    {
+     "speaker": "Dr Chen",
+     "text": "The faculty is considering moving first-year lectures online permanently. I'd like to hear your views before the committee meets."
+    },
+    {
+     "speaker": "Sam",
+     "text": "Personally, I'd welcome it. I work part-time, and recorded lectures let me study when it suits me. I can also pause and rewatch difficult sections, which really helps with technical subjects."
+    },
+    {
+     "speaker": "Aisha",
+     "text": "I see the benefits, but I think first-year students especially need face-to-face contact. When I started university, the lectures were where I met people and felt part of a community. Online, it's easy to fall behind without anyone noticing."
+    },
+    {
+     "speaker": "Dr Chen",
+     "text": "Both are fair points. One option is a blended model: recorded lectures for content, plus weekly in-person workshops for discussion and support."
+    },
+    {
+     "speaker": "Aisha",
+     "text": "That would be a good compromise, as long as attendance at workshops is encouraged."
+    },
+    {
+     "speaker": "Sam",
+     "text": "I'd support that too, provided the workshops are offered at a few different times."
+    }
+   ],
+   "key_points": [
+    {
+     "label": "Dr Chen: faculty considering moving first-year lectures online; wants student views",
+     "keywords": [
+      [
+       "chen",
+       "lecturer",
+       "professor"
+      ],
+      [
+       "online",
+       "faculty",
+       "committee"
+      ],
+      [
+       "lecture",
+       "lectures",
+       "views"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "Sam: supports online — flexibility for part-time work, can pause and rewatch",
+     "keywords": [
+      [
+       "sam"
+      ],
+      [
+       "flexible",
+       "flexibility",
+       "work",
+       "part-time",
+       "suits"
+      ],
+      [
+       "pause",
+       "rewatch",
+       "recorded",
+       "recordings"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "Aisha: first-years need face-to-face contact and community; risk of falling behind",
+     "keywords": [
+      [
+       "aisha"
+      ],
+      [
+       "face",
+       "person",
+       "contact",
+       "community",
+       "people"
+      ],
+      [
+       "behind",
+       "isolated",
+       "first-year",
+       "first"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "Dr Chen proposes a blended model with weekly workshops; both students agree with conditions",
+     "keywords": [
+      [
+       "chen",
+       "proposes",
+       "suggests",
+       "suggested"
+      ],
+      [
+       "blended",
+       "workshop",
+       "workshops",
+       "compromise",
+       "hybrid"
+      ],
+      [
+       "agree",
+       "agreed",
+       "support",
+       "attendance",
+       "times"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "sgd-003",
+   "title": "Library opening hours",
+   "difficulty": "medium",
+   "turns": [
+    {
+     "speaker": "Professor Lee",
+     "text": "The library committee wants to know whether students would prefer the library to open twenty-four hours a day during exam periods. It would mean reducing evening hours during the rest of the year to cover staff costs."
+    },
+    {
+     "speaker": "Nadia",
+     "text": "I'd definitely support it. Before exams the library is so crowded in the evenings that people can't find a seat. If it were open all night, students could spread out their study time."
+    },
+    {
+     "speaker": "Tom",
+     "text": "I'm not convinced. I worry it would encourage people to stay up all night, which isn't healthy. And cutting evening hours for the rest of the year would hurt part-time students who can only come after work."
+    },
+    {
+     "speaker": "Professor Lee",
+     "text": "Those are both important concerns. What if we opened twenty-four hours only for the final two weeks before exams, and kept normal evening hours otherwise, funding it from the student services budget?"
+    },
+    {
+     "speaker": "Nadia",
+     "text": "That would be fine with me."
+    },
+    {
+     "speaker": "Tom",
+     "text": "I could accept that, as long as the library also promotes healthy study habits during that time."
+    }
+   ],
+   "key_points": [
+    {
+     "label": "Professor Lee: committee asks about 24-hour opening in exams, funded by cutting evening hours",
+     "keywords": [
+      [
+       "lee",
+       "professor",
+       "committee"
+      ],
+      [
+       "24",
+       "twenty",
+       "hours",
+       "all",
+       "night"
+      ],
+      [
+       "exam",
+       "exams",
+       "evening",
+       "cut",
+       "cost",
+       "costs"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "Nadia: supports it because the library is overcrowded before exams",
+     "keywords": [
+      [
+       "nadia"
+      ],
+      [
+       "support",
+       "supports",
+       "favour",
+       "agree"
+      ],
+      [
+       "crowded",
+       "busy",
+       "seat",
+       "seats",
+       "space"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "Tom: worried about health and about part-time students losing evening hours",
+     "keywords": [
+      [
+       "tom"
+      ],
+      [
+       "health",
+       "healthy",
+       "sleep",
+       "night"
+      ],
+      [
+       "part-time",
+       "work",
+       "evening",
+       "students"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "compromise: 24 hours only in the final two weeks, normal hours otherwise; both agree",
+     "keywords": [
+      [
+       "compromise",
+       "only",
+       "final",
+       "two",
+       "weeks"
+      ],
+      [
+       "agree",
+       "agreed",
+       "accept",
+       "fine",
+       "support"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "sgd-004",
+   "title": "Using AI tools in assignments",
+   "difficulty": "hard",
+   "turns": [
+    {
+     "speaker": "Dr Patel",
+     "text": "The department is writing a policy on AI writing tools. I'd like to hear how you think students should be allowed to use them in assignments."
+    },
+    {
+     "speaker": "Kai",
+     "text": "I think they should be allowed for brainstorming and checking grammar. Banning them completely isn't realistic, and employers will expect us to know how to use them."
+    },
+    {
+     "speaker": "Sofia",
+     "text": "I agree they're useful, but I'm worried about fairness. If some students use AI to write whole essays, the marks won't reflect real understanding. I'd want clear rules and some assessments done in class."
+    },
+    {
+     "speaker": "Dr Patel",
+     "text": "So perhaps students could use AI for planning and editing, but must declare how they used it, and we add a short in-class written component to each module."
+    },
+    {
+     "speaker": "Kai",
+     "text": "Declaring it seems reasonable."
+    },
+    {
+     "speaker": "Sofia",
+     "text": "Yes, and the in-class component would address my concern about fairness."
+    }
+   ],
+   "key_points": [
+    {
+     "label": "Dr Patel: department writing a policy on AI tools in assignments",
+     "keywords": [
+      [
+       "patel"
+      ],
+      [
+       "policy",
+       "department"
+      ],
+      [
+       "ai",
+       "tools",
+       "assignments"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "Kai: allow AI for brainstorming and grammar; banning is unrealistic; employers expect it",
+     "keywords": [
+      [
+       "kai"
+      ],
+      [
+       "brainstorm",
+       "brainstorming",
+       "grammar",
+       "allow",
+       "allowed"
+      ],
+      [
+       "ban",
+       "banning",
+       "employers",
+       "realistic",
+       "jobs"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "Sofia: worried about fairness and real understanding; wants clear rules and in-class assessment",
+     "keywords": [
+      [
+       "sofia"
+      ],
+      [
+       "fair",
+       "fairness",
+       "understanding",
+       "cheating"
+      ],
+      [
+       "rules",
+       "class",
+       "in-class",
+       "assessment"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "outcome: allowed for planning/editing with declaration plus in-class component; both agree",
+     "keywords": [
+      [
+       "declare",
+       "declaration",
+       "disclose"
+      ],
+      [
+       "class",
+       "in-class",
+       "component"
+      ],
+      [
+       "agree",
+       "agreed",
+       "reasonable"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  }
+ ],
+ "respond_to_situation": [
+  {
+   "id": "rts-001",
+   "title": "Missed deadline",
+   "difficulty": "medium",
+   "situation": "You were ill last week and could not submit your essay on time. Your tutor, Dr Morgan, is in her office. Explain what happened and ask for an extension.",
+   "functions": [
+    {
+     "label": "Greet the tutor",
+     "patterns": [
+      "\\b(hello|hi|good (morning|afternoon)|excuse me|dr morgan)\\b"
+     ]
+    },
+    {
+     "label": "Explain that you were ill",
+     "patterns": [
+      "\\b(ill|sick|unwell|flu|fever|doctor|hospital)\\b"
+     ]
+    },
+    {
+     "label": "Apologise for the late submission",
+     "patterns": [
+      "\\b(sorry|apologi[sz]e)\\b"
+     ]
+    },
+    {
+     "label": "Ask for an extension",
+     "patterns": [
+      "\\b(extension|extra time|more time|extend|later date|submit (it )?(by|on|next))\\b"
+     ]
+    },
+    {
+     "label": "Offer evidence or a new date",
+     "patterns": [
+      "\\b(certificate|note|evidence|proof|by (monday|tuesday|wednesday|thursday|friday)|next week|in (two|three|a few) days)\\b"
+     ]
+    }
+   ],
+   "key_points": [
+    {
+     "label": "essay / deadline",
+     "keywords": [
+      [
+       "essay",
+       "assignment",
+       "deadline",
+       "submit"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "rts-002",
+   "title": "Noisy neighbour",
+   "difficulty": "easy",
+   "situation": "Your neighbour in the student residence plays loud music late at night, and you have an exam tomorrow morning. Knock on their door and ask them politely to turn it down.",
+   "functions": [
+    {
+     "label": "Greet your neighbour",
+     "patterns": [
+      "\\b(hi|hello|hey|sorry to bother|excuse me)\\b"
+     ]
+    },
+    {
+     "label": "Explain the problem (the music)",
+     "patterns": [
+      "\\b(music|noise|noisy|loud|sound)\\b"
+     ]
+    },
+    {
+     "label": "Give your reason (the exam)",
+     "patterns": [
+      "\\b(exam|test|early|sleep|tomorrow)\\b"
+     ]
+    },
+    {
+     "label": "Make a polite request",
+     "patterns": [
+      "\\b(could you|would you|would it be possible|would you mind|please|turn it down|lower)\\b"
+     ]
+    },
+    {
+     "label": "Thank them",
+     "patterns": [
+      "\\b(thank|thanks|appreciate)\\b"
+     ]
+    }
+   ],
+   "key_points": [
+    {
+     "label": "music / exam",
+     "keywords": [
+      [
+       "music",
+       "noise"
+      ],
+      [
+       "exam",
+       "sleep"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "rts-003",
+   "title": "Library book damaged",
+   "difficulty": "medium",
+   "situation": "You borrowed a book from the university library and accidentally spilled coffee on it. You are now at the library desk. Explain what happened and ask what you should do.",
+   "functions": [
+    {
+     "label": "Greet the librarian",
+     "patterns": [
+      "\\b(hi|hello|good (morning|afternoon)|excuse me)\\b"
+     ]
+    },
+    {
+     "label": "Explain the accident",
+     "patterns": [
+      "\\b(spill|spilled|spilt|coffee|damaged|accident|stain)\\b"
+     ]
+    },
+    {
+     "label": "Apologise",
+     "patterns": [
+      "\\b(sorry|apologi[sz]e)\\b"
+     ]
+    },
+    {
+     "label": "Ask what to do / offer to pay or replace",
+     "patterns": [
+      "\\b(what (should|can|do) i|pay|replace|replacement|fee|cost|fine)\\b"
+     ]
+    }
+   ],
+   "key_points": [
+    {
+     "label": "book / library",
+     "keywords": [
+      [
+       "book"
+      ],
+      [
+       "library",
+       "borrowed"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "rts-004",
+   "title": "Change of group",
+   "difficulty": "medium",
+   "situation": "You have been placed in a Tuesday tutorial group, but you have a part-time job on Tuesday afternoons. Speak to the course coordinator, explain your situation and ask to move to another group.",
+   "functions": [
+    {
+     "label": "Greet the coordinator",
+     "patterns": [
+      "\\b(hello|hi|good (morning|afternoon)|excuse me)\\b"
+     ]
+    },
+    {
+     "label": "Explain the timetable clash with your job",
+     "patterns": [
+      "\\b(job|work|working|shift|part-time|clash|conflict)\\b"
+     ]
+    },
+    {
+     "label": "Ask to change groups",
+     "patterns": [
+      "\\b(change|move|switch|transfer|swap|another group|different group)\\b"
+     ]
+    },
+    {
+     "label": "Suggest an alternative time",
+     "patterns": [
+      "\\b(monday|wednesday|thursday|friday|morning|another day|other day)\\b"
+     ]
+    },
+    {
+     "label": "Thank them",
+     "patterns": [
+      "\\b(thank|thanks|appreciate)\\b"
+     ]
+    }
+   ],
+   "key_points": [
+    {
+     "label": "tutorial / group",
+     "keywords": [
+      [
+       "tutorial",
+       "group",
+       "class"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "rts-005",
+   "title": "Wrong order at a café",
+   "difficulty": "easy",
+   "situation": "You ordered a vegetarian sandwich at the campus café, but you were given one with chicken. You have already paid. Go back to the counter and politely explain the problem.",
+   "functions": [
+    {
+     "label": "Get the staff member's attention politely",
+     "patterns": [
+      "\\b(excuse me|hi|hello|sorry to bother)\\b"
+     ]
+    },
+    {
+     "label": "Explain that you received the wrong order",
+     "patterns": [
+      "\\b(wrong|mistake|chicken|not what i ordered|ordered a)\\b"
+     ]
+    },
+    {
+     "label": "Mention you are vegetarian",
+     "patterns": [
+      "\\b(vegetarian|don't eat meat|do not eat meat|no meat)\\b"
+     ]
+    },
+    {
+     "label": "Ask for a replacement or refund",
+     "patterns": [
+      "\\b(replace|replacement|change it|swap|refund|another one|new one|exchange)\\b"
+     ]
+    },
+    {
+     "label": "Thank them",
+     "patterns": [
+      "\\b(thank|thanks|appreciate)\\b"
+     ]
+    }
+   ],
+   "key_points": [
+    {
+     "label": "sandwich / order",
+     "keywords": [
+      [
+       "sandwich",
+       "order"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "rts-006",
+   "title": "Recommendation letter",
+   "difficulty": "hard",
+   "situation": "You are applying for a master's programme and need a reference letter. Your former lecturer, Professor Chen, taught you two years ago. Ask her politely if she would be willing to write one for you.",
+   "functions": [
+    {
+     "label": "Greet the professor and remind her who you are",
+     "patterns": [
+      "\\b(hello|hi|good (morning|afternoon)|professor|dr|remember|you taught|your class|your course)\\b"
+     ]
+    },
+    {
+     "label": "Explain what you are applying for",
+     "patterns": [
+      "\\b(master|masters|master's|programme|program|apply|applying|application|postgraduate)\\b"
+     ]
+    },
+    {
+     "label": "Ask politely for a reference",
+     "patterns": [
+      "\\b(would you|could you|would it be possible|i was wondering|willing|reference|recommendation|letter)\\b"
+     ]
+    },
+    {
+     "label": "Mention the deadline or offer information",
+     "patterns": [
+      "\\b(deadline|by (the )?\\w+|send you|cv|résumé|resume|transcript|details|information)\\b"
+     ]
+    },
+    {
+     "label": "Thank her",
+     "patterns": [
+      "\\b(thank|thanks|appreciate|grateful)\\b"
+     ]
+    }
+   ],
+   "key_points": [
+    {
+     "label": "reference / application",
+     "keywords": [
+      [
+       "reference",
+       "recommendation",
+       "letter"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  }
+ ]
 }

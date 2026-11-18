@@ -12,10 +12,15 @@ services:
       DATABASE_URL: postgresql+psycopg://parpte:parpte@db:5432/parpte
       WHISPER_MODEL: ${WHISPER_MODEL:-base.en}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8000}
+      LANGUAGETOOL_URL: http://languagetool:8010     # full grammar checking for writing tasks
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}      # optional: Claude writes the coach summaries
     volumes:
       - ./backend/models:/app/backend/models
       - hf-cache:/root/.cache/huggingface
-    depends_on: [db]
+    depends_on: [db, languagetool]
+  languagetool:
+    image: erikvl87/languagetool:latest   # self-hosted LanguageTool server (open source, LGPL)
+    environment: { Java_Xms: 512m, Java_Xmx: 1g }
   db:
     image: postgres:16-alpine
     environment: { POSTGRES_USER: parpte, POSTGRES_PASSWORD: parpte, POSTGRES_DB: parpte }

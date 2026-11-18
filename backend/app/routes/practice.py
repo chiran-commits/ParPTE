@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from collections import defaultdict
 from datetime import date, timedelta
 
@@ -10,7 +11,7 @@ from sqlalchemy.orm import Session
 from .. import bank
 from ..config import AI_TASKS, MAX_AUDIO_MB, PLANS
 from ..db import Attempt, Usage, User, now
-from ..scoring import models, phoneme, score_item, semantic
+from ..scoring import models, phoneme, score_item, semantic, sphinx, vad
 from ..scoring.asr import whisper_available
 from ..scoring.overall import aggregate
 from ..security import current_user, get_db
@@ -27,7 +28,10 @@ def meta():
         "modules": MODULES,
         "plans": PLANS,
         "mock_blueprint": MOCK_BLUEPRINT,
-        "engines": {"asr": "whisper" if whisper_available() else "browser", "pronunciation": "phoneme" if phoneme.available() else "proxy",
+        "engines": {"asr": "whisper" if whisper_available() else "browser",
+                    "pronunciation": "phoneme+gop" if phoneme.available() else ("gop" if sphinx.available() else "proxy"),
+                    "vad": "silero" if vad.available() else "energy", "grammar": "languagetool" if os.getenv("LANGUAGETOOL_URL") else "rules",
+                    "coach": "claude" if os.getenv("ANTHROPIC_API_KEY") else "rules",
                     "similarity": semantic.engine_name(), **models.status()},
     }
 

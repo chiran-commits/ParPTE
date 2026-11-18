@@ -6,7 +6,7 @@ import re
 from collections import Counter
 from dataclasses import dataclass
 
-WORD_RE = re.compile(r"[A-Za-z]+(?:['’][A-Za-z]+)*|\d+(?:[.,]\d+)?%?")
+WORD_RE = re.compile(r"[A-Za-zÀ-ÖØ-öø-ÿ]+(?:['’][A-Za-zÀ-ÖØ-öø-ÿ]+)*|\d+(?:[.,]\d+)?%?")
 SENT_END_RE = re.compile(r"[.!?]+(?=\s|$)")
 
 FILLERS = {"um", "uh", "erm", "er", "ah", "hmm", "mm", "uhm", "umm", "eh"}

@@ -1,5 +1,5 @@
-import { Check, X } from "lucide-react";
-import type { AlignedWord, ScoreResult } from "../lib/types";
+import { Check, Sparkles, X } from "lucide-react";
+import type { AlignedWord, Coach, ScoreResult } from "../lib/types";
 import { Panel, ScoreRuler, TraitBar, cx } from "./ui";
 
 export function ResultPanel({ r, audioUrl, target }: { r: ScoreResult; audioUrl?: string | null; target?: number }) {
@@ -27,9 +27,13 @@ export function ResultPanel({ r, audioUrl, target }: { r: ScoreResult; audioUrl?
       </div>
 
       <div className="space-y-6 p-6">
+        {r.coach && r.coach.headline && <CoachBox c={r.coach} />}
+
+        {d.fluency && Object.keys(d.fluency).length > 0 && <FluencyEvidence f={d.fluency} />}
+
         {r.feedback?.length > 0 && (
           <section>
-            <h3 className="mb-2 font-display text-lg font-semibold">How to improve</h3>
+            <h3 className="mb-2 font-display text-lg font-semibold">Everything we noticed</h3>
             <ul className="space-y-1.5 text-[15.5px]">
               {r.feedback.map((f, i) => (
                 <li key={i} className="flex gap-2">
@@ -57,15 +61,24 @@ export function ResultPanel({ r, audioUrl, target }: { r: ScoreResult; audioUrl?
           </section>
         )}
 
-        {d.pronunciation?.words && (
+        {d.pronunciation?.words?.length > 0 && (
           <section>
             <h3 className="mb-2 font-display text-lg font-semibold">Pronunciation by word</h3>
             <p className="flex flex-wrap gap-1.5 text-[15px]">
-              {d.pronunciation.words.map((w: { word: string; accuracy: number }, i: number) => (
-                <span key={i} className={cx("rounded px-1.5 py-0.5", w.accuracy >= 0.8 ? "bg-ok-tint" : w.accuracy >= 0.6 ? "bg-marigold-tint" : "bg-coral-tint")}>
+              {d.pronunciation.words.map((w: { word: string; level: string; sound?: string | null }, i: number) => (
+                <span
+                  key={i}
+                  title={w.sound ? `Check the sound ${w.sound}` : undefined}
+                  className={cx("rounded px-1.5 py-0.5", w.level === "good" ? "bg-ok-tint" : w.level === "weak" ? "bg-marigold-tint" : "bg-coral-tint font-semibold text-coral")}
+                >
                   {w.word}
                 </span>
               ))}
+            </p>
+            <p className="mt-2 flex flex-wrap gap-4 text-[13px] text-ink-mute">
+              <span><span className="rounded bg-ok-tint px-1">word</span> clear</span>
+              <span><span className="rounded bg-marigold-tint px-1">word</span> slightly unclear</span>
+              <span><span className="rounded bg-coral-tint px-1 text-coral">word</span> mispronounced</span>
             </p>
           </section>
         )}
@@ -163,6 +176,58 @@ export function ResultPanel({ r, audioUrl, target }: { r: ScoreResult; audioUrl?
         <Reveal rv={rv} task={r.task} />
       </div>
     </Panel>
+  );
+}
+
+export function CoachBox({ c }: { c: Coach }) {
+  return (
+    <section className="rounded-panel border border-pine/30 bg-pine-tint/60 p-5">
+      <div className="flex items-center gap-2">
+        <Sparkles className="h-5 w-5 text-pine" aria-hidden />
+        <h3 className="font-display text-lg font-semibold">Coach summary</h3>
+        {c.source === "claude" && <span className="text-[12px] text-ink-mute">written by Claude</span>}
+      </div>
+      <p className="mt-2 text-[16px] font-semibold">{c.headline}</p>
+      {c.priorities?.length > 0 && (
+        <ol className="mt-3 space-y-3">
+          {c.priorities.map((p, i) => (
+            <li key={i} className="grid grid-cols-[24px_1fr] gap-2 text-[15.5px]">
+              <span className="mt-0.5 grid h-6 w-6 place-items-center rounded-full bg-pine text-[13px] font-bold text-white">{i + 1}</span>
+              <div>
+                <p className="font-semibold">{p.title}</p>
+                {p.why && <p className="text-ink-soft">{p.why}</p>}
+                {p.drill && <p className="mt-0.5"><span className="font-semibold text-pine">Practice: </span>{p.drill}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+      {c.strengths?.length > 0 && <p className="mt-3 text-[14.5px] text-ink-soft"><span className="font-semibold text-ink">Strengths: </span>{c.strengths.join(", ")}</p>}
+    </section>
+  );
+}
+
+function FluencyEvidence({ f }: { f: Record<string, number> }) {
+  const rows: [string, string, boolean][] = [
+    ["Pace", `${f.syllables_per_sec} syllables/s`, f.syllables_per_sec >= 2.6 && f.syllables_per_sec <= 5.8],
+    ["Phrase length", `${f.syllables_between_pauses} syllables between pauses`, f.syllables_between_pauses >= 5],
+    ["Long pauses (1 s+)", String(f.long_pauses), f.long_pauses === 0],
+    ["Fillers (um, uh)", String(f.fillers), f.fillers === 0],
+    ["Mid-phrase hesitations", String(f.mid_phrase_hesitations), f.mid_phrase_hesitations === 0],
+    ["Repetitions / restarts", String(f.repetitions_restarts), f.repetitions_restarts === 0],
+  ];
+  return (
+    <section>
+      <h3 className="mb-2 font-display text-lg font-semibold">Fluency evidence</h3>
+      <dl className="grid gap-x-8 gap-y-1.5 text-[15px] sm:grid-cols-2">
+        {rows.map(([k, v, ok]) => (
+          <div key={k} className="flex items-center justify-between gap-3 border-b border-line py-1">
+            <dt className="text-ink-soft">{k}</dt>
+            <dd className={cx("tabular-nums font-semibold", ok ? "text-ok" : "text-coral")}>{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   );
 }
 

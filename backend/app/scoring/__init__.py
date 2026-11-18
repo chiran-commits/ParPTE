@@ -4,11 +4,11 @@ Every result has the shape {"score", "max", "traits": [{name, score, max, note}]
 """
 from __future__ import annotations
 
-from . import objective, speaking, writing
+from . import coach, objective, speaking, writing
 from .overall import item_band
 
 
-def score_item(task: str, q: dict, response: dict, audio: bytes | None = None) -> dict:
+def score_item(task: str, q: dict, response: dict, audio: bytes | None = None, with_coach: bool = True) -> dict:
     r = response or {}
     if task in speaking.SPEAKING_TASKS:
         res = speaking.score(task, q, audio, r.get("transcript"), r.get("confidence"))
@@ -38,4 +38,8 @@ def score_item(task: str, q: dict, response: dict, audio: bytes | None = None) -
     res.setdefault("feedback", [])
     res["task"] = task
     res["band"] = item_band(res)
+    if with_coach:
+        from ..tasks import TASKS
+
+        res["coach"] = coach.summarize(res, TASKS.get(task, {}).get("name", task))
     return res

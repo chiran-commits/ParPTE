@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from .. import bank
 from ..config import PLANS
 from ..db import Attempt, Mock, User, now
+from ..scoring import coach
 from ..scoring.overall import aggregate
 from ..security import current_user, get_db
 from ..tasks import MOCK_BLUEPRINT, TASKS
@@ -109,6 +110,7 @@ def finish(mid: int, user: User = Depends(current_user), db: Session = Depends(g
             items.append({"task": q["task"], "score": 0, "max": 1, "traits": [], "question_id": qid, "attempt_id": None})
     agg = aggregate(items)
     agg["breakdown"] = items
+    agg["coach"] = coach.mock_summary(agg, items, {k: v["name"] for k, v in TASKS.items()}, user.target_score)
     m.result, m.finished_at = agg, now()
     db.commit()
     return _view(m, with_questions=False)

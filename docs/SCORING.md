@@ -26,16 +26,45 @@ ParPTE follows the trait structure and point ranges Pearson publishes for PTE Ac
 
 ## Speaking pipeline
 
+Everything below runs on a small CPU server with no model downloads. PocketSphinx and Silero ship inside the install.
+
 1. **Decode** any browser recording to 16 kHz mono (ffmpeg).
-2. **Acoustics** (numpy): energy-based voice activity → speech segments, pauses, initial silence, and pitch variation (intonation).
-3. **Speech recognition:** Whisper with word timestamps, prompted to keep fillers. Without Whisper, the browser's transcript is used and word timings are estimated from the detected speech segments.
-4. **Oral fluency** maps the PTE rubric bands (native-like → disfluent) onto speech rate, hesitations (fillers + 0.5–1 s pauses), long pauses (≥1 s), repetitions and false starts, phrase length and intonation.
-5. **Pronunciation:** with the phoneme model, the recognised phonemes are aligned to the expected phonemes (g2p) and phoneme accuracy gives the score, plus a per-word breakdown. Without it, the score is estimated from how intelligible the speech was to the recogniser.
-6. **Learned models** (from Kaggle) are blended in when present: a feature regressor and/or a fine-tuned wav2vec2 model predict expert accuracy, fluency and prosody ratings.
+2. **Voice activity (Silero VAD, neural):** exact speech/silence boundaries, even with background noise. This gives pauses, long pauses (≥1 s), initial delay and speaking time.
+3. **Syllable nuclei** (de Jong & Wempe method): syllables counted from intensity peaks in the signal itself, which gives speech rate, articulation rate and mean length of run. This is measured from the audio, so a browser recogniser that tidies up your speech can't inflate it.
+4. **Forced alignment (PocketSphinx):** the audio is aligned to the words you were meant to say. For Read Aloud and Repeat Sentence that's the reference text, in the order you actually said it; for open tasks it's the transcript. The aligner tries a grammar with optional fillers between words, falls back to wider beams for long passages, then to aligning long recordings piece by piece at their pauses. British-style non-rhotic pronunciations are added as alternatives, and words missing from the dictionary get pronunciations from UK/US spelling variants, compound splitting or letter-to-sound rules.
+5. **Goodness of Pronunciation (GOP):** each word's acoustic score, normalised per frame against the best-matching sound model, shows how far the sounds you produced were from the expected ones. The phone-level pass names the sound that went wrong ("the 'th' in think").
+6. **Trained model:** gradient-boosted regressors map 29 acoustic features to expert pronunciation-accuracy, fluency and prosody ratings. They were trained on **speechocean762** (5,000 utterances, five expert raters each) with `training/train_speaking.py`.
+7. **Rubric layer:** the PTE oral-fluency bands are applied as hard caps on top of the model. One long pause caps fluency at 2.5, two or more at 1.5, three or more hesitations at 3, and unnaturally fast speech (over 6.5 syllables/s) at 3. For Read Aloud and Repeat Sentence, fluency and pronunciation are also capped by how much of the text you said correctly, so reading half the passage or reading it out of order can't earn top marks for how it sounded.
+8. **Optional extras:** Whisper (server transcription that keeps fillers and repetitions), a wav2vec2 phoneme recogniser, and the fine-tuned wav2vec2 model from the Kaggle notebook are blended in when installed.
+
+### Accuracy on unseen speech
+
+| Trait | ParPTE (held-out speechocean762 test split) | GOPT, published research model (2022) |
+|---|---|---|
+| Pronunciation accuracy | PCC 0.67 | 0.71 |
+| Fluency | PCC 0.75 | 0.75 |
+| Prosody | PCC 0.74 | 0.76 |
+
+PCC is the Pearson correlation with the average of five expert raters; 1.0 would be perfect agreement. Human raters don't agree with each other perfectly either, so no automatic system gets close to 1.0.
+
+### Adversarial tests
+
+`tests/test_speaking_robustness.py` synthesises deliberately bad answers and checks they can't score well. For several of them the transcript passed in is the clean reference text, simulating a browser that autocorrected the speech:
+
+* long pauses mid-sentence → fluency ≤ 2
+* "um" fillers the transcript hides → fluency drops and is capped at 3.5
+* word-by-word, slow reading → fluency ≤ 2
+* badly mispronounced audio with a perfect transcript → pronunciation ≤ 2 and well below the clean reading
+* words read out of order → content ≤ 2.5, fluency and pronunciation ≤ 3
+* only half the passage read → every trait ≤ 3
+* repetitions and restarts → fluency ≤ 4
+* rushed speech (≈420 wpm) → fluency ≤ 3.5
+* a keyword list instead of sentences (Describe Image) → content ≤ 2.5
+* silence → 0
 
 ## Writing pipeline
 
-Rules handle form, spelling (UK and US accepted), grammar patterns, cohesion markers, paragraphing, sentence variety, lexical diversity and academic vocabulary. Set `LANGUAGETOOL_URL` to a LanguageTool server for much stronger grammar checking. With the ELLIPSE model installed, cohesion, syntax, vocabulary, phraseology, grammar and conventions predictions are blended into DSC, GLR, vocabulary and grammar.
+Rules handle form, spelling (UK and US accepted), 20+ grammar patterns, cohesion markers, paragraphing, sentence variety, lexical diversity and academic vocabulary. They also penalise memorised template phrases (Pearson has lowered scores for memorised content since 2025), summaries copied word for word from the passage, and paragraphs that drift off topic. Set `LANGUAGETOOL_URL` to a LanguageTool server for much stronger grammar checking. With the ELLIPSE model installed, cohesion, syntax, vocabulary, phraseology, grammar and conventions predictions are blended into DSC, GLR, vocabulary and grammar.
 
 ## From items to the 10–90 scale
 

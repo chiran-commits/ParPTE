@@ -17,11 +17,11 @@ import re
 
 import numpy as np
 
-from . import models, phoneme
+from . import models, phoneme, sphinx
 from .asr import Transcript, transcribe
 from .audio import AcousticFeatures, acoustic_features, decode
 from .semantic import similarity
-from .text import FILLERS, align, keypoint_hits, lcs_len, tokens
+from .text import FILLERS, STOPWORDS, align, keypoint_hits, lcs_len, tokens
 
 log = logging.getLogger(__name__)
 
@@ -34,116 +34,173 @@ def _t(name, score, mx, note="", raw=None):
     return {"name": name, "score": round(s), "max": mx, "raw": round(raw if raw is not None else s, 2), "note": note}
 
 
-# =================================================================== fluency
-def fluency_features(tr: Transcript, ac: AcousticFeatures) -> dict:
-    words = [w for w in tr.words if tokens(w.w)]
-    lw = [tokens(w.w)[0] for w in words]
-    fillers = sum(1 for t in lw if t in FILLERS)
-    lexical = [w for w, t in zip(words, lw) if t not in FILLERS]
-    n = len(lexical)
-    # repetitions ("the the") and false starts (truncated word followed by the full word: "pro- problem")
+# =================================================================== helpers
+def interp(x: float, xs: list[float], ys: list[float]) -> float:
+    return float(np.interp(x, xs, ys))
+
+
+def so_to_pte(x: float) -> float:
+    """speechocean762 expert scale (0–10) → PTE trait band (0–5)."""
+    return interp(x, [3.0, 4.5, 6.0, 7.3, 8.5, 9.5], [0, 1, 2, 3, 4, 5])
+
+
+FUNCTION_WORDS = {"a", "an", "the", "of", "to", "in", "on", "at", "for", "with", "and", "or", "but", "is", "are", "was", "were",
+                  "my", "your", "their", "his", "her", "its", "this", "that", "these", "those", "from", "by", "as", "be"}
+
+PHONE_TIPS = {
+    "TH": "the 'th' in think (tongue between the teeth)", "DH": "the 'th' in this (voiced, tongue between the teeth)",
+    "V": "'v' (top teeth on the lower lip, voiced)", "W": "'w' (rounded lips, no teeth)", "R": "the English 'r' (tongue doesn't touch the roof)",
+    "L": "'l' (tongue tip on the ridge behind the teeth)", "Z": "'z' (a buzzing 's')", "ZH": "the 's' in measure",
+    "SH": "'sh'", "CH": "'ch'", "JH": "'j' as in job", "NG": "'ng' as in sing", "IY": "the long 'ee' in see",
+    "IH": "the short 'i' in sit", "AE": "the 'a' in cat (open mouth)", "AH": "the 'u' in cup", "ER": "the 'ir' in bird",
+    "UW": "the long 'oo' in food", "UH": "the short 'oo' in book", "OW": "the 'o' in go", "EY": "the 'ay' in day",
+    "AY": "the 'i' in time", "AW": "the 'ow' in now", "OY": "the 'oy' in boy", "AA": "the 'a' in father", "AO": "the 'aw' in law",
+    "EH": "the 'e' in bed", "T": "a crisp final 't'", "D": "a clear final 'd'", "S": "a clear final 's'", "K": "'k'", "P": "'p'",
+    "B": "'b'", "G": "'g'", "F": "'f'", "HH": "'h'", "M": "'m'", "N": "'n'", "Y": "'y' as in yes",
+}
+
+
+# =================================================================== disfluencies from the transcript
+def transcript_disfluencies(tr: Transcript) -> dict:
+    lw = [tokens(w.w)[0] for w in tr.words if tokens(w.w)]
     reps = sum(1 for a, b in zip(lw, lw[1:]) if a == b and a not in FILLERS)
+    reps += sum(1 for i in range(len(lw) - 3) if lw[i : i + 2] == lw[i + 2 : i + 4])  # "the cat the cat"
     false_starts = sum(1 for a, b in zip(lw, lw[1:]) if len(a) >= 2 and b.startswith(a) and b != a)
-    false_starts += sum(1 for w in words if w.w.endswith("-"))
-    # inter-word gaps
-    gaps = [b.start - a.end for a, b in zip(words, words[1:])]
-    if tr.timed:
-        hes_pauses = sum(1 for g in gaps if 0.5 <= g < 1.0)
-        long_pauses = sum(1 for g in gaps if g >= 1.0)
-    else:
-        hes_pauses = sum(1 for p in ac.pauses if 0.5 <= p < 1.0)
-        long_pauses = ac.n_long_pauses
-    # run lengths of words without a >=0.4 s break
-    runs, cur = [], 0
-    for i, w in enumerate(words):
-        cur += 1
-        if i < len(gaps) and gaps[i] >= 0.4:
-            runs.append(cur)
-            cur = 0
-    if cur:
-        runs.append(cur)
-    span = (words[-1].end - words[0].start) if len(words) >= 2 else max(ac.speech_time, 0.1)
-    phon = ac.speech_time if ac.speech_time > 0 else span
-    return {
-        "n_words": n, "fillers": fillers, "repetitions": reps, "false_starts": false_starts,
-        "hesitation_pauses": hes_pauses, "long_pauses": long_pauses,
-        "speech_rate_wpm": 60 * n / span if span > 0 else 0.0,
-        "articulation_rate_wpm": 60 * n / phon if phon > 0 else 0.0,
-        "mean_run": float(np.mean(runs)) if runs else 0.0, "longest_run": max(runs) if runs else 0,
-        "initial_silence": ac.initial_silence, "pitch_st_std": ac.pitch_st_std,
-        "mean_word_prob": float(np.mean([w.prob for w in lexical])) if lexical else 0.0,
-        "low_prob_ratio": float(np.mean([w.prob < 0.5 for w in lexical])) if lexical else 1.0,
-    }
+    false_starts += sum(1 for w in tr.words if w.w.endswith("-"))
+    lexical = [w for w, t in zip([w for w in tr.words if tokens(w.w)], lw) if t not in FILLERS]
+    return {"n_words": len(lexical), "t_fillers": sum(t in FILLERS for t in lw), "repetitions": reps, "false_starts": false_starts,
+            "mean_word_prob": float(np.mean([w.prob for w in lexical])) if lexical else 0.0}
 
 
-def fluency_score(f: dict, task: str) -> tuple[float, list[str]]:
-    """Maps the PTE oral-fluency rubric (Native-like 5 … Disfluent 0) onto measured features."""
-    tips = []
-    n = f["n_words"]
-    if n < 3:
-        return 0.0, ["Too little speech was detected to assess fluency."]
-    hes = f["fillers"] + f["hesitation_pauses"]
-    breaks = f["repetitions"] + f["false_starts"]
-    s = 5.0
-    s -= 0.45 * min(hes, 6)
-    s -= 1.1 * min(f["long_pauses"], 3)
-    s -= 0.5 * min(breaks, 4)
-    wpm = f["speech_rate_wpm"]
-    lo, hi = (105, 185) if task in {"read_aloud", "repeat_sentence"} else (95, 180)
-    if wpm < lo:
-        s -= min(2.0, (lo - wpm) / 25)
-        tips.append(f"Your pace was {wpm:.0f} words/min — aim for about {lo + 25}–{hi - 15}.")
-    elif wpm > hi + 25:
-        s -= min(1.5, (wpm - hi - 25) / 30)
-        tips.append(f"You spoke very fast ({wpm:.0f} wpm); slow down slightly for clearer phrasing.")
-    if f["mean_run"] < 3 and n >= 6:
-        s -= 1.0
-        tips.append("Speech sounded staccato — group words into phrases of 4–7 words.")
-    if 0 < f["pitch_st_std"] < 1.4 and n >= 10:
+# =================================================================== oral fluency
+def fluency_rule(f: dict, d: dict, sx, task: str) -> tuple[float, float, list[str], dict]:
+    """Evidence-based mapping of the PTE oral-fluency rubric. Returns (score, cap, tips, evidence).
+
+    A high band needs positive evidence — long runs of speech, a natural rate, no long pauses — rather than
+    merely the absence of detected problems. The cap encodes the rubric's hard limits (e.g. Good (3) allows
+    no long pauses; Intermediate (2) allows one; two or more ⇒ Limited)."""
+    tips: list[str] = []
+    syl = f["syllables"]
+    if syl < 3 and d["n_words"] < 3:
+        return 0.0, 0.0, ["Too little speech was detected to assess fluency."], {}
+    mid_phrase = 0
+    if sx is not None:
+        for st, en, i in sx.pauses:
+            if en - st >= 0.3 and 0 <= i < len(sx.words) and sx.words[i].w in FUNCTION_WORDS:
+                mid_phrase += 1
+    # Hard evidence only: fillers the recogniser transcribed, or acoustic fillers lasting ≥0.25 s (short "uh"
+    # detections fire even for fluent speakers). Long pauses come from the neural VAD. The learned model
+    # still sees the raw counts.
+    sx_long_fillers = sum(1 for a, b in sx.fillers if b - a >= 0.25) if sx is not None else 0
+    fillers = int(max(sx_long_fillers, d["t_fillers"]))
+    long_p = int(f["n_long_pauses"])
+    hes = fillers + mid_phrase
+    breaks = d["repetitions"] + d["false_starts"]
+    short = task in {"repeat_sentence", "answer_short_question"}
+    mlr_score = interp(f["mlr_syl"], [1.5, 3, 5, 7, 10], [0.5, 2, 3.2, 4.2, 5])
+    if short and f["n_pauses"] == 0:
+        mlr_score = max(mlr_score, 4.5)  # a short sentence said in one breath has no room for longer runs
+    rate = f["speech_rate_sps"]
+    # anchors from speechocean762: 2.0 syllables/s for expert fluency ≤4, 2.9 for 6–7, 3.6 for 9–10
+    rate_score = interp(rate, [1.4, 2.0, 2.5, 2.9, 3.25, 3.55, 3.85], [0.3, 1.3, 2.2, 3.0, 3.8, 4.5, 5])
+    if rate > 5.8:  # fluent native speech rarely exceeds ~5.5 syllables/s; beyond that words blur together
+        rate_score -= min(3.0, (rate - 5.8) * 2.0)
+    s = 0.5 * mlr_score + 0.5 * rate_score
+    s -= 0.45 * max(0, hes - 1) + 0.6 * breaks + 0.8 * long_p
+    if 0 < f["pitch_st_std"] < 1.2 and syl >= 12:
         s -= 0.4
-        tips.append("Intonation was quite flat; let your voice rise and fall naturally and stress key words.")
-    if f["fillers"]:
-        tips.append(f"Avoid fillers (um/uh): {f['fillers']} detected.")
-    if f["long_pauses"]:
-        tips.append(f"{f['long_pauses']} long pause(s) — keep going even if you make a mistake; never stop for >1 s.")
+    cap = 5.0
+    if long_p >= 2:
+        cap = 1.5
+    elif long_p == 1:
+        cap = 2.5
+    if hes >= 5:
+        cap = min(cap, 2.0)
+    elif hes >= 3:
+        cap = min(cap, 3.0)
+    elif hes >= 2:
+        cap = min(cap, 4.0)
+    if breaks >= 3:
+        cap = min(cap, 2.5)
+    elif breaks >= 1:
+        cap = min(cap, 4.0)
+    if f["mlr_syl"] < 3 and syl >= 12:
+        cap = min(cap, 2.0)
+    if rate > 7.5:
+        cap = min(cap, 2.0)
+    elif rate > 6.5:
+        cap = min(cap, 3.0)
+    # tips with specifics
+    if long_p:
+        where = [sx.words[i].w for st, en, i in sx.pauses if en - st >= 1.0 and i < len(sx.words)][:3] if sx else []
+        tips.append(f"{long_p} long pause(s){' after: ' + ', '.join(where) if where else ''}. In PTE a single long pause caps fluency at Intermediate. Keep talking even after a mistake.")
+    if fillers:
+        tips.append(f"{fillers} filler(s) (um/uh) detected. Replace them with a short silent breath at a natural break.")
+    if mid_phrase:
+        tips.append(f"{mid_phrase} hesitation(s) in the middle of a phrase (e.g. after 'the' or 'of'). Pause only at commas and full stops.")
     if breaks:
-        tips.append(f"{breaks} repetition(s)/false start(s) — don't correct yourself, just continue.")
+        tips.append(f"{breaks} repetition(s) or restart(s). Don't go back to fix a word; carry on.")
+    if rate < 2.4 and syl >= 8:
+        tips.append(f"Your pace was slow ({rate:.1f} syllables/s). Aim for 3–4 syllables per second, like a news reader.")
+    elif rate > 6.0:
+        tips.append(f"You rushed ({rate:.1f} syllables/s). Slow slightly so words don't run together.")
+    if f["mlr_syl"] < 4 and syl >= 12:
+        tips.append(f"Speech came in short bursts (about {f['mlr_syl']:.0f} syllables between pauses). Join words into phrases of 5–8 words.")
+    if 0 < f["pitch_st_std"] < 1.2 and syl >= 12:
+        tips.append("Your intonation was flat. Let your voice rise and fall and stress the key words.")
     if f["initial_silence"] > 2.5:
-        tips.append("Start speaking within 1–2 s of the tone — the real test closes the microphone after 3 s of silence.")
-    return max(0.0, min(5.0, s)), tips
+        tips.append("You started late. Begin within 1–2 s of the tone; the real test closes the microphone after 3 s of silence.")
+    ev = {"syllables_per_sec": round(rate, 2), "syllables_between_pauses": round(f["mlr_syl"], 1), "long_pauses": long_p,
+          "fillers": fillers, "mid_phrase_hesitations": mid_phrase, "repetitions_restarts": breaks,
+          "pitch_variation_semitones": round(f["pitch_st_std"], 2)}
+    return max(0.0, min(5.0, s)), cap, tips, ev
 
 
 # =================================================================== pronunciation
-def pronunciation_score(wave, tr: Transcript, f: dict, ref_words: list[str] | None, match_rate: float | None) -> tuple[float, dict, list[str]]:
-    tips: list[str] = []
-    info: dict = {"engine": "proxy"}
-    words = ref_words if ref_words else [tokens(w.w)[0] for w in tr.words if tokens(w.w) and tokens(w.w)[0] not in FILLERS]
-    ph = phoneme.analyse(wave, words) if wave is not None else None
-    if ph:
-        info = {"engine": "phoneme", **ph}
-        pa = ph["phoneme_accuracy"]
-        s = 5 * np.clip((pa - 0.5) / 0.4, 0, 1)
-        weak = [w["word"] for w in ph["words"] if w["accuracy"] < 0.6][:8]
-        if weak:
-            tips.append("Words to practise: " + ", ".join(weak) + ".")
-    else:
-        # Proxy: how intelligible the speech was to the recogniser, plus recogniser confidence.
-        conf = f.get("mean_word_prob", 0.0)
-        intel = match_rate if match_rate is not None else 1 - f.get("low_prob_ratio", 0.5)
-        s = 5 * np.clip((0.6 * intel + 0.4 * conf - 0.45) / 0.47, 0, 1)
-        info["intelligibility"] = round(float(intel), 3)
-        info["confidence"] = round(float(conf), 3)
-    feats = f | ({"phoneme_accuracy": ph["phoneme_accuracy"], "phoneme_confidence": ph["phoneme_confidence"]} if ph else {})
-    reg = models.speaking_traits(feats)
-    info["learned_traits"] = reg
-    ssl = models.speaking_ssl(wave) if wave is not None else None
-    learned = [m["accuracy"] / 2 for m in (reg, ssl) if m]
-    if learned:
-        s = 0.5 * s + 0.5 * float(np.mean(learned))
-        info["learned"] = True
-    if s < 3.5:
-        tips.append("Pronounce word endings (-s, -ed, -t) clearly and stress the right syllable.")
-    return float(s), info, tips
+def pronunciation_rule(f: dict) -> float:
+    """Word-level GOP (calibrated on speechocean762) → 0–5."""
+    # anchors from speechocean762: mean word GOP is −3.4 for expert accuracy ≤4, −2.4 for 6–7, −1.7 for 9–10
+    s = interp(f["gop_mean"], [-4.0, -3.3, -2.8, -2.3, -1.9, -1.6], [0, 1, 2, 3, 4, 5])
+    s -= 2.5 * max(0.0, f["gop_low_ratio"] - 0.08) + 3.0 * f["gop_very_low_ratio"]
+    return max(0.0, min(5.0, s))
+
+
+def word_feedback(sx, limit: int = 8) -> tuple[list[dict], list[str]]:
+    """Per-word pronunciation verdicts and the sounds that most often went wrong."""
+    if sx is None or not sx.words:
+        return [], []
+    g = np.array([w.gop for w in sx.words])
+    med = float(np.median(g))
+    out, sounds = [], {}
+    for w in sx.words:
+        bad = w.gop < -4.0 or (w.gop < med - 1.8 and w.gop < -3.0)
+        weak = not bad and (w.gop < -3.0 or w.gop < med - 1.2)
+        worst = min(w.phones, key=lambda p: p.gop) if w.phones else None
+        if (bad or weak) and worst is not None and worst.gop < -4.0:
+            key = re.sub(r"\d", "", worst.p)
+            sounds[key] = sounds.get(key, 0) + 1
+        out.append({"word": w.w, "level": "bad" if bad else "weak" if weak else "good", "gop": round(w.gop, 2),
+                    "sound": re.sub(r"\d", "", worst.p) if (bad or weak) and worst is not None else None})
+    top = [PHONE_TIPS.get(k, k) for k, _ in sorted(sounds.items(), key=lambda kv: -kv[1])[:3]]
+    return out, top
+
+
+def coherence(text: str) -> tuple[float, str | None]:
+    """Penalise keyword lists and word salad in open responses: natural English is ~40–50 % function words."""
+    toks = [t for t in tokens(text) if t not in FILLERS]
+    n = len(toks)
+    if n < 8:
+        return 1.0, None
+    fw = sum(t in STOPWORDS for t in toks) / n
+    uniq = len(set(toks)) / n
+    factor, msg = 1.0, None
+    if fw < 0.16:
+        factor, msg = 0.35, "This sounded like a list of keywords, not sentences. PTE content needs connected, meaningful sentences."
+    elif fw < 0.26:
+        factor, msg = 0.7, "Some of your answer was disconnected words. Use full sentences that link your ideas."
+    if uniq < 0.45:
+        factor, msg = min(factor, 0.6), "You repeated the same words a lot. Vary your wording and add new information."
+    return factor, msg
 
 
 # =================================================================== content
@@ -226,37 +283,95 @@ def _rts_content(text: str, q: dict) -> tuple[float, dict, list[str]]:
     return raw, {"functions": done, "polite": polite, "key_points": hits}, tips
 
 
-# =================================================================== training features
-# The Kaggle notebook (kaggle/01_speaking_pronunciation_fluency.ipynb) calls extract_features() so the
-# regressor is trained on exactly the features the server computes at scoring time.
-SPEAKING_FEATURES = ["n_words", "fillers", "repetitions", "false_starts", "hesitation_pauses", "long_pauses", "speech_rate_wpm",
-                     "articulation_rate_wpm", "mean_run", "longest_run", "initial_silence", "pitch_st_std", "mean_word_prob",
-                     "low_prob_ratio", "phoneme_accuracy", "phoneme_confidence"]
+# =================================================================== acoustic features (model inputs)
+# These are computed from the audio and the words the speaker was meant to say — never from a browser
+# transcript — so a recogniser that "tidies up" speech can't hide pauses, fillers or mispronunciations.
+# training/train_speaking.py fits the trait models on speechocean762 with exactly this function.
+SPEAKING_FEATURES = [
+    "span", "speech_time", "phonation_ratio", "syllables", "speech_rate_sps", "articulation_rate_sps", "mlr_syl",
+    "pauses_per_min", "n_pauses", "n_long_pauses", "mean_pause", "max_pause", "initial_silence",
+    "pitch_st_std", "intensity_std", "syl_ratio", "words_per_sec",
+    "gop_mean", "gop_median", "gop_p10", "gop_min", "gop_low_ratio", "gop_very_low_ratio", "gop_std", "word_dur_cv",
+    "sx_fillers", "sx_pauses", "sx_long_pauses", "sx_pause_time",
+]
 
 
-def extract_features(wave, reference_text: str | None = None, client_transcript: str | None = None) -> dict:
-    ac = acoustic_features(wave)
-    tr = transcribe(wave, client_transcript, ac)
-    f = fluency_features(tr, ac)
-    words = tokens(reference_text) if reference_text else [t for t in tokens(tr.text) if t not in FILLERS]
-    ph = phoneme.analyse(wave, words)
-    f["phoneme_accuracy"] = ph["phoneme_accuracy"] if ph else 0.0
-    f["phoneme_confidence"] = ph["phoneme_confidence"] if ph else 0.0
-    f["transcript"] = tr.text
+def acoustic_model_features(wave, words: list[str], ac: AcousticFeatures | None = None, sx=None) -> dict:
+    from . import sphinx
+
+    ac = ac or acoustic_features(wave)
+    norm, _ = sphinx.normalise_words(words)
+    if sx is None:
+        sx = sphinx.analyse(wave, norm, phones=False) if norm else None
+    f: dict = {}
+    segs = ac.segments
+    span = (segs[-1][1] - segs[0][0]) if segs else 0.0
+    f["span"] = span
+    f["speech_time"] = ac.speech_time
+    f["phonation_ratio"] = ac.speech_time / span if span else 0.0
+    f["syllables"] = float(ac.syllables)
+    f["speech_rate_sps"] = ac.syllables / span if span else 0.0
+    f["articulation_rate_sps"] = ac.syllables / ac.speech_time if ac.speech_time else 0.0
+    # mean length of run: syllables between pauses of ≥ 250 ms
+    runs, cur, k = [], 0, 0
+    st = ac.syllable_times
+    for i, (s0, e0) in enumerate(segs):
+        while k < len(st) and st[k] <= e0:
+            cur += st[k] >= s0
+            k += 1
+        nxt = segs[i + 1][0] if i + 1 < len(segs) else None
+        if nxt is None or nxt - e0 >= 0.25:
+            runs.append(cur)
+            cur = 0
+    f["mlr_syl"] = float(np.mean(runs)) if runs else 0.0
+    p = [x for x in ac.pauses if x >= 0.25]
+    f["n_pauses"] = float(len(p))
+    f["pauses_per_min"] = 60 * len(p) / span if span else 0.0
+    f["n_long_pauses"] = float(sum(1 for x in p if x >= 1.0))
+    f["mean_pause"] = float(np.mean(p)) if p else 0.0
+    f["max_pause"] = float(max(p)) if p else 0.0
+    f["initial_silence"] = ac.initial_silence
+    f["pitch_st_std"] = ac.pitch_st_std
+    f["intensity_std"] = ac.intensity_std
+    exp_syl = sphinx.expected_syllables(norm) if norm else 0
+    f["syl_ratio"] = ac.syllables / exp_syl if exp_syl else 0.0
+    f["words_per_sec"] = len(norm) / span if span else 0.0
+    sxf = sx.features() if sx else {}
+    for k2 in ["gop_mean", "gop_median", "gop_p10", "gop_min", "gop_low_ratio", "gop_very_low_ratio", "gop_std", "word_dur_cv",
+               "sx_fillers", "sx_pauses", "sx_long_pauses", "sx_pause_time"]:
+        f[k2] = float(sxf.get(k2, 0.0 if not k2.startswith("gop") else -12.0))
     return f
 
 
+def extract_features(wave, reference_text: str | None = None, client_transcript: str | None = None) -> dict:
+    """Training/inference helper: model features for one recording of `reference_text`."""
+    words = tokens(reference_text or client_transcript or "", lower=True)
+    return acoustic_model_features(wave, words)
+
+
 # =================================================================== entry point
+def _intended_words(al: list) -> list[str]:
+    """What the speaker was trying to say, in the order they said it (Read Aloud / Repeat Sentence):
+    matched and substituted words use the reference word (a substitution is evidence of a mispronunciation),
+    inserted words use what was heard, skipped words are left out."""
+    out = []
+    for a in al:
+        if a.op in ("ok", "sub"):
+            out.append(a.ref)
+        elif a.op == "ins":
+            out.append(a.hyp)
+    return out
+
+
 def score(task: str, q: dict, audio: bytes | None, client_transcript: str | None = None,
           client_confidence: float | None = None) -> dict:
     wave = decode(audio) if audio else None
     ac = acoustic_features(wave)
     tr = transcribe(wave, client_transcript, ac, confidence=client_confidence)
     text = tr.text
-    f = fluency_features(tr, ac)
+    d = transcript_disfluencies(tr)
     feedback: list[str] = []
-    detail: dict = {"transcript": text, "asr_engine": tr.engine, "acoustics": ac.as_dict(),
-                    "fluency_features": {k: (round(v, 3) if isinstance(v, float) else v) for k, v in f.items()}}
+    detail: dict = {"transcript": text, "asr_engine": tr.engine, "acoustics": ac.as_dict()}
 
     if task == "answer_short_question":
         answers = [a.lower() for a in q.get("answers", [])]
@@ -267,22 +382,23 @@ def score(task: str, q: dict, audio: bytes | None, client_transcript: str | None
         return {"score": 1 if ok else 0, "max": 1, "traits": [_t("Vocabulary", 1 if ok else 0, 1)], "feedback": feedback,
                 "detail": detail | {"expected": q.get("answers", [])}}
 
-    ref_words = None
-    match_rate = None
+    # ---------------- content
+    intended: list[str] = [t for t in tokens(text) if t not in FILLERS]
+    word_acc = None
     if task == "read_aloud":
         c, cd = _ra_content(q["text"], text)
         content = _t("Content", c, 5, f"{cd['correct']}/{cd['total']} words correct, {cd['errors']} error(s)", c)
-        ref_words, match_rate = tokens(q["text"]), cd["match_rate"]
+        word_acc = cd["correct"] / max(1, cd["total"])
         detail.update(cd)
         if cd["errors"]:
-            feedback.append("Read every word exactly as written — each omission, insertion or substitution is an error.")
+            feedback.append("Read every word exactly as written. Each omission, insertion or substitution is an error.")
     elif task == "repeat_sentence":
         c, cd = _rs_content(q["text"], text)
         content = _t("Content", c, 3, f"{cd['in_sequence']}/{cd['total']} words in sequence", c)
-        ref_words, match_rate = tokens(q["text"]), cd["match_rate"]
+        word_acc = cd["in_sequence"] / max(1, cd["total"])
         detail.update(cd)
         if c < 3:
-            feedback.append("Repeat the sentence word-for-word; if you lose part of it, keep speaking fluently anyway.")
+            feedback.append("Repeat the sentence word for word. If you lose part of it, keep speaking fluently anyway.")
     elif task == "describe_image":
         c, cd, tips = _di_content(text, q)
         content = _t("Content", c, 6, "", c)
@@ -308,22 +424,88 @@ def score(task: str, q: dict, audio: bytes | None, client_transcript: str | None
     else:
         raise ValueError(f"unknown speaking task {task}")
 
-    fl, fl_tips = fluency_score(f, task)
-    pr, pr_info, pr_tips = pronunciation_score(wave, tr, f, ref_words, match_rate)
-    reg = pr_info.get("learned_traits")
-    if reg:  # blend learned fluency (speechocean762 fluency/prosody → 0–5)
-        fl = 0.6 * fl + 0.4 * ((reg["fluency"] + reg["prosodic"]) / 4)
-    detail["pronunciation"] = pr_info
-    traits = [content, _t("Oral Fluency", fl, 5, "", fl), _t("Pronunciation", pr, 5, "", pr)]
+    if task in ("read_aloud", "repeat_sentence"):
+        intended = _intended_words([type("A", (), x) for x in detail["alignment"]]) if text else tokens(q["text"])
+    else:
+        factor, msg = coherence(text)
+        if factor < 1:
+            content = _t("Content", content["raw"] * factor, content["max"], content["note"], content["raw"] * factor)
+            feedback.insert(0, msg)
+        detail["coherence"] = round(factor, 2)
 
-    if f["n_words"] == 0:
-        traits = [dict(t, score=0, raw=0.0) for t in traits]
-        feedback = ["No speech detected. Check your microphone and start speaking right after the tone."]
-    elif content["score"] == 0 and task not in {"read_aloud", "repeat_sentence"}:
+    # ---------------- acoustic analysis (independent of the transcript's wording quality)
+    norm, _ = sphinx.normalise_words(intended)
+    sx = sphinx.analyse(wave, norm, phones=True) if wave is not None and norm else None
+    aligned_ok = sx is not None and len(sx.words) > 0
+    f = acoustic_model_features(wave, intended, ac, sx) if wave is not None else None
+    # The trained model needs a successful alignment; without one its GOP inputs are meaningless.
+    learned = models.speaking_traits(f) if f and aligned_ok else None
+
+    if f is None or (f["syllables"] < 3 and d["n_words"] == 0):
+        traits = [dict(content, score=0, raw=0.0), _t("Oral Fluency", 0, 5), _t("Pronunciation", 0, 5)]
+        return {"score": 0, "max": sum(t["max"] for t in traits), "traits": traits,
+                "feedback": ["No speech detected. Check your microphone and start speaking right after the tone."], "detail": detail}
+
+    # ---------------- oral fluency
+    fl_rule, fl_cap, fl_tips, fl_ev = fluency_rule(f, d, sx, task)
+    fl = fl_rule
+    if learned:
+        fl = 0.55 * so_to_pte((learned["fluency"] + learned["prosodic"]) / 2) + 0.45 * fl_rule
+    fl = min(fl, fl_cap)
+
+    # ---------------- pronunciation
+    if aligned_ok:
+        pr_rule = pronunciation_rule(f)
+    else:
+        # Couldn't align the audio to the words (unusual accent, heavy noise, or speech unrelated to the text):
+        # fall back to how intelligible the speech was to the recogniser, and say so.
+        match = detail.get("match_rate", 0.7)
+        rate_ok = 1.0 if 1.8 <= f["speech_rate_sps"] <= 6.0 else 0.6
+        # without sound-level evidence the score can't certify more than "Good" (3/5)
+        pr_rule = min(3.0, 5 * float(np.clip((0.6 * match + 0.4 * d["mean_word_prob"] - 0.45) / 0.5, 0, 1)) * rate_ok)
+        feedback.append("We couldn't measure your pronunciation sound by sound for this recording, so this score is an estimate. "
+                        "Recording in a quiet room with the microphone close to your mouth helps.")
+    pr = pr_rule
+    if learned:
+        pr = 0.65 * so_to_pte(learned["accuracy"]) + 0.35 * pr_rule
+    ph = phoneme.analyse(wave, norm) if phoneme.available() else None  # wav2vec2 (pro engine), if installed
+    if ph:
+        pr = 0.5 * pr + 0.5 * 5 * float(np.clip((ph["phoneme_accuracy"] - 0.5) / 0.4, 0, 1))
+    ssl = models.speaking_ssl(wave)
+    if ssl:
+        pr = 0.6 * pr + 0.4 * so_to_pte(ssl["accuracy"])
+        fl = min(fl_cap, 0.6 * fl + 0.4 * so_to_pte((ssl["fluency"] + ssl["prosodic"]) / 2))
+    words_fb, sounds = word_feedback(sx)
+    bad_ratio = np.mean([w["level"] == "bad" for w in words_fb]) if words_fb else 0.0
+    if bad_ratio > 0.3:
+        pr = min(pr, 2.5)
+    elif bad_ratio > 0.15:
+        pr = min(pr, 3.5)
+
+    # Read Aloud / Repeat Sentence: fluency and pronunciation are judged on the text. Reading only part of
+    # it, or saying words out of order, can't earn top marks for how it sounded.
+    if word_acc is not None:
+        cap = 1 + 4 * word_acc
+        fl, pr = min(fl, cap), min(pr, cap)
+
+    detail["fluency"] = fl_ev
+    detail["pronunciation"] = {"engine": "phoneme+gop" if ph else "gop", "words": words_fb, "sounds_to_practise": sounds,
+                               "learned_model": bool(learned)}
+    detail["model_features"] = {k: round(float(v), 3) for k, v in f.items()}
+    if learned:
+        detail["expert_scale"] = {k: round(v, 1) for k, v in learned.items()}  # 0–10, speechocean762 scale
+
+    traits = [content, _t("Oral Fluency", fl, 5, "", fl), _t("Pronunciation", pr, 5, "", pr)]
+    if content["score"] == 0 and task not in {"read_aloud", "repeat_sentence"}:
         traits = [dict(t, score=0, raw=0.0, note="Content is 0, so the response is not scored further")
                   if t["name"] != "Content" else dict(t, raw=0.0) for t in traits]
-        feedback.insert(0, "Your response wasn't relevant enough to score — in PTE this gives 0 for all traits.")
+        feedback.insert(0, "Your response wasn't relevant enough to score. In PTE this gives 0 for all traits.")
     else:
-        feedback += fl_tips + pr_tips
-    score_ = round(sum(t["raw"] for t in traits), 1)  # precise total; traits display as whole bands
+        feedback += fl_tips
+        bad_words = [w["word"] for w in words_fb if w["level"] == "bad"][:8]
+        if bad_words:
+            feedback.append("Mispronounced: " + ", ".join(bad_words) + ".")
+        if sounds:
+            feedback.append("Sounds to practise: " + "; ".join(sounds) + ".")
+    score_ = round(sum(t["raw"] for t in traits), 1)
     return {"score": score_, "max": sum(t["max"] for t in traits), "traits": traits, "feedback": feedback, "detail": detail}

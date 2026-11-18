@@ -1,45 +1,845 @@
 {
-  "summarize_written_text": [
-    {"id": "swt-001", "title": "The four-day work week", "difficulty": "medium",
-     "passage": "Over the past decade, a growing number of companies have experimented with a four-day working week, in which employees work fewer hours for the same pay. Early trials in several countries have produced encouraging results. Many participating firms reported that productivity remained stable or even improved, as staff focused more intensely on essential tasks and spent less time in unnecessary meetings. Employees, meanwhile, described lower levels of stress and burnout, better sleep, and more time for family and personal interests. Some companies also found it easier to recruit and retain talented workers. Nevertheless, the model is not suitable for every sector. Hospitals, schools and customer-facing businesses must provide services every day, so reducing hours often requires hiring additional staff, which raises costs. Critics also warn that compressing work into four days can intensify pressure rather than reduce it. Consequently, most researchers argue that the four-day week should be adapted to each organisation rather than imposed universally.",
-     "key_points": [
-       {"label": "companies are trialling a four-day week with the same pay", "keywords": [["four", "4"], ["day", "week"], ["trial", "trials", "experiment", "experimented", "companies", "firms"]], "min": 2},
-       {"label": "productivity stayed the same or improved", "keywords": [["productivity", "productive", "output"], ["stable", "improve", "improved", "maintained", "same", "increased"]], "min": 1},
-       {"label": "employees had less stress and better wellbeing", "keywords": [["stress", "burnout", "wellbeing", "well-being", "health"], ["employee", "employees", "staff", "workers", "lower", "less", "reduced"]], "min": 2},
-       {"label": "not suitable for all sectors (e.g. hospitals) because of costs", "keywords": [["sector", "sectors", "hospitals", "schools", "industries", "every"], ["cost", "costs", "suitable", "staff", "hiring", "not"]], "min": 2},
-       {"label": "should be adapted to each organisation", "keywords": [["adapt", "adapted", "tailor", "tailored", "flexible", "each", "individual"], ["organisation", "organization", "company", "universally", "imposed"]], "min": 1}
-     ]},
-    {"id": "swt-002", "title": "Microplastics", "difficulty": "hard",
-     "passage": "Microplastics, fragments of plastic smaller than five millimetres, have now been detected in almost every environment on Earth, from the deepest ocean trenches to the snow on mountain peaks. They originate from many sources, including the breakdown of larger plastic waste, synthetic fibres released when clothes are washed, and the wear of car tyres. Because they are so small and persistent, microplastics are easily absorbed by marine organisms and can move up the food chain, eventually reaching humans through seafood, salt and even drinking water. Scientists are still uncertain about the long-term effects on human health, but laboratory studies suggest that the particles may cause inflammation and carry toxic chemicals into the body. Removing microplastics once they have entered the environment is extremely difficult. As a result, experts emphasise prevention: reducing single-use plastics, designing washing machines with filters, and developing biodegradable alternatives.",
-     "key_points": [
-       {"label": "microplastics are found almost everywhere", "keywords": [["microplastic", "microplastics", "plastic"], ["everywhere", "every", "environment", "ocean", "found", "detected"]], "min": 2},
-       {"label": "they come from waste breakdown, clothing fibres and tyres", "keywords": [["source", "sources", "come", "originate", "from"], ["fibres", "fibers", "clothes", "tyres", "tires", "waste", "breakdown"]], "min": 2},
-       {"label": "they enter the food chain and reach humans", "keywords": [["food", "chain", "seafood", "water"], ["human", "humans", "people", "reach"]], "min": 2},
-       {"label": "health effects are uncertain but may be harmful", "keywords": [["health", "inflammation", "toxic", "harm", "harmful"], ["uncertain", "unclear", "unknown", "may", "might"]], "min": 2},
-       {"label": "prevention is key because removal is difficult", "keywords": [["prevent", "prevention", "reduce", "reducing", "filters", "biodegradable"], ["remove", "removal", "removing", "difficult", "hard"]], "min": 1}
-     ]}
-  ],
-  "write_essay": [
-    {"id": "we-001", "title": "Technology in education", "difficulty": "medium",
-     "prompt": "Some people believe that technology has made learning easier and more effective, while others argue that it distracts students and reduces the quality of education. Discuss both views and give your own opinion.",
-     "key_points": [
-       {"label": "the benefits of technology for learning", "keywords": [["technology", "digital", "online", "internet", "computers", "devices"], ["easier", "effective", "access", "benefit", "benefits", "advantage", "advantages", "resources"]], "min": 2},
-       {"label": "technology as a distraction / lower quality", "keywords": [["distract", "distraction", "distracts", "distracting", "social media", "games"], ["quality", "concentration", "focus", "attention", "reduce", "reduces"]], "min": 1},
-       {"label": "your own opinion", "keywords": [["opinion", "believe", "view", "agree", "argue", "think"]], "min": 1}
-     ]},
-    {"id": "we-002", "title": "Working from home", "difficulty": "medium",
-     "prompt": "Working from home has become common in many professions. Do the advantages of this trend outweigh the disadvantages?",
-     "key_points": [
-       {"label": "advantages of working from home", "keywords": [["home", "remote", "remotely"], ["advantage", "advantages", "benefit", "benefits", "flexibility", "commute", "commuting", "save", "saves"]], "min": 2},
-       {"label": "disadvantages of working from home", "keywords": [["disadvantage", "disadvantages", "drawback", "drawbacks", "isolation", "isolated", "lonely", "distraction", "boundaries"]], "min": 1},
-       {"label": "clear position on whether advantages outweigh disadvantages", "keywords": [["outweigh", "outweighs", "outweighed", "greater", "overall", "opinion", "believe"]], "min": 1}
-     ]},
-    {"id": "we-003", "title": "Government funding for the arts", "difficulty": "hard",
-     "prompt": "Governments should spend money on supporting the arts, such as music, theatre and painting, rather than only on practical areas like healthcare and transport. To what extent do you agree or disagree?",
-     "key_points": [
-       {"label": "the value of funding the arts", "keywords": [["art", "arts", "music", "theatre", "theater", "culture", "cultural", "painting"], ["value", "important", "benefit", "benefits", "identity", "creativity", "tourism", "wellbeing"]], "min": 2},
-       {"label": "priority of practical services like healthcare and transport", "keywords": [["healthcare", "health", "hospitals", "transport", "infrastructure", "practical", "essential"]], "min": 1},
-       {"label": "extent of agreement", "keywords": [["agree", "disagree", "extent", "opinion", "believe", "balance"]], "min": 1}
-     ]}
-  ]
+ "summarize_written_text": [
+  {
+   "id": "swt-001",
+   "title": "The four-day work week",
+   "difficulty": "medium",
+   "passage": "Over the past decade, a growing number of companies have experimented with a four-day working week, in which employees work fewer hours for the same pay. Early trials in several countries have produced encouraging results. Many participating firms reported that productivity remained stable or even improved, as staff focused more intensely on essential tasks and spent less time in unnecessary meetings. Employees, meanwhile, described lower levels of stress and burnout, better sleep, and more time for family and personal interests. Some companies also found it easier to recruit and retain talented workers. Nevertheless, the model is not suitable for every sector. Hospitals, schools and customer-facing businesses must provide services every day, so reducing hours often requires hiring additional staff, which raises costs. Critics also warn that compressing work into four days can intensify pressure rather than reduce it. Consequently, most researchers argue that the four-day week should be adapted to each organisation rather than imposed universally.",
+   "key_points": [
+    {
+     "label": "companies are trialling a four-day week with the same pay",
+     "keywords": [
+      [
+       "four",
+       "4"
+      ],
+      [
+       "day",
+       "week"
+      ],
+      [
+       "trial",
+       "trials",
+       "experiment",
+       "experimented",
+       "companies",
+       "firms"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "productivity stayed the same or improved",
+     "keywords": [
+      [
+       "productivity",
+       "productive",
+       "output"
+      ],
+      [
+       "stable",
+       "improve",
+       "improved",
+       "maintained",
+       "same",
+       "increased"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "employees had less stress and better wellbeing",
+     "keywords": [
+      [
+       "stress",
+       "burnout",
+       "wellbeing",
+       "well-being",
+       "health"
+      ],
+      [
+       "employee",
+       "employees",
+       "staff",
+       "workers",
+       "lower",
+       "less",
+       "reduced"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "not suitable for all sectors (e.g. hospitals) because of costs",
+     "keywords": [
+      [
+       "sector",
+       "sectors",
+       "hospitals",
+       "schools",
+       "industries",
+       "every"
+      ],
+      [
+       "cost",
+       "costs",
+       "suitable",
+       "staff",
+       "hiring",
+       "not"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "should be adapted to each organisation",
+     "keywords": [
+      [
+       "adapt",
+       "adapted",
+       "tailor",
+       "tailored",
+       "flexible",
+       "each",
+       "individual"
+      ],
+      [
+       "organisation",
+       "organization",
+       "company",
+       "universally",
+       "imposed"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "swt-002",
+   "title": "Microplastics",
+   "difficulty": "hard",
+   "passage": "Microplastics, fragments of plastic smaller than five millimetres, have now been detected in almost every environment on Earth, from the deepest ocean trenches to the snow on mountain peaks. They originate from many sources, including the breakdown of larger plastic waste, synthetic fibres released when clothes are washed, and the wear of car tyres. Because they are so small and persistent, microplastics are easily absorbed by marine organisms and can move up the food chain, eventually reaching humans through seafood, salt and even drinking water. Scientists are still uncertain about the long-term effects on human health, but laboratory studies suggest that the particles may cause inflammation and carry toxic chemicals into the body. Removing microplastics once they have entered the environment is extremely difficult. As a result, experts emphasise prevention: reducing single-use plastics, designing washing machines with filters, and developing biodegradable alternatives.",
+   "key_points": [
+    {
+     "label": "microplastics are found almost everywhere",
+     "keywords": [
+      [
+       "microplastic",
+       "microplastics",
+       "plastic"
+      ],
+      [
+       "everywhere",
+       "every",
+       "environment",
+       "ocean",
+       "found",
+       "detected"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "they come from waste breakdown, clothing fibres and tyres",
+     "keywords": [
+      [
+       "source",
+       "sources",
+       "come",
+       "originate",
+       "from"
+      ],
+      [
+       "fibres",
+       "fibers",
+       "clothes",
+       "tyres",
+       "tires",
+       "waste",
+       "breakdown"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "they enter the food chain and reach humans",
+     "keywords": [
+      [
+       "food",
+       "chain",
+       "seafood",
+       "water"
+      ],
+      [
+       "human",
+       "humans",
+       "people",
+       "reach"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "health effects are uncertain but may be harmful",
+     "keywords": [
+      [
+       "health",
+       "inflammation",
+       "toxic",
+       "harm",
+       "harmful"
+      ],
+      [
+       "uncertain",
+       "unclear",
+       "unknown",
+       "may",
+       "might"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "prevention is key because removal is difficult",
+     "keywords": [
+      [
+       "prevent",
+       "prevention",
+       "reduce",
+       "reducing",
+       "filters",
+       "biodegradable"
+      ],
+      [
+       "remove",
+       "removal",
+       "removing",
+       "difficult",
+       "hard"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "swt-003",
+   "title": "Urban farming",
+   "difficulty": "medium",
+   "passage": "Urban agriculture, the practice of growing food within cities, has expanded rapidly over the past twenty years. Rooftop gardens, community plots and indoor hydroponic farms now supply fresh produce to neighbourhoods that previously had limited access to affordable vegetables. Supporters argue that urban farms shorten supply chains, reduce transport emissions and strengthen local communities by bringing residents together around a shared project. In some cities, urban farming has also been linked to improved diets among low-income households. However, critics point out that urban agriculture can only meet a small fraction of a city's total food needs, because land is scarce and expensive. Indoor farms in particular consume large amounts of electricity for lighting and climate control. As a result, most researchers see urban agriculture as a valuable complement to rural farming rather than a replacement for it, especially when its social and educational benefits are taken into account.",
+   "key_points": [
+    {
+     "label": "urban agriculture has expanded rapidly",
+     "keywords": [
+      [
+       "urban",
+       "city",
+       "cities"
+      ],
+      [
+       "farming",
+       "agriculture",
+       "farms",
+       "food"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "benefits: fresh produce, shorter supply chains, lower emissions, community",
+     "keywords": [
+      [
+       "supply",
+       "emissions",
+       "community",
+       "communities",
+       "fresh",
+       "access"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "limits: meets only a small share of food needs; land costly; indoor farms use energy",
+     "keywords": [
+      [
+       "small",
+       "fraction",
+       "limited",
+       "scarce",
+       "land",
+       "electricity",
+       "energy"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "conclusion: a complement to, not a replacement for, rural farming",
+     "keywords": [
+      [
+       "complement",
+       "supplement",
+       "replacement",
+       "replace",
+       "rural"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "swt-004",
+   "title": "Sleep and teenagers",
+   "difficulty": "hard",
+   "passage": "Adolescents are frequently criticised for staying up late and sleeping in, yet research in chronobiology suggests that their behaviour is driven largely by biology rather than by laziness. During puberty, the body's internal clock shifts later, so that teenagers naturally feel sleepy around two hours later than younger children and adults. Because most secondary schools begin early in the morning, many students are chronically sleep deprived, a condition associated with poorer concentration, lower academic achievement and higher rates of anxiety and depression. Several school districts that delayed their start times by around an hour have reported improvements in attendance, grades and even road safety, as fewer teenage drivers were involved in accidents. Nevertheless, changing school schedules is complicated, since it affects bus timetables, parents' working hours and after-school activities. Experts therefore recommend that communities weigh these practical costs against the substantial benefits for young people's health and learning.",
+   "key_points": [
+    {
+     "label": "teenagers' late sleep is biological, not laziness",
+     "keywords": [
+      [
+       "biology",
+       "biological",
+       "clock",
+       "natural",
+       "naturally"
+      ],
+      [
+       "teenagers",
+       "adolescents",
+       "teens"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "early school starts cause chronic sleep deprivation",
+     "keywords": [
+      [
+       "early",
+       "start"
+      ],
+      [
+       "sleep",
+       "deprived",
+       "deprivation",
+       "tired"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "harms: concentration, achievement, mental health",
+     "keywords": [
+      [
+       "concentration",
+       "achievement",
+       "grades",
+       "anxiety",
+       "depression",
+       "health"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "later start times improved attendance, grades, safety",
+     "keywords": [
+      [
+       "later",
+       "delayed",
+       "delay"
+      ],
+      [
+       "attendance",
+       "grades",
+       "safety",
+       "accidents",
+       "improve",
+       "improved"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "practical costs must be weighed against benefits",
+     "keywords": [
+      [
+       "cost",
+       "costs",
+       "practical",
+       "complicated",
+       "timetables",
+       "weigh",
+       "parents"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  }
+ ],
+ "write_essay": [
+  {
+   "id": "we-001",
+   "title": "Technology in education",
+   "difficulty": "medium",
+   "prompt": "Some people believe that technology has made learning easier and more effective, while others argue that it distracts students and reduces the quality of education. Discuss both views and give your own opinion.",
+   "key_points": [
+    {
+     "label": "the benefits of technology for learning",
+     "keywords": [
+      [
+       "technology",
+       "digital",
+       "online",
+       "internet",
+       "computers",
+       "devices"
+      ],
+      [
+       "easier",
+       "effective",
+       "access",
+       "benefit",
+       "benefits",
+       "advantage",
+       "advantages",
+       "resources"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "technology as a distraction / lower quality",
+     "keywords": [
+      [
+       "distract",
+       "distraction",
+       "distracts",
+       "distracting",
+       "social media",
+       "games"
+      ],
+      [
+       "quality",
+       "concentration",
+       "focus",
+       "attention",
+       "reduce",
+       "reduces"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "your own opinion",
+     "keywords": [
+      [
+       "opinion",
+       "believe",
+       "view",
+       "agree",
+       "argue",
+       "think"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "we-002",
+   "title": "Working from home",
+   "difficulty": "medium",
+   "prompt": "Working from home has become common in many professions. Do the advantages of this trend outweigh the disadvantages?",
+   "key_points": [
+    {
+     "label": "advantages of working from home",
+     "keywords": [
+      [
+       "home",
+       "remote",
+       "remotely"
+      ],
+      [
+       "advantage",
+       "advantages",
+       "benefit",
+       "benefits",
+       "flexibility",
+       "commute",
+       "commuting",
+       "save",
+       "saves"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "disadvantages of working from home",
+     "keywords": [
+      [
+       "disadvantage",
+       "disadvantages",
+       "drawback",
+       "drawbacks",
+       "isolation",
+       "isolated",
+       "lonely",
+       "distraction",
+       "boundaries"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "clear position on whether advantages outweigh disadvantages",
+     "keywords": [
+      [
+       "outweigh",
+       "outweighs",
+       "outweighed",
+       "greater",
+       "overall",
+       "opinion",
+       "believe"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "we-003",
+   "title": "Government funding for the arts",
+   "difficulty": "hard",
+   "prompt": "Governments should spend money on supporting the arts, such as music, theatre and painting, rather than only on practical areas like healthcare and transport. To what extent do you agree or disagree?",
+   "key_points": [
+    {
+     "label": "the value of funding the arts",
+     "keywords": [
+      [
+       "art",
+       "arts",
+       "music",
+       "theatre",
+       "theater",
+       "culture",
+       "cultural",
+       "painting"
+      ],
+      [
+       "value",
+       "important",
+       "benefit",
+       "benefits",
+       "identity",
+       "creativity",
+       "tourism",
+       "wellbeing"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "priority of practical services like healthcare and transport",
+     "keywords": [
+      [
+       "healthcare",
+       "health",
+       "hospitals",
+       "transport",
+       "infrastructure",
+       "practical",
+       "essential"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "extent of agreement",
+     "keywords": [
+      [
+       "agree",
+       "disagree",
+       "extent",
+       "opinion",
+       "believe",
+       "balance"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "we-004",
+   "title": "Unpaid internships",
+   "difficulty": "medium",
+   "prompt": "Many young people now take unpaid internships to gain work experience. Some argue these internships are valuable, while others believe they are unfair and exploitative. Discuss both views and give your opinion.",
+   "key_points": [
+    {
+     "label": "value of internships",
+     "keywords": [
+      [
+       "internship",
+       "internships",
+       "experience"
+      ],
+      [
+       "valuable",
+       "value",
+       "skills",
+       "career",
+       "benefit",
+       "benefits"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "unfairness / exploitation",
+     "keywords": [
+      [
+       "unfair",
+       "exploitative",
+       "exploitation",
+       "unpaid",
+       "wealthy",
+       "afford",
+       "privilege"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "your opinion",
+     "keywords": [
+      [
+       "opinion",
+       "believe",
+       "view",
+       "agree",
+       "argue",
+       "think"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "we-005",
+   "title": "Space exploration",
+   "difficulty": "hard",
+   "prompt": "Some people think that governments should stop spending money on space exploration and use it to solve problems on Earth instead. To what extent do you agree or disagree?",
+   "key_points": [
+    {
+     "label": "arguments for space spending",
+     "keywords": [
+      [
+       "space",
+       "exploration",
+       "nasa",
+       "research",
+       "satellites",
+       "technology"
+      ],
+      [
+       "benefit",
+       "benefits",
+       "innovation",
+       "discoveries",
+       "science"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "problems on Earth",
+     "keywords": [
+      [
+       "poverty",
+       "health",
+       "climate",
+       "hunger",
+       "earth",
+       "education",
+       "problems"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "extent of agreement",
+     "keywords": [
+      [
+       "agree",
+       "disagree",
+       "extent",
+       "opinion",
+       "believe"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "we-006",
+   "title": "Online shopping",
+   "difficulty": "easy",
+   "prompt": "Online shopping is replacing traditional shops in many towns. What are the advantages and disadvantages of this development?",
+   "key_points": [
+    {
+     "label": "advantages of online shopping",
+     "keywords": [
+      [
+       "online",
+       "internet",
+       "shopping"
+      ],
+      [
+       "convenient",
+       "convenience",
+       "cheaper",
+       "choice",
+       "advantage",
+       "advantages"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "disadvantages for towns/traditional shops",
+     "keywords": [
+      [
+       "shops",
+       "stores",
+       "high street",
+       "town",
+       "towns",
+       "jobs",
+       "local"
+      ],
+      [
+       "close",
+       "closing",
+       "decline",
+       "disadvantage",
+       "disadvantages",
+       "lose"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  },
+  {
+   "id": "we-007",
+   "title": "Learning history",
+   "difficulty": "medium",
+   "prompt": "Some people believe studying history is a waste of time because we should focus on the future. Others think history is essential. Discuss both views and give your opinion.",
+   "key_points": [
+    {
+     "label": "history is a waste / focus on future",
+     "keywords": [
+      [
+       "waste",
+       "future",
+       "practical",
+       "useless",
+       "irrelevant"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "history is essential",
+     "keywords": [
+      [
+       "history",
+       "past"
+      ],
+      [
+       "essential",
+       "important",
+       "lessons",
+       "learn",
+       "understand",
+       "identity"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "your opinion",
+     "keywords": [
+      [
+       "opinion",
+       "believe",
+       "view",
+       "agree",
+       "argue",
+       "think"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "we-008",
+   "title": "Tourism and local culture",
+   "difficulty": "hard",
+   "prompt": "International tourism brings economic benefits, but it can also damage local cultures and environments. Do the benefits of tourism outweigh its drawbacks?",
+   "key_points": [
+    {
+     "label": "economic benefits",
+     "keywords": [
+      [
+       "economic",
+       "economy",
+       "jobs",
+       "income",
+       "revenue",
+       "money"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "damage to culture and environment",
+     "keywords": [
+      [
+       "culture",
+       "cultural",
+       "traditions",
+       "environment",
+       "environmental",
+       "pollution",
+       "damage"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "clear position on whether benefits outweigh drawbacks",
+     "keywords": [
+      [
+       "outweigh",
+       "outweighs",
+       "overall",
+       "opinion",
+       "believe"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  }
+ ]
 }

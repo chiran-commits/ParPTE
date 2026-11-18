@@ -128,7 +128,7 @@ def test_acoustic_pauses_detected():
     tone = lambda s: 0.3 * np.sin(2 * np.pi * 180 * np.arange(int(s * sr)) / sr) * (1 + 0.3 * np.sin(np.arange(int(s * sr)) / 400))
     sil = lambda s: np.zeros(int(s * sr))
     wave = np.concatenate([sil(0.8), tone(1.0), sil(1.5), tone(1.0), sil(0.6), tone(1.0)]).astype(np.float32)
-    ac = acoustic_features(wave)
+    ac = acoustic_features(wave, neural=False)  # pure tones aren't speech to the neural VAD
     assert len(ac.segments) == 3
     assert ac.n_long_pauses == 1 and abs(ac.initial_silence - 0.8) < 0.1
 
@@ -179,3 +179,27 @@ def test_curve_and_aggregate():
              {"task": "read_aloud", "score": 15, "max": 15, "traits": []}]
     agg = aggregate(items)
     assert agg["skills"]["listening"] == 90 and agg["skills"]["speaking"] == 90 and agg["skills"]["reading"] is None
+
+
+def test_template_essay_penalised():
+    q = bank.get("we-001")
+    tpl = ("In this day and age, it is an undeniable fact that technology plays a pivotal role in our lives. This essay will discuss "
+           "the pros and cons of this hotly debated topic. ") + ESSAY + (" In a nutshell, every coin has two sides and technology "
+           "is a double-edged sword. Last but not least, taking everything into consideration, it goes without saying that a plethora of "
+           "factors matter.")
+    t = {x["name"]: x["score"] for x in writing.write_essay(tpl, q)["traits"]}
+    assert t["Content"] <= 5
+
+
+def test_swt_copied_sentence_penalised():
+    q = bank.get("swt-001")
+    copied = ("Over the past decade, a growing number of companies have experimented with a four-day working week, in which "
+              "employees work fewer hours for the same pay.")
+    r = writing.summarize_written_text(copied, q)
+    assert r["traits"][0]["score"] <= 1
+
+
+def test_grammar_patterns():
+    from app.scoring.lexicon import grammar_issues
+    codes = {i["code"] for i in grammar_issues("There is many reasons. Its a problem that we discuss about. People could of known more then that.")}
+    assert {"there-is-plural", "its-its", "discuss-about", "could-of", "than-then"} <= codes

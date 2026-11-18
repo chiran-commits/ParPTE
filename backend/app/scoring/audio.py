@@ -69,6 +69,10 @@ class AcousticFeatures:
     pauses: list[float] = field(default_factory=list)  # gaps between speech segments (s)
     pitch_st_std: float = 0.0  # pitch variation in semitones (intonation)
     snr_db: float = 0.0
+    syllables: int = 0  # syllable nuclei detected from the signal (de Jong & Wempe, 2009)
+    syllable_times: list[float] = field(default_factory=list)
+    intensity_std: float = 0.0  # loudness variation across syllables (stress / rhythm)
+    vad: str = "energy"
 
     @property
     def n_pauses(self) -> int:
@@ -86,10 +90,11 @@ class AcousticFeatures:
             "max_pause": round(max(self.pauses), 2) if self.pauses else 0.0,
             "mean_pause": round(float(np.mean(self.pauses)), 2) if self.pauses else 0.0,
             "pitch_st_std": round(self.pitch_st_std, 2), "snr_db": round(self.snr_db, 1),
+            "syllables": self.syllables, "vad": self.vad,
         }
 
 
-def acoustic_features(wave: np.ndarray | None) -> AcousticFeatures:
+def acoustic_features(wave: np.ndarray | None, neural: bool = True) -> AcousticFeatures:
     f = AcousticFeatures()
     if wave is None or len(wave) < SR * 0.2:
         return f
@@ -109,12 +114,58 @@ def acoustic_features(wave: np.ndarray | None) -> AcousticFeatures:
     voiced = _drop_short(voiced, 8)
     segs = _runs(voiced)
     f.segments = [(s * hop / SR, (e * hop + frame) / SR) for s, e in segs]
+    if neural:
+        from . import vad
+
+        vs = vad.segments(wave)
+        if vs is not None:
+            f.segments, f.vad = vs, "silero"
+            voiced = np.zeros_like(voiced)
+            for a, b in vs:
+                voiced[int(a * SR / hop) : int(b * SR / hop) + 1] = True
     if f.segments:
         f.initial_silence = f.segments[0][0]
         f.speech_time = sum(e - s for s, e in f.segments)
         f.pauses = [f.segments[i + 1][0] - f.segments[i][1] for i in range(len(f.segments) - 1)]
     f.pitch_st_std = _pitch_variation(wave, voiced, hop, frame)
+    f.syllable_times, peaks_db = _syllable_nuclei(db, voiced, wave, hop, frame)
+    f.syllables = len(f.syllable_times)
+    f.intensity_std = float(np.std(peaks_db)) if len(peaks_db) > 2 else 0.0
     return f
+
+
+def _syllable_nuclei(db: np.ndarray, voiced: np.ndarray, wave: np.ndarray, hop: int, frame: int) -> tuple[list[float], list[float]]:
+    """Count syllables from intensity peaks: a peak must stand ≥2 dB above the dip before it, sit above a
+    silence threshold, fall inside detected speech and be voiced. Speech rate measured this way does not
+    depend on a transcript, so a recogniser "tidying up" your speech can't inflate it."""
+    if len(db) < 5:
+        return [], []
+    k = 5  # ~50 ms smoothing
+    sm = np.convolve(db, np.ones(k) / k, mode="same")
+    thr = max(np.percentile(sm, 99) - 25.0, np.median(sm))
+    times, levels = [], []
+    last_dip = sm[0]
+    for i in range(1, len(sm) - 1):
+        if sm[i] < last_dip:
+            last_dip = sm[i]
+        if sm[i] >= sm[i - 1] and sm[i] > sm[i + 1] and sm[i] > thr and voiced[i] and sm[i] - last_dip >= 2.0:
+            s = i * hop
+            x = wave[s : s + int(0.04 * SR)]
+            if len(x) > 200 and _is_voiced(x):
+                if not times or (i * hop / SR) - times[-1] > 0.07:
+                    times.append(i * hop / SR)
+                    levels.append(float(sm[i]))
+                    last_dip = sm[i]
+    return times, levels
+
+
+def _is_voiced(x: np.ndarray) -> bool:
+    x = x - x.mean()
+    ac = np.correlate(x, x, "full")[len(x) - 1 :]
+    if ac[0] <= 0:
+        return False
+    lo, hi = SR // 400, min(len(ac) - 1, SR // 70)
+    return bool(hi > lo and ac[lo:hi].max() / ac[0] > 0.35)
 
 
 def _runs(mask: np.ndarray) -> list[tuple[int, int]]:

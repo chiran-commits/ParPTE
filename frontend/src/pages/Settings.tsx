@@ -78,11 +78,20 @@ export default function Settings() {
           <dt className="text-ink-soft">Speech recognition</dt>
           <dd>{e.asr === "whisper" ? "Whisper (server)" : "Browser speech recognition (Chrome or Edge)"}</dd>
           <dt className="text-ink-soft">Pronunciation</dt>
-          <dd>{e.pronunciation === "phoneme" ? "Phoneme model" : "Recognition-confidence estimate"}</dd>
+          <dd>{e.pronunciation === "phoneme+gop" ? "Sound-by-sound alignment + wav2vec2 phoneme model" : e.pronunciation === "gop" ? "Sound-by-sound alignment (GOP)" : "Recognition-confidence estimate"}</dd>
+          <dt className="text-ink-soft">Pause detection</dt>
+          <dd>{e.vad === "silero" ? "Neural voice-activity detection" : "Energy threshold"}</dd>
+          <dt className="text-ink-soft">Grammar</dt>
+          <dd>{e.grammar === "languagetool" ? "LanguageTool + PTE rules" : "PTE rules"}</dd>
+          <dt className="text-ink-soft">Coach summaries</dt>
+          <dd>{e.coach === "claude" ? "Written by Claude" : "Built-in coach"}</dd>
           <dt className="text-ink-soft">Content similarity</dt>
           <dd>{e.similarity === "embeddings" ? "Sentence embeddings" : "Keyword overlap"}</dd>
           <dt className="text-ink-soft">Trained models</dt>
-          <dd>{[e.essay_traits && "essay traits", e.speaking_traits && "speaking traits", e.speaking_ssl && "speaking audio model"].filter(Boolean).join(", ") || "None loaded yet"}</dd>
+          <dd>
+            {[e.speaking_traits && "speaking traits (expert-rated speech)", e.essay_traits && "essay traits", e.speaking_ssl && "speaking audio model"].filter(Boolean).join(", ") || "None loaded yet"}
+            {e.speaking_model_quality && <span className="block text-[13px] text-ink-mute">Agreement with expert raters on unseen speech: {String(e.speaking_model_quality)}</span>}
+          </dd>
         </dl>
       </Panel>
     </div>

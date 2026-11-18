@@ -95,6 +95,13 @@ export interface AlignedWord {
   op: "ok" | "sub" | "del" | "ins";
 }
 
+export interface Coach {
+  headline: string;
+  priorities: { title: string; why: string; drill: string }[];
+  strengths: string[];
+  source: "rules" | "claude" | "none";
+}
+
 export interface ScoreResult {
   attempt_id?: number;
   task: string;
@@ -105,6 +112,7 @@ export interface ScoreResult {
   feedback: string[];
   detail: Record<string, any>;
   reveal: Record<string, any>;
+  coach?: Coach;
 }
 
 export interface Progress {
@@ -124,7 +132,7 @@ export interface MockSummary {
   created_at: string;
   finished_at: string | null;
   count: number;
-  result: (Progress["predicted"] & { breakdown: any[] }) | null;
+  result: (Progress["predicted"] & { breakdown: any[]; coach?: Coach }) | null;
   questions?: Question[];
   answered?: string[];
 }

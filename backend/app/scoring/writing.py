@@ -67,6 +67,37 @@ def _vocab_points(toks: list[str], spell_errs: int, text: str) -> int:
     return int(pts)
 
 
+TEMPLATE_PHRASES = [
+    "in this day and age", "it is an undeniable fact", "plays a pivotal role", "in a nutshell", "hotly debated", "pros and cons",
+    "this essay will discuss", "a burning issue", "since time immemorial", "every coin has two sides", "double-edged sword",
+    "last but not least", "the topic of whether", "has been a matter of debate", "a myriad of", "it is a widely held belief",
+    "with the advent of", "in today's modern world", "from my point of view, i firmly believe", "the aforementioned",
+    "to put it in a nutshell", "taking everything into consideration", "a plethora of", "it goes without saying",
+]
+
+
+def template_ratio(text: str) -> tuple[float, list[str]]:
+    """Share of the response made of stock template phrases (Pearson penalises memorised content since 2025)."""
+    low = re.sub(r"\s+", " ", text.lower())
+    found = [p for p in TEMPLATE_PHRASES if p in low]
+    words = max(1, len(tokens(text)))
+    return sum(len(p.split()) for p in found) / words, found
+
+
+def copied_ratio(response: str, source: str, n: int = 6) -> float:
+    """Fraction of the response's words that sit inside 6-word runs copied verbatim from the source."""
+    r, src = tokens(response), tokens(source)
+    if len(r) < n or len(src) < n:
+        return 0.0
+    grams = {tuple(src[i : i + n]) for i in range(len(src) - n + 1)}
+    covered = [False] * len(r)
+    for i in range(len(r) - n + 1):
+        if tuple(r[i : i + n]) in grams:
+            for j in range(i, i + n):
+                covered[j] = True
+    return sum(covered) / len(r)
+
+
 def _spell_points(n: int) -> int:
     return 2 if n == 0 else (1 if n == 1 else 0)
 
@@ -89,6 +120,13 @@ def summarize_written_text(response: str, q: dict) -> dict:
     content = round(4 * raw)
     if cover == 0 and sim < 0.12:
         content = 0
+    copied = copied_ratio(response, q.get("passage", ""))
+    if copied > 0.75 and cover < 0.6:
+        content = min(content, 1)
+        feedback.append("Most of your summary is copied word for word from one part of the text. Combine the main ideas from the whole passage in your own words.")
+    elif copied > 0.6:
+        content = min(content, 3)
+        feedback.append("Paraphrase more. Long stretches are copied straight from the passage.")
     missed = [h["label"] for h in hits if not h["covered"]]
     if missed:
         feedback.append("Key ideas missing: " + "; ".join(missed) + ".")
@@ -106,7 +144,7 @@ def summarize_written_text(response: str, q: dict) -> dict:
         _trait("Vocabulary", vocab, 2),
     ]
     return _finish(traits, feedback, {"word_count": words, "key_points": hits, "grammar": issues, "spelling": spell,
-                                      "similarity": round(sim, 3)})
+                                      "similarity": round(sim, 3), "copied_ratio": round(copied, 2)})
 
 
 # ======================================================================= Essay
@@ -152,6 +190,18 @@ def write_essay(response: str, q: dict) -> dict:
     if relevance < 0.15:
         content = 0
         feedback.append("The essay does not appear to address the prompt — this scores 0 in PTE.")
+    tpl, tpl_found = template_ratio(response)
+    if tpl > 0.12:
+        content = min(content, 3)
+        feedback.append("A large part of the essay is stock template phrases (" + ", ".join(f"'{t}'" for t in tpl_found[:3])
+                        + "). Since 2025 Pearson lowers scores for memorised content. Use your own ideas and examples.")
+    elif tpl > 0.06:
+        content = min(content, 5)
+        feedback.append("Cut the stock phrases (" + ", ".join(f"'{t}'" for t in tpl_found[:3]) + ") and spend the words on your argument.")
+    off = [i + 1 for i, p in enumerate(paras[1:-1], start=1) if len(tokens(p)) > 25 and similarity(p, prompt) < 0.05]
+    if off and content > 2:
+        content -= 1
+        feedback.append(f"Paragraph {', '.join(map(str, off))} drifts away from the question. Link every paragraph back to the prompt.")
     for h in hits:
         if not h["covered"]:
             feedback.append(f"Address this part of the prompt more directly: {h['label']}.")
@@ -171,7 +221,10 @@ def write_essay(response: str, q: dict) -> dict:
     if model:
         dsc = 0.55 * dsc + 0.45 * ((model["cohesion"] - 1) / 4 * 6)
     if len(paras) < 4:
+        dsc = min(dsc, 4)
         feedback.append("Use 4–5 paragraphs: introduction, two or three body paragraphs, conclusion.")
+    if len(conn) < 3:
+        dsc = min(dsc, 4)
     if not has_concl:
         feedback.append("Open the final paragraph with a clear conclusion marker ('In conclusion, ...').")
 
@@ -184,6 +237,8 @@ def write_essay(response: str, q: dict) -> dict:
     glr_raw = (0.25 * min(1.0, sd / 7) + 0.25 * min(1.0, subord / 1.2) + 0.15 * min(1.0, passive / 2)
                + 0.35 * min(1.0, max(0, ttr - 0.55) / 0.25))
     glr = 6 * glr_raw
+    if words < 200 or len(sents) < 8:
+        glr = min(glr, 4)  # too little text to show a wide range
     if model:
         glr = 0.5 * glr + 0.5 * (((model["syntax"] + model["vocabulary"]) / 2 - 1) / 4 * 6)
 
@@ -206,7 +261,7 @@ def write_essay(response: str, q: dict) -> dict:
         _trait("Spelling", _spell_points(len(spell)), 2, f"{len(spell)} error(s)"),
     ]
     return _finish(traits, feedback, {"word_count": words, "paragraphs": len(paras), "key_points": hits,
-                                      "connectives": conn, "grammar": issues, "spelling": spell,
+                                      "connectives": conn, "grammar": issues, "spelling": spell, "template_ratio": round(tpl, 2),
                                       "model": "ellipse" if model else "rules"})
 
 

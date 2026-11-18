@@ -6,6 +6,7 @@ import { api, ApiError } from "../lib/api";
 import { MODULE_LABEL, useApp } from "../lib/app";
 import type { MockSummary, Module, Submission } from "../lib/types";
 import { INSTRUCTIONS, TaskRunner } from "../tasks/TaskRunner";
+import { CoachBox } from "../components/ResultPanel";
 
 const KINDS = [
   { kind: "full", module: null, title: "Full mock test", body: "About two hours, every question type in exam order. Closest to the real thing." },
@@ -201,6 +202,7 @@ export function MockReport() {
           ))}
         </div>
       </Panel>
+      {r.coach && <div className="mt-6"><CoachBox c={r.coach} /></div>}
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <Panel className="p-5">
           <h2 className="mb-3 text-lg font-semibold">By question type</h2>

@@ -9,12 +9,12 @@ Both notebooks run on Kaggle's free GPUs (30 h/week), so training costs you noth
 
 ## 1 · Speaking: `01_speaking_pronunciation_fluency.ipynb`
 
-* Kaggle → **Create → New Notebook → File → Import Notebook**, and upload this file.
-* Settings: **Accelerator GPU T4 x1**, **Internet on**. Then **Run all**.
-* Part A takes about 30 minutes. Set `RUN_PART_B = True` to also fine-tune wav2vec2 (about 1.5 h extra).
-* Download `parpte_speaking_models.zip` from **Output** and unzip it into `backend/models/`.
+The speaking model (part A) is **already trained and committed** at `backend/models/speaking_traits.joblib`. Re-run this notebook only if you change the feature extractor, or to add part B.
 
-The model learns from speechocean762's expert ratings (pronunciation accuracy, fluency, prosody on 0–10), using exactly the features the server computes. That data is mostly Mandarin L1 speakers reading short sentences, so the model is strongest on Read Aloud and Repeat Sentence. The rubric scorer still governs the longer tasks.
+* Kaggle → **Create → New Notebook → File → Import Notebook**, and upload this file. Turn **Internet on**.
+* Part A runs on CPU in about 10 minutes: feature extraction with the app's own code, then training and evaluation on the held-out test split.
+* Part B (optional, set `RUN_PART_B = True`, **GPU T4**, about 1.5 h) fine-tunes wav2vec2 on the raw audio and exports ONNX.
+* Download `parpte_speaking_models.zip` from **Output** and unzip it into `backend/models/`.
 
 ## 2 · Writing: `02_writing_traits_ellipse.ipynb`
 

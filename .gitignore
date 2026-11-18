@@ -8,7 +8,8 @@ __pycache__/
 .venv/
 venv/
 backend/models/**/*.onnx
-backend/models/**/*.joblib
 backend/models/**/*.bin
+# the small trained speaking model ships with the repo
+!backend/models/speaking_traits.joblib
 *.zip
 .DS_Store

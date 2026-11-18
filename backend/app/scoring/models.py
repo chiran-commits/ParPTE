@@ -66,7 +66,7 @@ def essay_traits(text: str) -> dict | None:
 @lru_cache(maxsize=1)
 def _speaking_reg():
     p = MODELS_DIR / "speaking_traits.joblib"
-    if _disabled() or not p.exists():
+    if os.getenv("PARPTE_DISABLE_TRAINED") == "1" or not p.exists():  # small shipped model: on unless explicitly disabled
         return None
     try:
         import joblib
@@ -88,6 +88,11 @@ def speaking_traits(features: dict) -> dict | None:
 
     x = np.array([[float(features.get(f, 0.0) or 0.0) for f in b["feature_names"]]])
     return {k: float(np.clip(m.predict(x)[0], 0, 10)) for k, m in b["models"].items()}
+
+
+def speaking_metrics() -> dict | None:
+    b = _speaking_reg()
+    return b.get("metrics") if b else None
 
 
 # ------------------------------------------------------------------ speaking: fine-tuned SSL model on raw audio
@@ -120,9 +125,11 @@ def speaking_ssl(wave) -> dict | None:
 
 
 def status() -> dict:
+    m = speaking_metrics() or {}
     return {
         "models_dir": str(MODELS_DIR),
         "essay_traits": _essay_session() is not None,
         "speaking_traits": _speaking_reg() is not None,
         "speaking_ssl": _speaking_ssl() is not None,
+        "speaking_model_quality": ", ".join(f"{k} r={v['test_pcc']}" for k, v in m.items() if k != "completeness") if m else "",
     }

@@ -173,6 +173,155 @@
      "min": 2
     }
    ]
+  },
+  {
+   "id": "sst-003",
+   "title": "The gig economy",
+   "difficulty": "medium",
+   "transcript": "The so-called gig economy, in which people work through apps on a task-by-task basis, has grown enormously in the past decade. Drivers, delivery riders and freelance designers can choose when and how much they work, and many value that flexibility. But the arrangement has a downside. Gig workers are usually classified as independent contractors rather than employees, which means they often lack sick pay, holiday pay and pension contributions. Their income can also be unpredictable, changing from week to week depending on demand and on the platform's algorithms. Several countries are now reviewing their laws to decide whether these workers deserve some of the protections that employees enjoy, without removing the flexibility that attracted them in the first place.",
+   "key_points": [
+    {
+     "label": "gig economy has grown: app-based task work",
+     "keywords": [
+      [
+       "gig",
+       "app",
+       "apps",
+       "platform",
+       "platforms"
+      ],
+      [
+       "grown",
+       "growth",
+       "grew",
+       "increase"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "workers value flexibility",
+     "keywords": [
+      [
+       "flexibility",
+       "flexible",
+       "choose"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "lack of protections: sick pay, holiday, pensions",
+     "keywords": [
+      [
+       "sick",
+       "holiday",
+       "pension",
+       "pensions",
+       "protection",
+       "protections",
+       "benefits",
+       "contractors"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "unpredictable income",
+     "keywords": [
+      [
+       "unpredictable",
+       "income",
+       "pay",
+       "earnings",
+       "algorithm",
+       "algorithms"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "governments reviewing laws to balance protection and flexibility",
+     "keywords": [
+      [
+       "law",
+       "laws",
+       "countries",
+       "governments",
+       "regulation",
+       "reviewing"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "sst-004",
+   "title": "Why we forget",
+   "difficulty": "hard",
+   "transcript": "Forgetting is usually seen as a failure of memory, but many psychologists now argue that it serves a useful purpose. Our brains receive vast amounts of information every day, and if we remembered everything, it would be harder to find what really matters. The famous forgetting curve, first described by Hermann Ebbinghaus in the eighteen eighties, shows that we lose most new information within a few days unless we review it. The practical lesson for students is spaced repetition: revisiting material at increasing intervals, for example after one day, then three days, then a week. Each review strengthens the memory and slows the rate of forgetting, so far less total study time is needed than with last-minute cramming.",
+   "key_points": [
+    {
+     "label": "forgetting can be useful: filters information",
+     "keywords": [
+      [
+       "useful",
+       "purpose",
+       "helpful",
+       "filter",
+       "matters"
+      ],
+      [
+       "forget",
+       "forgetting"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "Ebbinghaus forgetting curve: most new information lost within days",
+     "keywords": [
+      [
+       "curve",
+       "ebbinghaus"
+      ],
+      [
+       "days",
+       "lose",
+       "lost",
+       "quickly"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "spaced repetition: review at increasing intervals",
+     "keywords": [
+      [
+       "spaced",
+       "repetition",
+       "review",
+       "intervals",
+       "revisiting"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "more efficient than cramming",
+     "keywords": [
+      [
+       "cramming",
+       "cram",
+       "efficient",
+       "less",
+       "time"
+      ]
+     ],
+     "min": 1
+    }
+   ]
   }
  ],
  "mcq_multiple_listening": [
@@ -243,6 +392,39 @@
     "B",
     "D"
    ]
+  },
+  {
+   "id": "lmcma-003",
+   "title": "Desalination",
+   "difficulty": "hard",
+   "transcript": "Desalination, the process of removing salt from seawater, now provides drinking water for hundreds of millions of people, particularly in the Middle East. The most common method, reverse osmosis, pushes seawater through fine membranes at high pressure. The technology has become far more efficient, but it still uses a great deal of energy. Another concern is the highly salty brine left over, which can harm marine life if it is released back into the sea without care. Researchers are exploring ways to power plants with solar energy and to extract useful minerals from the brine.",
+   "question": "Which problems with desalination does the speaker mention?",
+   "options": [
+    {
+     "id": "A",
+     "text": "High energy use"
+    },
+    {
+     "id": "B",
+     "text": "Water that tastes salty"
+    },
+    {
+     "id": "C",
+     "text": "Brine that can harm marine life"
+    },
+    {
+     "id": "D",
+     "text": "A shortage of seawater"
+    },
+    {
+     "id": "E",
+     "text": "Membranes that never improve"
+    }
+   ],
+   "answers": [
+    "A",
+    "C"
+   ]
   }
  ],
  "listening_fill_blanks": [
@@ -257,6 +439,18 @@
    "title": "Volunteering",
    "difficulty": "easy",
    "text": "Volunteering abroad has become a popular way for young people to gain {{experience}} before starting university. However, critics argue that short {{placements}} can sometimes do more harm than good if volunteers lack the necessary {{skills}}."
+  },
+  {
+   "id": "lfib-003",
+   "title": "Research methods",
+   "difficulty": "medium",
+   "text": "In today's session we'll compare qualitative and {{quantitative}} research. Quantitative studies collect numerical data that can be analysed {{statistically}}, while qualitative studies explore people's experiences through methods such as {{interviews}} and observation. Many researchers now combine both in what is called a mixed-methods {{approach}}."
+  },
+  {
+   "id": "lfib-004",
+   "title": "Climate and crops",
+   "difficulty": "hard",
+   "text": "Rising temperatures are already affecting crop {{yields}} in many regions. Wheat and maize are particularly {{vulnerable}} to heat during flowering, and more frequent droughts are increasing the pressure on {{irrigation}} systems."
   }
  ],
  "highlight_correct_summary": [
@@ -306,6 +500,31 @@
     {
      "id": "D",
      "text": "Trees increase surface temperatures and put pressure on drainage systems in cities."
+    }
+   ],
+   "answer": "B"
+  },
+  {
+   "id": "hcs-003",
+   "title": "Microfinance",
+   "difficulty": "medium",
+   "transcript": "Microfinance means providing small loans to people who don't have access to traditional banks, often entrepreneurs in developing countries. When it became popular in the nineteen nineties, it was promoted as a powerful tool for ending poverty. Later, large studies found that the effects were more modest: microloans helped some people start or expand businesses, but on average they did not dramatically raise household incomes. Today, experts see microfinance as one useful service among many, rather than a solution to poverty on its own.",
+   "options": [
+    {
+     "id": "A",
+     "text": "Microfinance has been proven to end poverty wherever it is introduced."
+    },
+    {
+     "id": "B",
+     "text": "Microfinance was once seen as a cure for poverty, but research shows modest benefits, so it is now viewed as one useful service among many."
+    },
+    {
+     "id": "C",
+     "text": "Microfinance was abandoned in the 1990s because it failed to help any businesses."
+    },
+    {
+     "id": "D",
+     "text": "Traditional banks now provide most small loans in developing countries."
     }
    ],
    "answer": "B"
@@ -363,6 +582,32 @@
     }
    ],
    "answer": "C"
+  },
+  {
+   "id": "lmcsa-003",
+   "title": "Lab safety",
+   "difficulty": "easy",
+   "transcript": "Before we begin, a reminder about safety. Lab coats and goggles must be worn at all times in this room, even if you're only observing. Food and drink are not allowed, and any spills must be reported to a technician straight away rather than cleaned up yourself.",
+   "question": "What should students do if they spill something?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Clean it up immediately"
+    },
+    {
+     "id": "B",
+     "text": "Tell a technician"
+    },
+    {
+     "id": "C",
+     "text": "Leave the laboratory"
+    },
+    {
+     "id": "D",
+     "text": "Put on goggles"
+    }
+   ],
+   "answer": "B"
   }
  ],
  "select_missing_word": [
@@ -415,6 +660,56 @@
     }
    ],
    "answer": "B"
+  },
+  {
+   "id": "smw-003",
+   "title": "Photosynthesis",
+   "difficulty": "medium",
+   "transcript": "During photosynthesis, plants use energy from sunlight to convert carbon dioxide and water into glucose. As a by-product of this process, they release",
+   "options": [
+    {
+     "id": "A",
+     "text": "oxygen"
+    },
+    {
+     "id": "B",
+     "text": "nitrogen"
+    },
+    {
+     "id": "C",
+     "text": "carbon dioxide"
+    },
+    {
+     "id": "D",
+     "text": "heat"
+    }
+   ],
+   "answer": "A"
+  },
+  {
+   "id": "smw-004",
+   "title": "Supply and demand",
+   "difficulty": "hard",
+   "transcript": "When the supply of a product falls but demand stays the same, buyers compete for the limited goods available. In this situation, economists would expect the price to",
+   "options": [
+    {
+     "id": "A",
+     "text": "fall"
+    },
+    {
+     "id": "B",
+     "text": "rise"
+    },
+    {
+     "id": "C",
+     "text": "disappear"
+    },
+    {
+     "id": "D",
+     "text": "stay fixed by law"
+    }
+   ],
+   "answer": "B"
   }
  ],
  "highlight_incorrect_words": [
@@ -461,6 +756,50 @@
      "shown": "holidays"
     }
    ]
+  },
+  {
+   "id": "hiw-003",
+   "title": "Ancient Rome",
+   "difficulty": "medium",
+   "transcript": "The Roman Empire built an extensive network of roads that connected distant provinces to the capital. These roads allowed armies to move quickly and encouraged trade between regions that had previously been isolated.",
+   "substitutions": [
+    {
+     "actual": "extensive",
+     "shown": "expensive"
+    },
+    {
+     "actual": "distant",
+     "shown": "nearby"
+    },
+    {
+     "actual": "quickly",
+     "shown": "slowly"
+    },
+    {
+     "actual": "isolated",
+     "shown": "connected"
+    }
+   ]
+  },
+  {
+   "id": "hiw-004",
+   "title": "Volunteering",
+   "difficulty": "easy",
+   "transcript": "Research shows that people who volunteer regularly tend to report higher levels of happiness and lower levels of stress than those who do not.",
+   "substitutions": [
+    {
+     "actual": "regularly",
+     "shown": "rarely"
+    },
+    {
+     "actual": "happiness",
+     "shown": "income"
+    },
+    {
+     "actual": "stress",
+     "shown": "energy"
+    }
+   ]
   }
  ],
  "write_from_dictation": [
@@ -483,6 +822,86 @@
    "id": "wfd-004",
    "difficulty": "hard",
    "text": "The committee will review all applications before making a final decision."
+  },
+  {
+   "id": "wfd-005",
+   "difficulty": "easy",
+   "text": "The lecture notes will be uploaded after class."
+  },
+  {
+   "id": "wfd-006",
+   "difficulty": "easy",
+   "text": "Please submit your essay before the end of the week."
+  },
+  {
+   "id": "wfd-007",
+   "difficulty": "medium",
+   "text": "Most students prefer studying in the library during exam periods."
+  },
+  {
+   "id": "wfd-008",
+   "difficulty": "medium",
+   "text": "The survey results revealed significant differences between age groups."
+  },
+  {
+   "id": "wfd-009",
+   "difficulty": "hard",
+   "text": "Environmental policies must balance economic growth with sustainability."
+  },
+  {
+   "id": "wfd-010",
+   "difficulty": "medium",
+   "text": "Attendance at tutorials is compulsory for all first year students."
+  },
+  {
+   "id": "wfd-011",
+   "difficulty": "hard",
+   "text": "The professor's research focuses on the psychology of decision making."
+  },
+  {
+   "id": "wfd-012",
+   "difficulty": "easy",
+   "text": "The museum is closed on public holidays."
+  },
+  {
+   "id": "wfd-013",
+   "difficulty": "medium",
+   "text": "International students can apply for accommodation on campus."
+  },
+  {
+   "id": "wfd-014",
+   "difficulty": "hard",
+   "text": "Scientists have developed a more accurate method of measuring sea levels."
+  },
+  {
+   "id": "wfd-015",
+   "difficulty": "medium",
+   "text": "The assignment requires at least five academic references."
+  },
+  {
+   "id": "wfd-016",
+   "difficulty": "hard",
+   "text": "Effective communication is essential in a multicultural workplace."
+  },
+  {
+   "id": "wfd-017",
+   "difficulty": "easy",
+   "text": "Your student card gives you access to the gym."
+  },
+  {
+   "id": "wfd-018",
+   "difficulty": "medium",
+   "text": "The orientation programme introduces new students to university life."
+  },
+  {
+   "id": "wfd-019",
+   "difficulty": "hard",
+   "text": "Urban planners are designing cities that encourage walking and cycling."
+  },
+  {
+   "id": "wfd-020",
+   "difficulty": "medium",
+   "text": "Several departments have adopted new methods of online assessment."
   }
  ]
 }

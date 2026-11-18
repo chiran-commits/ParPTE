@@ -8,12 +8,14 @@ PTE Academic practice platform with AI scoring for all four skills. It covers al
 
 | | |
 |---|---|
-| **Speaking** (8 types) | Read Aloud, Repeat Sentence, Describe Image, Re-tell Lecture, Answer Short Question, **Summarize Group Discussion**, **Respond to a Situation**, Personal Introduction. Scored on content, oral fluency and pronunciation, with word-by-word Read Aloud review, pause/hesitation detection, per-word pronunciation and PTE's 3-second silence cut-off. |
+| **Speaking** (8 types) | Read Aloud, Repeat Sentence, Describe Image, Re-tell Lecture, Answer Short Question, **Summarize Group Discussion**, **Respond to a Situation**, Personal Introduction. Pronunciation and fluency are measured **from the audio**: forced alignment, per-word and per-sound Goodness of Pronunciation, neural pause detection, syllable rate and filler detection. A model trained on 5,000 expert-rated recordings agrees with experts at PCC 0.67 / 0.75 / 0.74 (accuracy / fluency / prosody), close to published research systems. |
 | **Writing** | Summarize Written Text and Write Essay on the 2025 trait scales (essay content /6, DSC /6, GLR /6 …), with the content/form zero rule, spelling, grammar and vocabulary range. |
 | **Reading** (5 types) | Pearson's partial-credit rules: negative marking for multiple-answer questions, adjacent-pair scoring for Re-order Paragraphs, per-blank scoring. |
 | **Listening** (8 types) | Audio plays once (with replay in practice mode). WFD is scored per word, HIW uses +1/−1 marking, SST is fully trait-scored. |
 | **Mock tests** | Full, mini and single-section tests in exam order. Scores stay hidden until you finish. |
 | **Dashboard** | Predicted overall and per-skill score on the 10–90 scale against your target, weekly trend, weakest question types, skills profile. |
+| **AI coach** | Every answer and mock test gets a prioritised summary: what cost the most points, the evidence (which words, which pauses), and a concrete drill. Add `ANTHROPIC_API_KEY` and Claude writes it. |
+| **Question bank** | 160 original questions across all 22 types. Add more from the admin panel or `backend/app/bank/data/*.json`. |
 | **Business** | Free / Pro / Premium plans, daily AI-scoring quota, admin panel (users, plans, add questions), payment-provider hook. Accounts listed in `ADMIN_EMAILS` get everything free. |
 
 ## Quick start (development)
@@ -35,7 +37,7 @@ npm run dev                                                         # http://loc
 
 Register with the email you put in `ADMIN_EMAILS` and your account gets developer access: every plan feature, free. In development, if `ADMIN_EMAILS` is empty, the **first** account registered becomes admin.
 
-Speaking works out of the box in **Chrome or Edge**: the browser transcribes your speech, and the server measures pauses, pace and intonation from the recording.
+Speaking works out of the box: the server measures pronunciation, pauses, pace and fillers directly from the recording with the bundled acoustic engine (PocketSphinx + Silero). In **Chrome or Edge** the browser also transcribes your speech, which the content score needs. Install the full engine below for server-side transcription in every browser.
 
 ## The full AI engine
 
@@ -53,14 +55,12 @@ On first start the server downloads its models (about 1.5 GB, then cached). Afte
 
 **Settings → Scoring engine** in the app shows what's active. `WHISPER_MODEL=small.en` is more accurate than `base.en` if you have the CPU or GPU for it.
 
-## Training the models on Kaggle (free GPU)
+## Models
 
-See [`kaggle/README.md`](kaggle/README.md). Two notebooks train on Kaggle's GPUs, so the heavy compute runs there and costs nothing:
-
-1. `01_speaking_pronunciation_fluency.ipynb`: pronunciation and fluency models on speechocean762 (expert-rated L2 speech).
-2. `02_writing_traits_ellipse.ipynb`: a DeBERTa-v3 essay-trait model on the ELLIPSE learner-essay corpus.
-
-Unzip the outputs into `backend/models/` and restart. The server blends them with the rubric scorer automatically.
+* **Speaking traits: trained and included** (`backend/models/speaking_traits.joblib`, under 1 MB). Retrain with
+  `python training/extract_speechocean.py <speechocean762> features.csv && python training/train_speaking.py features.csv models/speaking_traits.joblib`,
+  or on Kaggle (below).
+* **Optional, trained on Kaggle's free GPUs** ([`kaggle/README.md`](kaggle/README.md)): a fine-tuned wav2vec2 speaking model (`01_…ipynb`, part B) and a DeBERTa-v3 essay-trait model (`02_…ipynb`). Unzip the outputs into `backend/models/` and restart.
 
 ## Deploy
 

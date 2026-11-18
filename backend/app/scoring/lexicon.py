@@ -164,6 +164,18 @@ GRAMMAR_PATTERNS: list[tuple[str, re.Pattern, str]] = [
      "Use 'many' with countable nouns"),
     ("less-countable", re.compile(r"\bless\s+(people|students|cars|countries|problems)\b", re.I), "Use 'fewer' with countable nouns"),
     ("informal", re.compile(r"\b(gonna|wanna|gotta|kinda|ain't|u|ur|lol|etc\.\.\.)\b", re.I), "Informal language"),
+    ("there-is-plural", re.compile(r"\bthere (is|was) (many|several|two|three|few|a lot of|lots of|numerous|various)\b", re.I),
+     "Use 'there are/were' with plural nouns"),
+    ("its-its", re.compile(r"\bits (a|an|the|very|not|important|clear|true|essential)\b|\bit's (own|role|impact|effect)\b", re.I),
+     "Confused 'its' (possessive) and 'it's' (it is)"),
+    ("could-of", re.compile(r"\b(could|should|would|must) of\b", re.I), "Use 'could have', not 'could of'"),
+    ("than-then", re.compile(r"\b(more|less|better|worse|rather|other|greater|higher|lower) then\b", re.I), "Use 'than' in comparisons"),
+    ("double-negative", re.compile(r"\b(don't|doesn't|didn't|can't|won't|isn't|aren't) (no|nothing|nobody|never)\b", re.I), "Double negative"),
+    ("people-has", re.compile(r"\b(many|most|some|these|those|several) (\w+s) (has|is|was|does)\b", re.I), "Plural subject needs a plural verb"),
+    ("despite-of", re.compile(r"\bdespite of\b", re.I), "Use 'despite' or 'in spite of'"),
+    ("discuss-about", re.compile(r"\b(discuss|discussed|discussing) about\b", re.I), "'Discuss' takes no 'about'"),
+    ("informations", re.compile(r"\b(informations|advices|knowledges|researches|equipments|furnitures|evidences)\b", re.I),
+     "This noun is uncountable — no plural -s"),
 ]
 
 
@@ -199,6 +211,11 @@ def grammar_issues(text: str) -> list[dict]:
     for m in re.finditer(r"(?:^|[.!?]\s+)([a-z])", text):
         issues.append({"code": "capital", "message": "Sentence should start with a capital letter", "text": m.group(0).strip(),
                        "offset": m.start(1)})
+    # run-on sentences
+    for sent in re.split(r"(?<=[.!?])\s+", text):
+        if len(sent.split()) > 55 and sent.count(",") < 2:
+            issues.append({"code": "run-on", "message": "Very long sentence with little punctuation — split it", "text": sent[:40] + "…",
+                           "offset": text.find(sent)})
     issues.extend(_languagetool(text))
     # de-duplicate by offset
     seen, uniq = set(), []
