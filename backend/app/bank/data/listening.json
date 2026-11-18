@@ -1,0 +1,488 @@
+{
+ "summarize_spoken_text": [
+  {
+   "id": "sst-001",
+   "title": "The value of failure",
+   "difficulty": "medium",
+   "transcript": "Many students are terrified of failure. They choose easy courses, avoid difficult questions, and see every low mark as a judgment on their intelligence. But research on learning tells a different story. When we struggle with a problem and get it wrong, our brains are forced to work harder, and that effort makes the eventual solution far more memorable. Psychologists call this productive failure. In one well-known study, students who attempted complex maths problems before being taught the method outperformed those who were shown the method first. The key, though, is that failure must be followed by feedback and reflection. Simply failing repeatedly without understanding why does not help. So my advice is to treat mistakes as information, not as a verdict.",
+   "key_points": [
+    {
+     "label": "students fear failure and avoid challenges",
+     "keywords": [
+      [
+       "fear",
+       "afraid",
+       "terrified",
+       "scared",
+       "avoid"
+      ],
+      [
+       "failure",
+       "fail",
+       "failing",
+       "mistakes"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "struggling and failing makes learning more memorable",
+     "keywords": [
+      [
+       "struggle",
+       "struggling",
+       "effort",
+       "harder",
+       "wrong"
+      ],
+      [
+       "memorable",
+       "remember",
+       "learning",
+       "learn",
+       "brain"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "productive failure: study where trying first outperformed being taught first",
+     "keywords": [
+      [
+       "productive"
+      ],
+      [
+       "study",
+       "research",
+       "students",
+       "maths",
+       "outperformed",
+       "better"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "failure must be followed by feedback and reflection",
+     "keywords": [
+      [
+       "feedback",
+       "reflection",
+       "reflect",
+       "understand",
+       "understanding"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "treat mistakes as information",
+     "keywords": [
+      [
+       "information",
+       "learning opportunity",
+       "verdict",
+       "treat",
+       "advice"
+      ]
+     ],
+     "min": 1
+    }
+   ]
+  },
+  {
+   "id": "sst-002",
+   "title": "Light pollution",
+   "difficulty": "hard",
+   "transcript": "When we think of pollution, we usually imagine dirty air or plastic in the ocean. But light can also be a pollutant. Artificial lighting at night has grown so much that, in many cities, it is impossible to see more than a handful of stars. This matters for more than astronomy. Many animals rely on natural darkness: migrating birds use the stars to navigate, and baby sea turtles find the ocean by moving towards the brightest horizon, which, near coastal towns, is often a road rather than the sea. Humans are affected too. Exposure to bright light at night disrupts the production of melatonin, a hormone that regulates sleep. Fortunately, light pollution is one of the easiest kinds to fix. Shielding street lights so they point downwards, using warmer colours and switching off unnecessary lights can make an immediate difference.",
+   "key_points": [
+    {
+     "label": "artificial light at night is a form of pollution hiding the stars",
+     "keywords": [
+      [
+       "light",
+       "lighting",
+       "artificial"
+      ],
+      [
+       "pollution",
+       "pollutant",
+       "stars"
+      ]
+     ],
+     "min": 2
+    },
+    {
+     "label": "it harms animals such as birds and sea turtles",
+     "keywords": [
+      [
+       "animal",
+       "animals",
+       "birds",
+       "turtles",
+       "wildlife"
+      ],
+      [
+       "navigate",
+       "migrate",
+       "migrating",
+       "harm",
+       "affect",
+       "confuse"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "it disrupts human sleep via melatonin",
+     "keywords": [
+      [
+       "sleep",
+       "melatonin",
+       "hormone"
+      ],
+      [
+       "human",
+       "humans",
+       "people",
+       "disrupt",
+       "disrupts"
+      ]
+     ],
+     "min": 1
+    },
+    {
+     "label": "it is easy to fix: shielding, warmer lights, switching off",
+     "keywords": [
+      [
+       "easy",
+       "fix",
+       "solution",
+       "solutions",
+       "reduce"
+      ],
+      [
+       "shield",
+       "shielding",
+       "downwards",
+       "switch",
+       "switching",
+       "warmer"
+      ]
+     ],
+     "min": 2
+    }
+   ]
+  }
+ ],
+ "mcq_multiple_listening": [
+  {
+   "id": "lmcma-001",
+   "title": "Supermarket psychology",
+   "difficulty": "medium",
+   "transcript": "Supermarkets are carefully designed to encourage us to spend more. Essential items like bread and milk are usually placed at the back of the store, so customers must walk past many other products to reach them. The most profitable goods are displayed at eye level, while cheaper alternatives are placed on lower shelves. Some stores even play slow music, because research shows that shoppers move more slowly and buy more when the tempo is relaxed. Being aware of these techniques, and shopping with a list, can help consumers resist impulse purchases.",
+   "question": "Which strategies used by supermarkets are mentioned?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Placing essential items at the back of the store"
+    },
+    {
+     "id": "B",
+     "text": "Offering free samples at the entrance"
+    },
+    {
+     "id": "C",
+     "text": "Putting profitable products at eye level"
+    },
+    {
+     "id": "D",
+     "text": "Playing slow music"
+    },
+    {
+     "id": "E",
+     "text": "Reducing prices at closing time"
+    }
+   ],
+   "answers": [
+    "A",
+    "C",
+    "D"
+   ]
+  },
+  {
+   "id": "lmcma-002",
+   "title": "Sleep and teenagers",
+   "difficulty": "medium",
+   "transcript": "Teenagers are often criticised for staying up late and sleeping in, but biology is partly to blame. During adolescence, the body releases melatonin later in the evening, which shifts the natural sleep cycle by up to two hours. Several school districts that moved their start times later reported better attendance, fewer car accidents among teenage drivers, and modest improvements in grades. Critics point out, however, that later start times can create problems for parents' work schedules and for after-school sports.",
+   "question": "According to the speaker, which outcomes were reported after schools started later?",
+   "options": [
+    {
+     "id": "A",
+     "text": "Better attendance"
+    },
+    {
+     "id": "B",
+     "text": "Fewer car accidents involving teenage drivers"
+    },
+    {
+     "id": "C",
+     "text": "Higher participation in sports"
+    },
+    {
+     "id": "D",
+     "text": "Slightly better grades"
+    },
+    {
+     "id": "E",
+     "text": "Easier schedules for parents"
+    }
+   ],
+   "answers": [
+    "A",
+    "B",
+    "D"
+   ]
+  }
+ ],
+ "listening_fill_blanks": [
+  {
+   "id": "lfib-001",
+   "title": "Introduction to economics",
+   "difficulty": "medium",
+   "text": "Welcome to introductory economics. At its heart, economics is the study of how people make {{choices}} under conditions of {{scarcity}}. Because resources such as time, money and raw materials are {{limited}}, every decision involves a trade-off. Economists call the value of the next best {{alternative}} that you give up the opportunity cost."
+  },
+  {
+   "id": "lfib-002",
+   "title": "Volunteering",
+   "difficulty": "easy",
+   "text": "Volunteering abroad has become a popular way for young people to gain {{experience}} before starting university. However, critics argue that short {{placements}} can sometimes do more harm than good if volunteers lack the necessary {{skills}}."
+  }
+ ],
+ "highlight_correct_summary": [
+  {
+   "id": "hcs-001",
+   "title": "Why we procrastinate",
+   "difficulty": "medium",
+   "transcript": "We often assume that procrastination is a problem of laziness or poor time management. However, psychologists increasingly see it as a problem of emotion regulation. When a task makes us feel anxious, bored or insecure, putting it off provides immediate relief from those negative feelings. Unfortunately, that relief is temporary, and the stress returns, usually stronger, as the deadline approaches. Strategies that address the emotions, such as breaking the task into small steps or being kind to ourselves about past delays, tend to work better than simply making stricter schedules.",
+   "options": [
+    {
+     "id": "A",
+     "text": "Procrastination is mainly caused by laziness, so stricter schedules are the best solution."
+    },
+    {
+     "id": "B",
+     "text": "Procrastination is a way of avoiding negative emotions linked to a task, and strategies that address those emotions are more effective than strict scheduling."
+    },
+    {
+     "id": "C",
+     "text": "Procrastination reduces stress in the long term because it gives people time to relax before a deadline."
+    },
+    {
+     "id": "D",
+     "text": "Psychologists believe procrastination cannot be overcome and should therefore be accepted."
+    }
+   ],
+   "answer": "B"
+  },
+  {
+   "id": "hcs-002",
+   "title": "Urban trees",
+   "difficulty": "easy",
+   "transcript": "City trees do far more than make streets look pleasant. They provide shade that can lower surface temperatures by several degrees, absorb rainwater that would otherwise overwhelm drainage systems, and filter some pollutants from the air. Studies have also linked access to green space with lower stress. Despite this, many cities lose trees faster than they plant them, often because young trees are not watered or protected during their first few years.",
+   "options": [
+    {
+     "id": "A",
+     "text": "Urban trees are mainly decorative, and cities should focus on planting more flowers instead."
+    },
+    {
+     "id": "B",
+     "text": "Trees cool cities, reduce flooding, clean the air and benefit wellbeing, yet many cities lose trees because young ones are not cared for."
+    },
+    {
+     "id": "C",
+     "text": "Most cities now plant more trees than they lose, thanks to better watering programmes."
+    },
+    {
+     "id": "D",
+     "text": "Trees increase surface temperatures and put pressure on drainage systems in cities."
+    }
+   ],
+   "answer": "B"
+  }
+ ],
+ "mcq_single_listening": [
+  {
+   "id": "lmcsa-001",
+   "title": "Museum funding",
+   "difficulty": "medium",
+   "transcript": "Our museum has always offered free entry, and we're proud of that. But public funding has fallen by almost a third over the past five years. Rather than introduce an entrance fee, which we believe would discourage families and students, we've decided to expand our café and gift shop, and to rent our galleries for private events in the evenings.",
+   "question": "How does the museum plan to deal with reduced funding?",
+   "options": [
+    {
+     "id": "A",
+     "text": "By introducing an entrance fee"
+    },
+    {
+     "id": "B",
+     "text": "By closing some galleries"
+    },
+    {
+     "id": "C",
+     "text": "By increasing commercial activities"
+    },
+    {
+     "id": "D",
+     "text": "By asking families for donations"
+    }
+   ],
+   "answer": "C"
+  },
+  {
+   "id": "lmcsa-002",
+   "title": "Course change",
+   "difficulty": "easy",
+   "transcript": "Just a quick announcement about next week. Because the lecture theatre is being renovated, Tuesday's lecture will be delivered online as a live stream instead. The tutorial groups on Thursday will go ahead as normal in their usual rooms, and the assignment deadline has not changed.",
+   "question": "What is changing next week?",
+   "options": [
+    {
+     "id": "A",
+     "text": "The assignment deadline"
+    },
+    {
+     "id": "B",
+     "text": "The location of the tutorials"
+    },
+    {
+     "id": "C",
+     "text": "How Tuesday's lecture is delivered"
+    },
+    {
+     "id": "D",
+     "text": "The day of the lecture"
+    }
+   ],
+   "answer": "C"
+  }
+ ],
+ "select_missing_word": [
+  {
+   "id": "smw-001",
+   "title": "Renewable energy",
+   "difficulty": "medium",
+   "transcript": "Solar and wind power have become dramatically cheaper over the last decade. The main challenge now is not generating clean electricity, but storing it for times when the sun isn't shining and the wind isn't",
+   "options": [
+    {
+     "id": "A",
+     "text": "blowing"
+    },
+    {
+     "id": "B",
+     "text": "expensive"
+    },
+    {
+     "id": "C",
+     "text": "renewable"
+    },
+    {
+     "id": "D",
+     "text": "shining"
+    }
+   ],
+   "answer": "A"
+  },
+  {
+   "id": "smw-002",
+   "title": "Study tips",
+   "difficulty": "easy",
+   "transcript": "Rereading your notes feels productive, but it is one of the least effective ways to revise. Testing yourself, by contrast, forces you to retrieve information from memory, which makes it much easier to",
+   "options": [
+    {
+     "id": "A",
+     "text": "forget"
+    },
+    {
+     "id": "B",
+     "text": "remember"
+    },
+    {
+     "id": "C",
+     "text": "highlight"
+    },
+    {
+     "id": "D",
+     "text": "reread"
+    }
+   ],
+   "answer": "B"
+  }
+ ],
+ "highlight_incorrect_words": [
+  {
+   "id": "hiw-001",
+   "title": "The human microbiome",
+   "difficulty": "medium",
+   "transcript": "The human body contains trillions of microorganisms, most of which live in the gut. Far from being harmful, many of these bacteria help us digest food, produce vitamins and protect us against disease. Scientists now believe that the microbiome may also influence our mood and behaviour.",
+   "substitutions": [
+    {
+     "actual": "trillions",
+     "shown": "millions"
+    },
+    {
+     "actual": "harmful",
+     "shown": "useful"
+    },
+    {
+     "actual": "protect",
+     "shown": "expose"
+    },
+    {
+     "actual": "mood",
+     "shown": "height"
+    }
+   ]
+  },
+  {
+   "id": "hiw-002",
+   "title": "Public transport",
+   "difficulty": "easy",
+   "transcript": "Investing in public transport reduces traffic congestion and air pollution. It also gives people who cannot afford a car better access to jobs and education.",
+   "substitutions": [
+    {
+     "actual": "reduces",
+     "shown": "increases"
+    },
+    {
+     "actual": "afford",
+     "shown": "drive"
+    },
+    {
+     "actual": "jobs",
+     "shown": "holidays"
+    }
+   ]
+  }
+ ],
+ "write_from_dictation": [
+  {
+   "id": "wfd-001",
+   "difficulty": "easy",
+   "text": "The seminar has been moved to the main lecture theatre."
+  },
+  {
+   "id": "wfd-002",
+   "difficulty": "medium",
+   "text": "Students are encouraged to discuss their research proposals with a supervisor."
+  },
+  {
+   "id": "wfd-003",
+   "difficulty": "medium",
+   "text": "Economic growth depends largely on investment in education and infrastructure."
+  },
+  {
+   "id": "wfd-004",
+   "difficulty": "hard",
+   "text": "The committee will review all applications before making a final decision."
+  }
+ ]
+}

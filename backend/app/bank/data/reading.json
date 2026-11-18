@@ -1,0 +1,78 @@
+{
+  "rw_fill_blanks": [
+    {"id": "rwfib-001", "title": "Antibiotic resistance", "difficulty": "medium",
+     "text": "Antibiotic resistance occurs when bacteria {{evolve|evolve|evolution|evolved|evolving}} in ways that make medicines less effective. The {{overuse|overuse|shortage|absence|removal}} of antibiotics in both humans and animals has {{accelerated|accelerated|prevented|delayed|stopped}} this process. Unless new treatments are developed, common infections could once again become {{life-threatening|life-threatening|harmless|curable|beneficial}}, a scenario that health authorities describe as one of the greatest {{challenges|challenges|benefits|solutions|achievements}} of the century."},
+    {"id": "rwfib-002", "title": "The Silk Road", "difficulty": "medium",
+     "text": "The Silk Road was not a single road but a vast {{network|network|bridge|river|wall}} of trade routes linking China with the Mediterranean. Merchants rarely travelled its entire length; {{instead|instead|therefore|because|moreover}}, goods passed through many hands along the way. Besides silk, spices and precious stones, the routes {{facilitated|facilitated|prohibited|ignored|reduced}} the exchange of ideas, religions and technologies, {{making|making|made|make|makes}} it one of the most important channels of cultural contact in history."},
+    {"id": "rwfib-003", "title": "Urban gardens", "difficulty": "easy",
+     "text": "Community gardens are becoming increasingly {{popular|popular|popularity|popularly|populate}} in large cities. Apart from providing fresh vegetables, they offer residents a place to {{socialise|socialise|separate|compete|argue}} and learn new skills. Studies have {{shown|shown|showed|shows|showing}} that people who garden regularly report lower stress levels {{than|than|then|that|as}} those who do not."}
+  ],
+  "mcq_multiple_reading": [
+    {"id": "mcma-001", "title": "Benefits of bilingualism", "difficulty": "medium",
+     "passage": "For much of the twentieth century, raising children with two languages was thought to confuse them and slow their development. Modern research has largely overturned this view. Bilingual children may initially have slightly smaller vocabularies in each individual language, but their total vocabulary across both languages is usually comparable to that of monolingual children. More importantly, regularly switching between languages appears to strengthen executive functions, such as the ability to focus attention and ignore irrelevant information. Some studies have even linked lifelong bilingualism to a delay in the onset of dementia symptoms, although researchers caution that other factors, such as education and lifestyle, may also play a role.",
+     "question": "According to the passage, which of the following are true? Select all that apply.",
+     "options": [{"id": "A", "text": "Bilingualism was once believed to harm children's development."},
+                 {"id": "B", "text": "Bilingual children have much larger total vocabularies than monolingual children."},
+                 {"id": "C", "text": "Switching between languages may improve the ability to focus."},
+                 {"id": "D", "text": "Bilingualism has been proven to prevent dementia."},
+                 {"id": "E", "text": "Other factors may contribute to delayed dementia symptoms."}],
+     "answers": ["A", "C", "E"]},
+    {"id": "mcma-002", "title": "Desert locusts", "difficulty": "hard",
+     "passage": "Desert locusts are usually solitary insects that pose little threat to farmers. However, after periods of heavy rain, when vegetation becomes abundant, their populations can grow rapidly. As the insects are forced into close contact, they undergo a remarkable transformation: they change colour, become more active and begin to move in coordinated groups. A single swarm can contain billions of locusts and travel more than one hundred kilometres in a day, consuming as much food as millions of people. Early warning systems that use satellite data to monitor rainfall and vegetation now allow authorities to treat breeding areas before swarms form.",
+     "question": "Which of the following statements are supported by the passage?",
+     "options": [{"id": "A", "text": "Locusts are dangerous to crops at all times."},
+                 {"id": "B", "text": "Heavy rainfall can lead to population growth."},
+                 {"id": "C", "text": "Crowding causes changes in locust behaviour and appearance."},
+                 {"id": "D", "text": "Swarms are unable to travel long distances."},
+                 {"id": "E", "text": "Satellite monitoring helps authorities act before swarms develop."}],
+     "answers": ["B", "C", "E"]}
+  ],
+  "reorder_paragraphs": [
+    {"id": "ro-001", "title": "The discovery of penicillin", "difficulty": "medium",
+     "paragraphs": [
+       {"id": "A", "text": "In 1928, Alexander Fleming returned from holiday to find that mould had contaminated one of his bacterial cultures."},
+       {"id": "B", "text": "Around the mould, however, the bacteria had been destroyed, suggesting that it produced a powerful antibacterial substance."},
+       {"id": "C", "text": "Fleming named this substance penicillin, but he struggled to produce it in large quantities."},
+       {"id": "D", "text": "It was not until the 1940s that a team in Oxford found a way to mass-produce the drug, saving countless lives during the Second World War."}
+     ],
+     "answer": ["A", "B", "C", "D"]},
+    {"id": "ro-002", "title": "Applying for a scholarship", "difficulty": "easy",
+     "paragraphs": [
+       {"id": "A", "text": "The first step is to research which scholarships match your field of study and nationality."},
+       {"id": "B", "text": "Once you have a shortlist, check each scholarship's eligibility criteria and deadlines carefully."},
+       {"id": "C", "text": "Next, prepare the required documents, which usually include transcripts, references and a personal statement."},
+       {"id": "D", "text": "Finally, submit your application early and keep a copy of everything you send."},
+       {"id": "E", "text": "After that, be patient: results can take several months to be announced."}
+     ],
+     "answer": ["A", "B", "C", "D", "E"]}
+  ],
+  "reading_fill_blanks": [
+    {"id": "rfib-001", "title": "Glaciers", "difficulty": "medium",
+     "text": "Glaciers are formed when snow {{accumulates}} over many years and is compressed into ice. Although they appear solid, glaciers slowly {{flow}} downhill under their own weight. Today, most of the world's glaciers are {{retreating}} as global temperatures rise, a trend that threatens the water {{supply}} of millions of people.",
+     "distractors": ["evaporates", "freeze", "advancing"]},
+    {"id": "rfib-002", "title": "Habits", "difficulty": "easy",
+     "text": "Psychologists explain that a habit consists of three parts: a cue, a routine and a {{reward}}. Over time, the brain begins to {{associate}} the cue with the reward, so the routine becomes almost {{automatic}}.",
+     "distractors": ["punishment", "forget", "difficult"]},
+    {"id": "rfib-003", "title": "Volcanic soil", "difficulty": "hard",
+     "text": "Despite the obvious {{dangers}}, many communities choose to live near active volcanoes. One reason is that volcanic soil is extremely {{fertile}}, as it is rich in minerals released by eruptions. In addition, volcanoes can be a valuable source of geothermal {{energy}} and attract large numbers of {{tourists}}.",
+     "distractors": ["benefits", "barren", "pollution"]}
+  ],
+  "mcq_single_reading": [
+    {"id": "mcsa-001", "title": "Placebo effect", "difficulty": "medium",
+     "passage": "The placebo effect refers to an improvement in symptoms that occurs after a patient receives a treatment with no active ingredient, such as a sugar pill. The effect is thought to arise from the patient's expectations: believing that a treatment will work can trigger real physiological changes, such as the release of natural painkillers in the brain. For this reason, new drugs are tested against placebos in clinical trials, to determine whether their benefits are greater than those produced by expectation alone.",
+     "question": "Why are new drugs compared with placebos in clinical trials?",
+     "options": [{"id": "A", "text": "Because placebos are cheaper to produce."},
+                 {"id": "B", "text": "To check whether the drug works better than expectation alone."},
+                 {"id": "C", "text": "To make patients believe they are receiving treatment."},
+                 {"id": "D", "text": "Because placebos contain natural painkillers."}],
+     "answer": "B"},
+    {"id": "mcsa-002", "title": "Tea in Britain", "difficulty": "easy",
+     "passage": "Although tea is now regarded as a typically British drink, it only became widely popular in the eighteenth century. At first it was an expensive luxury, heavily taxed and enjoyed mainly by the wealthy. Smuggling was common until the government drastically reduced the tax in 1784, after which tea quickly became affordable for ordinary people.",
+     "question": "What was the main effect of the 1784 tax reduction?",
+     "options": [{"id": "A", "text": "Tea smuggling increased."},
+                 {"id": "B", "text": "Tea became a luxury for the wealthy."},
+                 {"id": "C", "text": "Tea became affordable for most people."},
+                 {"id": "D", "text": "The government banned tea imports."}],
+     "answer": "C"}
+  ]
+}

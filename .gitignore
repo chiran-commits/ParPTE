@@ -1,0 +1,14 @@
+node_modules/
+frontend/dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+.env
+.venv/
+venv/
+backend/models/**/*.onnx
+backend/models/**/*.joblib
+backend/models/**/*.bin
+*.zip
+.DS_Store

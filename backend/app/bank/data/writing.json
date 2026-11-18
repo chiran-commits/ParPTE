@@ -1,0 +1,45 @@
+{
+  "summarize_written_text": [
+    {"id": "swt-001", "title": "The four-day work week", "difficulty": "medium",
+     "passage": "Over the past decade, a growing number of companies have experimented with a four-day working week, in which employees work fewer hours for the same pay. Early trials in several countries have produced encouraging results. Many participating firms reported that productivity remained stable or even improved, as staff focused more intensely on essential tasks and spent less time in unnecessary meetings. Employees, meanwhile, described lower levels of stress and burnout, better sleep, and more time for family and personal interests. Some companies also found it easier to recruit and retain talented workers. Nevertheless, the model is not suitable for every sector. Hospitals, schools and customer-facing businesses must provide services every day, so reducing hours often requires hiring additional staff, which raises costs. Critics also warn that compressing work into four days can intensify pressure rather than reduce it. Consequently, most researchers argue that the four-day week should be adapted to each organisation rather than imposed universally.",
+     "key_points": [
+       {"label": "companies are trialling a four-day week with the same pay", "keywords": [["four", "4"], ["day", "week"], ["trial", "trials", "experiment", "experimented", "companies", "firms"]], "min": 2},
+       {"label": "productivity stayed the same or improved", "keywords": [["productivity", "productive", "output"], ["stable", "improve", "improved", "maintained", "same", "increased"]], "min": 1},
+       {"label": "employees had less stress and better wellbeing", "keywords": [["stress", "burnout", "wellbeing", "well-being", "health"], ["employee", "employees", "staff", "workers", "lower", "less", "reduced"]], "min": 2},
+       {"label": "not suitable for all sectors (e.g. hospitals) because of costs", "keywords": [["sector", "sectors", "hospitals", "schools", "industries", "every"], ["cost", "costs", "suitable", "staff", "hiring", "not"]], "min": 2},
+       {"label": "should be adapted to each organisation", "keywords": [["adapt", "adapted", "tailor", "tailored", "flexible", "each", "individual"], ["organisation", "organization", "company", "universally", "imposed"]], "min": 1}
+     ]},
+    {"id": "swt-002", "title": "Microplastics", "difficulty": "hard",
+     "passage": "Microplastics, fragments of plastic smaller than five millimetres, have now been detected in almost every environment on Earth, from the deepest ocean trenches to the snow on mountain peaks. They originate from many sources, including the breakdown of larger plastic waste, synthetic fibres released when clothes are washed, and the wear of car tyres. Because they are so small and persistent, microplastics are easily absorbed by marine organisms and can move up the food chain, eventually reaching humans through seafood, salt and even drinking water. Scientists are still uncertain about the long-term effects on human health, but laboratory studies suggest that the particles may cause inflammation and carry toxic chemicals into the body. Removing microplastics once they have entered the environment is extremely difficult. As a result, experts emphasise prevention: reducing single-use plastics, designing washing machines with filters, and developing biodegradable alternatives.",
+     "key_points": [
+       {"label": "microplastics are found almost everywhere", "keywords": [["microplastic", "microplastics", "plastic"], ["everywhere", "every", "environment", "ocean", "found", "detected"]], "min": 2},
+       {"label": "they come from waste breakdown, clothing fibres and tyres", "keywords": [["source", "sources", "come", "originate", "from"], ["fibres", "fibers", "clothes", "tyres", "tires", "waste", "breakdown"]], "min": 2},
+       {"label": "they enter the food chain and reach humans", "keywords": [["food", "chain", "seafood", "water"], ["human", "humans", "people", "reach"]], "min": 2},
+       {"label": "health effects are uncertain but may be harmful", "keywords": [["health", "inflammation", "toxic", "harm", "harmful"], ["uncertain", "unclear", "unknown", "may", "might"]], "min": 2},
+       {"label": "prevention is key because removal is difficult", "keywords": [["prevent", "prevention", "reduce", "reducing", "filters", "biodegradable"], ["remove", "removal", "removing", "difficult", "hard"]], "min": 1}
+     ]}
+  ],
+  "write_essay": [
+    {"id": "we-001", "title": "Technology in education", "difficulty": "medium",
+     "prompt": "Some people believe that technology has made learning easier and more effective, while others argue that it distracts students and reduces the quality of education. Discuss both views and give your own opinion.",
+     "key_points": [
+       {"label": "the benefits of technology for learning", "keywords": [["technology", "digital", "online", "internet", "computers", "devices"], ["easier", "effective", "access", "benefit", "benefits", "advantage", "advantages", "resources"]], "min": 2},
+       {"label": "technology as a distraction / lower quality", "keywords": [["distract", "distraction", "distracts", "distracting", "social media", "games"], ["quality", "concentration", "focus", "attention", "reduce", "reduces"]], "min": 1},
+       {"label": "your own opinion", "keywords": [["opinion", "believe", "view", "agree", "argue", "think"]], "min": 1}
+     ]},
+    {"id": "we-002", "title": "Working from home", "difficulty": "medium",
+     "prompt": "Working from home has become common in many professions. Do the advantages of this trend outweigh the disadvantages?",
+     "key_points": [
+       {"label": "advantages of working from home", "keywords": [["home", "remote", "remotely"], ["advantage", "advantages", "benefit", "benefits", "flexibility", "commute", "commuting", "save", "saves"]], "min": 2},
+       {"label": "disadvantages of working from home", "keywords": [["disadvantage", "disadvantages", "drawback", "drawbacks", "isolation", "isolated", "lonely", "distraction", "boundaries"]], "min": 1},
+       {"label": "clear position on whether advantages outweigh disadvantages", "keywords": [["outweigh", "outweighs", "outweighed", "greater", "overall", "opinion", "believe"]], "min": 1}
+     ]},
+    {"id": "we-003", "title": "Government funding for the arts", "difficulty": "hard",
+     "prompt": "Governments should spend money on supporting the arts, such as music, theatre and painting, rather than only on practical areas like healthcare and transport. To what extent do you agree or disagree?",
+     "key_points": [
+       {"label": "the value of funding the arts", "keywords": [["art", "arts", "music", "theatre", "theater", "culture", "cultural", "painting"], ["value", "important", "benefit", "benefits", "identity", "creativity", "tourism", "wellbeing"]], "min": 2},
+       {"label": "priority of practical services like healthcare and transport", "keywords": [["healthcare", "health", "hospitals", "transport", "infrastructure", "practical", "essential"]], "min": 1},
+       {"label": "extent of agreement", "keywords": [["agree", "disagree", "extent", "opinion", "believe", "balance"]], "min": 1}
+     ]}
+  ]
+}

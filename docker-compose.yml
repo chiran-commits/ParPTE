@@ -1,0 +1,25 @@
+# docker compose up --build   →   http://localhost:8000
+services:
+  app:
+    build:
+      context: .
+      args:
+        ML: "1"          # "0" for the lightweight engine (no Whisper/phoneme models)
+    ports: ["8000:8000"]
+    environment:
+      SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY in .env}
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+      DATABASE_URL: postgresql+psycopg://parpte:parpte@db:5432/parpte
+      WHISPER_MODEL: ${WHISPER_MODEL:-base.en}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8000}
+    volumes:
+      - ./backend/models:/app/backend/models
+      - hf-cache:/root/.cache/huggingface
+    depends_on: [db]
+  db:
+    image: postgres:16-alpine
+    environment: { POSTGRES_USER: parpte, POSTGRES_PASSWORD: parpte, POSTGRES_DB: parpte }
+    volumes: [pgdata:/var/lib/postgresql/data]
+volumes:
+  pgdata:
+  hf-cache:
