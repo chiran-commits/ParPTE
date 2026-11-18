@@ -8,6 +8,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 ENV = os.getenv("ENV", "development")
 DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{ROOT / 'parpte.db'}")
+# Hosts like Neon, Supabase, Render and Railway hand out postgres:// URLs; SQLAlchemy needs the driver name.
+for _prefix in ("postgres://", "postgresql://"):
+    if DATABASE_URL.startswith(_prefix):
+        DATABASE_URL = "postgresql+psycopg://" + DATABASE_URL[len(_prefix):]
 SECRET_KEY = os.getenv("SECRET_KEY") or ("dev-insecure-key-change-me-before-deploying-0123456789" if ENV == "development" else secrets.token_urlsafe(48))
 TOKEN_DAYS = int(os.getenv("TOKEN_DAYS", "30"))
 ADMIN_EMAILS = {e.strip().lower() for e in os.getenv("ADMIN_EMAILS", "").split(",") if e.strip()}

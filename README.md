@@ -71,6 +71,14 @@ docker compose up --build   # app + Postgres on http://localhost:8000
 
 The Docker image builds the frontend and serves it from FastAPI, so you deploy a single container. It works on Railway, Render, Fly.io, a VPS, or any container host. Use `ML=0` as a build arg for a small image without the speech models. Commercial setup (payments, content, legal) is covered in [`docs/COMMERCIAL.md`](docs/COMMERCIAL.md).
 
+### Frontend on Vercel, backend elsewhere
+
+Vercel can't run the API (it needs ffmpeg, a database and long audio processing), but it can host the frontend:
+
+1. Deploy the backend container (Render, Railway, Fly.io or a VPS) with `SECRET_KEY`, `ADMIN_EMAILS`, `DATABASE_URL` (any Postgres, e.g. Neon or Supabase) and `CORS_ORIGINS=https://your-app.vercel.app`.
+2. On Vercel, import the repo with **Root Directory** `frontend` (Vite is detected automatically) and set the environment variable `VITE_API_URL=https://your-backend-host`.
+3. Redeploy. `frontend/vercel.json` already routes every page to the single-page app.
+
 ## Project layout
 
 ```
