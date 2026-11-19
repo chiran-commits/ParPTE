@@ -19,7 +19,7 @@ import numpy as np
 
 from . import models, phoneme, sphinx
 from .asr import Transcript, transcribe
-from .audio import AcousticFeatures, acoustic_features, decode
+from .audio import AcousticFeatures, AudioDecodeError, acoustic_features, decode
 from .semantic import similarity
 from .text import FILLERS, STOPWORDS, align, keypoint_hits, lcs_len, tokens
 
@@ -365,7 +365,9 @@ def _intended_words(al: list) -> list[str]:
 
 def score(task: str, q: dict, audio: bytes | None, client_transcript: str | None = None,
           client_confidence: float | None = None) -> dict:
-    wave = decode(audio) if audio else None
+    if not audio and task != "answer_short_question":
+        raise AudioDecodeError("No recording was received. Check that the browser has microphone permission and try again.")
+    wave = decode(audio) if audio else None  # raises AudioDecodeError rather than silently scoring the transcript
     ac = acoustic_features(wave)
     tr = transcribe(wave, client_transcript, ac, confidence=client_confidence)
     text = tr.text

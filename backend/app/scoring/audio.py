@@ -6,6 +6,7 @@ scorer whether or not Whisper is available.
 from __future__ import annotations
 
 import logging
+import os
 import shutil
 import subprocess
 import tempfile
@@ -18,8 +19,20 @@ log = logging.getLogger(__name__)
 SR = 16000
 
 
+class AudioDecodeError(RuntimeError):
+    """The recording was uploaded but couldn't be turned into audio. Never score from the transcript alone."""
+
+
+def _ffmpeg_args(src: str) -> list[str]:
+    return ["-nostdin", "-loglevel", "error", "-i", src, "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"]
+
+
 def decode(data: bytes) -> np.ndarray | None:
-    """Any browser format (webm/opus, ogg, mp4, wav) → mono float32 @16 kHz. Needs ffmpeg on PATH."""
+    """Any browser format (webm/opus, ogg, mp4/aac, wav) → mono float32 @16 kHz. Needs ffmpeg on PATH.
+
+    Feeds ffmpeg through a pipe (works on Windows, where an open temporary file is locked against other
+    processes). MP4 recordings whose index sits at the end can't be read from a pipe, so a closed temporary
+    file is the fallback. Raises AudioDecodeError if every attempt fails."""
     if not data:
         return None
     if data[:4] == b"RIFF":
@@ -34,18 +47,49 @@ def decode(data: bytes) -> np.ndarray | None:
             pass
     ff = shutil.which("ffmpeg")
     if not ff:
-        log.warning("ffmpeg not found — cannot decode audio")
-        return None
-    with tempfile.NamedTemporaryFile(suffix=".bin") as f:
-        f.write(data)
-        f.flush()
+        raise AudioDecodeError("ffmpeg is not installed on the server, so recordings can't be scored.")
+    errors = []
+    try:
+        r = subprocess.run([ff, *_ffmpeg_args("pipe:0")], input=data, capture_output=True, timeout=60)
+        if r.returncode == 0 and len(r.stdout) > 3200:
+            return np.frombuffer(r.stdout, dtype=np.int16).astype(np.float32) / 32768
+        errors.append(r.stderr.decode(errors="ignore").strip()[-300:])
+    except Exception as e:
+        errors.append(str(e))
+    # fallback: a real file, closed before ffmpeg opens it (required on Windows)
+    fd, path = tempfile.mkstemp(suffix=".audio")
+    try:
+        with os.fdopen(fd, "wb") as f:
+            f.write(data)
+        r = subprocess.run([ff, *_ffmpeg_args(path)], capture_output=True, timeout=60)
+        if r.returncode == 0 and r.stdout:
+            return np.frombuffer(r.stdout, dtype=np.int16).astype(np.float32) / 32768
+        errors.append(r.stderr.decode(errors="ignore").strip()[-300:])
+    except Exception as e:
+        errors.append(str(e))
+    finally:
         try:
-            out = subprocess.run([ff, "-nostdin", "-loglevel", "error", "-i", f.name, "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"],
-                                 capture_output=True, timeout=60, check=True).stdout
-        except Exception as e:
-            log.warning("ffmpeg decode failed: %s", e)
-            return None
-    return np.frombuffer(out, dtype=np.int16).astype(np.float32) / 32768 if out else None
+            os.unlink(path)
+        except OSError:
+            pass
+    log.warning("ffmpeg could not decode the recording: %s", " | ".join(e for e in errors if e))
+    raise AudioDecodeError("We couldn't read your recording. Please try again, and if it keeps happening use Chrome or Edge.")
+
+
+def ffmpeg_self_test() -> str | None:
+    """Run at startup: returns an error message if ffmpeg can't decode a recording, else None."""
+    import io
+    import wave
+
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as w:
+        w.setnchannels(1), w.setsampwidth(2), w.setframerate(22050)
+        w.writeframes((np.sin(np.arange(22050) / 10) * 8000).astype(np.int16).tobytes())
+    try:
+        x = decode(buf.getvalue())
+        return None if x is not None and len(x) > 8000 else "ffmpeg returned no audio"
+    except AudioDecodeError as e:
+        return str(e)
 
 
 def write_wav(wave: np.ndarray, path: str | Path) -> str:

@@ -10,13 +10,12 @@ from __future__ import annotations
 
 import logging
 import os
-import tempfile
 from dataclasses import dataclass, field
 from functools import lru_cache
 
 import numpy as np
 
-from .audio import AcousticFeatures, write_wav
+from .audio import AcousticFeatures
 from .text import tokens
 
 log = logging.getLogger(__name__)
@@ -66,18 +65,15 @@ def transcribe(wave: np.ndarray | None, client_text: str | None, ac: AcousticFea
     m = _whisper()
     if m is not None and wave is not None and len(wave) > 1600:
         try:
-            with tempfile.NamedTemporaryFile(suffix=".wav") as f:
-                write_wav(wave, f.name)
-                prompt = FILLER_PROMPT
-                segs, _ = m.transcribe(f.name, language="en", word_timestamps=True, initial_prompt=prompt,
-                                       vad_filter=False, beam_size=5, condition_on_previous_text=False,
-                                       temperature=0.0)
-                words: list[Word] = []
-                for s in segs:
-                    for w in s.words or []:
-                        t = w.word.strip()
-                        if t:
-                            words.append(Word(t, float(w.start), float(w.end), float(w.probability)))
+            # faster-whisper accepts the waveform directly — no temporary file (those are locked on Windows)
+            segs, _ = m.transcribe(wave.astype(np.float32), language="en", word_timestamps=True, initial_prompt=FILLER_PROMPT,
+                                   vad_filter=False, beam_size=5, condition_on_previous_text=False, temperature=0.0)
+            words: list[Word] = []
+            for s in segs:
+                for w in s.words or []:
+                    t = w.word.strip()
+                    if t:
+                        words.append(Word(t, float(w.start), float(w.end), float(w.probability)))
             text = " ".join(w.w for w in words)
             return Transcript(text=text, words=words, engine="whisper", timed=True)
         except Exception as e:  # pragma: no cover

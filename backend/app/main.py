@@ -18,7 +18,25 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(messag
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     init_db()
+    _engine_report()
     yield
+
+
+def _engine_report() -> None:
+    log = logging.getLogger("parpte")
+    from .scoring import models, sphinx, vad
+    from .scoring.audio import ffmpeg_self_test
+
+    err = ffmpeg_self_test()
+    rows = [
+        ("ffmpeg (decode recordings)", "OK" if err is None else f"FAILED: {err}"),
+        ("Pronunciation alignment (PocketSphinx)", "OK" if sphinx.available() else "MISSING: pip install pocketsphinx"),
+        ("Pause detection (Silero VAD)", "OK" if vad.available() else "MISSING: pip install onnxruntime"),
+        ("Trained speaking model", "OK" if models.status()["speaking_traits"] else "MISSING: backend/models/speaking_traits.joblib"),
+    ]
+    log.info("ParPTE scoring engine:\n" + "\n".join(f"  {k:42s} {v}" for k, v in rows))
+    if err or not sphinx.available():
+        log.warning("Speaking answers will NOT be scored correctly until the items above are fixed.")
 
 
 app = FastAPI(title="ParPTE API", version="1.0.0", description="AI scoring for PTE Academic practice", lifespan=lifespan)

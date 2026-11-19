@@ -110,6 +110,12 @@ export function SpeakingTask({ q, meta, onSubmit, accent, mode }: TaskProps) {
       {noAsr && q.task !== "personal_introduction" && (
         <Notice tone="warn">This browser can't transcribe speech and the server's Whisper model isn't installed, so answers can't be scored. Use Chrome or Edge, or set up Whisper (see the README).</Notice>
       )}
+      {appMeta && (appMeta.engines.decode !== "ok" || appMeta.engines.pronunciation === "proxy") && (
+        <Notice tone="error">
+          The server's speech engine isn't fully set up, so speaking scores won't be accurate.{" "}
+          {appMeta.engines.decode !== "ok" ? `Audio decoding: ${String(appMeta.engines.decode)}` : "Install the backend requirements: pip install -r requirements.txt"}
+        </Notice>
+      )}
       {error && <Notice tone="error">{error}</Notice>}
 
       <div className="rounded-panel border border-line bg-paper-raised px-5 py-4">

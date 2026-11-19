@@ -13,11 +13,24 @@ from ..config import AI_TASKS, MAX_AUDIO_MB, PLANS
 from ..db import Attempt, Usage, User, now
 from ..scoring import models, phoneme, score_item, semantic, sphinx, vad
 from ..scoring.asr import whisper_available
+from ..scoring.audio import AudioDecodeError
 from ..scoring.overall import aggregate
 from ..security import current_user, get_db
 from ..tasks import MOCK_BLUEPRINT, MODULES, TASKS
 
 router = APIRouter(prefix="/api", tags=["practice"])
+
+
+_DECODE_STATUS: dict = {}
+
+
+def decode_status() -> str:
+    if "v" not in _DECODE_STATUS:
+        from ..scoring.audio import ffmpeg_self_test
+
+        err = ffmpeg_self_test()
+        _DECODE_STATUS["v"] = "ok" if err is None else err
+    return _DECODE_STATUS["v"]
 
 
 @router.get("/meta")
@@ -30,7 +43,7 @@ def meta():
         "mock_blueprint": MOCK_BLUEPRINT,
         "engines": {"asr": "whisper" if whisper_available() else "browser",
                     "pronunciation": "phoneme+gop" if phoneme.available() else ("gop" if sphinx.available() else "proxy"),
-                    "vad": "silero" if vad.available() else "energy", "grammar": "languagetool" if os.getenv("LANGUAGETOOL_URL") else "rules",
+                    "vad": "silero" if vad.available() else "energy", "decode": decode_status(), "grammar": "languagetool" if os.getenv("LANGUAGETOOL_URL") else "rules",
                     "coach": "claude" if os.getenv("ANTHROPIC_API_KEY") else "rules",
                     "similarity": semantic.engine_name(), **models.status()},
     }
@@ -93,7 +106,10 @@ def run_scoring(db: Session, user: User, qid: str, response: str, audio: UploadF
         if len(data) > MAX_AUDIO_MB * 1024 * 1024:
             raise HTTPException(413, "Recording too large")
     usage = check_quota(db, user, q["task"]) if mock_id is None else None
-    result = score_item(q["task"], q, resp, data)
+    try:
+        result = score_item(q["task"], q, resp, data)
+    except AudioDecodeError as e:
+        raise HTTPException(422, str(e))
     result["reveal"] = bank.reveal(q)
     att = Attempt(user_id=user.id, question_id=qid, task=q["task"], module=TASKS[q["task"]]["module"], score=result["score"],
                   max_score=result["max"], band=result.get("band"), result=result, response=resp, mock_id=mock_id)
