@@ -129,3 +129,31 @@ def test_silence_scores_zero():
 def test_coach_summary_present():
     r = score_item("read_aloud", bank.get("ra-004"), {"transcript": RA}, tts(RA, wpm=90))
     assert r["coach"]["headline"] and r["coach"]["priorities"]
+
+
+# ---- browser-recognition errors must not count against a correct reading (user report, Nov 2026)
+CHROME_ERRORS = ("it is a often several decrease warmer than the rounding counter side a phenomenon known as the urban heat island "
+                 "effect concrete and asfalt absorb sunlight during the day and release it slowly at night were the lack of vegetation "
+                 "reduces natural cooling planting trees and installing reflective routes are two practical ways to reduce the effect")
+
+
+def test_correct_reading_survives_browser_misrecognition():
+    q = bank.get("ra-001")
+    r = score_item("read_aloud", q, {"transcript": CHROME_ERRORS}, tts(q["text"]), with_coach=False)
+    assert r["detail"]["content_engine"] == "acoustic"
+    assert traits(r)["Content"] >= 4.8, [a for a in r["detail"]["alignment"] if a["op"] != "ok"]
+
+
+def test_real_misreading_still_caught():
+    q = bank.get("ra-001")
+    said = q["text"].replace("while", "were")
+    r = score_item("read_aloud", q, {"transcript": CHROME_ERRORS}, tts(said), with_coach=False)
+    subs = [(a["ref"], a["hyp"]) for a in r["detail"]["alignment"] if a["op"] == "sub"]
+    assert ("while", "were") in subs, subs
+
+
+def test_no_transcript_uses_audio_only():
+    q = bank.get("ra-001")
+    full = traits(score_item("read_aloud", q, {"transcript": ""}, tts(q["text"]), with_coach=False))
+    half = traits(score_item("read_aloud", q, {"transcript": ""}, tts(" ".join(q["text"].split()[:25])), with_coach=False))
+    assert full["Content"] >= 4.5 and half["Content"] <= 3.0, (full, half)

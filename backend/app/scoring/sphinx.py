@@ -289,21 +289,35 @@ def _decoder(**kw):
     return Decoder(hmm=p["hmm"], dict=p["dict"], lm=None, samprate=16000, loglevel="ERROR", **kw)
 
 
-def _shared(wide: bool = False) -> "Decoder":
-    """One reusable decoder per thread for the grammar and word-alignment passes (safe to reuse).
-    The wide-beam variant is the fallback for long passages, where the default beam loses the path."""
-    key = "wide" if wide else "default"
+# Search settings, tried in order: PocketSphinx's defaults suit most recordings (and are the only ones that
+# reliably finish the last word of a passage); the wider beams rescue long passages and strong accents.
+LEVELS = [dict(), dict(beam=1e-80, pbeam=1e-80, wbeam=1e-60), dict(beam=1e-100, pbeam=1e-100, wbeam=1e-80)]
+
+
+def _key(level: int, grammar: bool) -> str:
+    return ("g_" if grammar else "a_") + str(level)
+
+
+def _shared(level: int = 0, grammar: bool = False) -> "Decoder":
+    """One reusable decoder per thread and purpose (safe to reuse).
+
+    Grammar decoders run with bestpath off: reading word segments from a grammar search otherwise builds
+    a full lattice, which takes ~15 s on a 20 s passage with optional fillers between every word. They are
+    only used to find which words/fillers were said and when; acoustic scores come from alignment decoders.
+    The wide-beam variants are the fallback for long passages, where the default beam loses the path."""
+    key = _key(level, grammar)
     d = getattr(_local, key, None)
     if d is None:
-        d = _decoder(beam=1e-100, pbeam=1e-100, wbeam=1e-80) if wide else _decoder(beam=1e-80, pbeam=1e-80, wbeam=1e-60)
+        beams = LEVELS[level]
+        d = _decoder(bestpath=False, **beams) if grammar else _decoder(**beams)
         setattr(_local, key, d)
         setattr(_local, key + "_seen", set())
     return d
 
 
-def _prepare(wide: bool, words: list[str]):
-    d = _shared(wide)
-    _ensure_words(d, words, getattr(_local, ("wide" if wide else "default") + "_seen"))
+def _prepare(level: int, words: list[str], grammar: bool = False):
+    d = _shared(level, grammar)
+    _ensure_words(d, words, getattr(_local, _key(level, grammar) + "_seen"))
     return d
 
 
@@ -335,6 +349,8 @@ def _covers(sg, words: list[str]) -> bool:
 def _segs(d) -> list[tuple[str, float, float, float]]:
     out = []
     for s in d.seg():
+        if "NULL" in s.word:  # empty grammar transitions
+            continue
         name = re.sub(r"\(\d+\)$", "", s.word)
         frames = s.end_frame - s.start_frame + 1
         gop = (math.log(s.ascore) if s.ascore > 0 else -700.0) / max(1, frames)
@@ -342,7 +358,173 @@ def _segs(d) -> list[tuple[str, float, float, float]]:
     return out
 
 
+def _clip_score(wave: np.ndarray, start: float, end: float, words: list[str]) -> float | None:
+    """Per-frame acoustic fit of `words` to a short stretch of audio (higher = better match)."""
+    if not words:
+        return None
+    a, b = max(0, int((start - 0.08) * 16000)), min(len(wave), int((end + 0.08) * 16000))
+    if b - a < 800:
+        return None
+    raw = (np.clip(wave[a:b], -1, 1) * 32767).astype(np.int16).tobytes()
+    r = _align_segs(raw, words)
+    return r[1] if r else None
+
+
+SUB_MARGIN = 0.6  # nats/frame the browser's word must beat the reference word by (benefit of the doubt → text)
+
+
+def _word_fit(wave: np.ndarray, start: float, end: float, words: list[str]) -> bool:
+    """Absolute test: does this stretch of audio contain `words`? Uses the words' own frames only (silence
+    around them would otherwise make any short word look like a good fit)."""
+    a, b = max(0, int((start - 0.05) * 16000)), min(len(wave), int((end + 0.05) * 16000))
+    if b - a < 1600:
+        return False
+    raw = (np.clip(wave[a:b], -1, 1) * 32767).astype(np.int16).tobytes()
+    r = _align_segs(raw, words, levels=2)
+    if not r:
+        return False
+    ws = [x for x in _real(r[0]) if x[0] not in FILLER_WORDS]
+    if len(ws) != len(words):
+        return False
+    syl = max(1, expected_syllables(words))
+    dur = sum(en - st for _, st, en, _ in ws)
+    return min(g for *_, g in ws) > -5.0 and dur >= 0.1 * syl
+
+
+def reconcile(wave: np.ndarray, ref: list[str], heard: list[str]) -> list[str] | None:
+    """Decide from the AUDIO which words of a Read Aloud / Repeat Sentence text were actually said.
+
+    Browser recognisers guess from context and often mishear correct speech ("degrees" → "decrease"),
+    invent words or drop them. We align a base word sequence to the recording, then settle every
+    disagreement between the text and the browser transcript acoustically:
+      * substitution → score the reference word and the browser's word on the same stretch of audio; the
+        browser's word wins only if it fits clearly better (a real misreading still loses to what was said);
+      * missing word → counted as read if the audio there clearly matches it;
+      * extra word → counted only if there is speech the alignment doesn't explain.
+    The base is the reference text; if that doesn't fit (several words really were misread) the browser's
+    version of the disputed words is tried. With no transcript, words count as read when the audio matches
+    them. Returns the normalised words heard, or None if nothing aligns (the transcript is then used as is)."""
+    from .text import align as word_align
+
+    if not available() or wave is None or len(wave) < 1600 or not ref:
+        return None
+    norm = {t: normalise_words([t])[0] for t in set(ref) | set(heard)}
+    ops = word_align(ref, heard) if heard else [type("A", (), {"ref": r, "hyp": None, "op": "del"})() for r in ref]
+
+    def build(use_hyp: bool):
+        flat, spans = [], []
+        for op in ops:
+            if op.op in ("ok",) or (op.op == "sub" and not use_hyp) or (op.op == "del" and not use_hyp):
+                toks = norm[op.ref]
+            elif op.op == "sub" and use_hyp:
+                toks = norm[op.hyp]
+            else:
+                toks = []
+            spans.append((len(flat), len(flat) + len(toks)))
+            flat += toks
+        return flat, spans
+
+    W = spans = None
+    for use_hyp in ((False, True) if heard else (False,)):
+        flat, sp = build(use_hyp)
+        if not flat:
+            continue
+        sx = analyse(wave, flat, phones=False)
+        if sx is not None and len(sx.words) == len(flat) and sx.coverage >= 1:
+            W, spans = sx.words, sp
+            break
+    if W is None:
+        # Neither base sequence fits the audio. A free grammar search over a long passage was tried and
+        # wrongly marked spoken words as skipped, so we don't guess: the caller falls back to the transcript.
+        if heard:
+            return None
+        flat, _ = build(False)
+        return _longest_read_prefix(wave, flat)
+
+    def read_ok(i0: int, i1: int) -> bool:
+        ws = W[i0:i1]
+        # short function words ("the", "a") are often reduced in fluent speech, so the bar is low
+        return bool(ws) and min(w.gop for w in ws) > -7.5 and sum(w.end - w.start for w in ws) >= 0.05 * len(ws)
+
+    from .audio import acoustic_features
+
+    speech = acoustic_features(wave).segments
+
+    def neighbours(k: int) -> tuple[float, float]:
+        prev_end = next((W[spans[j][1] - 1].end for j in range(k - 1, -1, -1) if spans[j][1] > spans[j][0]), 0.0)
+        next_start = next((W[spans[j][0]].start for j in range(k + 1, len(spans)) if spans[j][1] > spans[j][0]), prev_end + 10)
+        return prev_end, next_start
+
+    out: list[str] = []
+    for k, op in enumerate(ops):
+        i0, i1 = spans[k]
+        if op.op == "ok":
+            out += norm[op.ref]
+        elif op.op == "sub":
+            if i1 <= i0:
+                out += norm[op.ref]
+                continue
+            st, en = W[i0].start, W[i1 - 1].end
+            s_ref = _clip_score(wave, st, en, norm[op.ref])
+            s_hyp = _clip_score(wave, st, en, norm[op.hyp])
+            really_other = s_ref is not None and s_hyp is not None and s_hyp > s_ref + SUB_MARGIN
+            if s_ref is None and s_hyp is not None and i1 > i0 and W[i0].w == (norm[op.hyp] or [""])[0]:
+                really_other = True  # the reference word couldn't even be fitted where the other word aligned well
+            out += norm[op.hyp] if really_other else norm[op.ref]
+        elif op.op == "del":
+            if i1 > i0:
+                if read_ok(i0, i1):
+                    out += norm[op.ref]
+            else:  # base without this word: was it said in the gap between its neighbours?
+                a, b = neighbours(k)
+                b = min(b, a + 1.5)
+                gap_speech = sum(max(0.0, min(e, b) - max(s0, a)) for s0, e in speech)
+                if gap_speech >= 0.15 * max(1, expected_syllables(norm[op.ref])):  # needs real speech, not silence
+                    if _word_fit(wave, a, b, norm[op.ref]):
+                        out += norm[op.ref]
+        elif op.op == "ins":
+            a, b = neighbours(k)
+            gap_speech = sum(max(0.0, min(e, b) - max(s0, a)) for s0, e in speech)
+            if gap_speech >= 0.25:
+                out += norm[op.hyp]
+    return out
+
+
+def _longest_read_prefix(wave: np.ndarray, flat: list[str]) -> list[str] | None:
+    """No transcript and the full text doesn't align: estimate how much of the text was read by aligning
+    prefixes of the text and keeping the longest one that fits the audio about as well as the best fit."""
+    trimmed, _ = _trim(wave)
+    raw = (np.clip(trimmed, -1, 1) * 32767).astype(np.int16).tobytes()
+    fits = []
+    for frac in (0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2):
+        n = max(1, int(len(flat) * frac))
+        r = _align_segs(raw, flat[:n])
+        if r:
+            fits.append((n, r[1]))
+    if not fits:
+        return None
+    best = max(f for _, f in fits)
+    n = max(n for n, f in fits if f >= best - 0.25)
+    return flat[:n]
+
+
 def analyse(wave: np.ndarray, words: list[str], phones: bool = True) -> SphinxResult | None:
+    """Cached front for _analyse: scoring one answer can ask for the same alignment more than once."""
+    if wave is None:
+        return None
+    import hashlib
+
+    audio_id = hashlib.blake2b(np.ascontiguousarray(wave).tobytes(), digest_size=16).digest()  # content, not identity
+    cache = getattr(_local, "cache", None)
+    if cache is None or cache[0] != audio_id:
+        cache = _local.cache = [audio_id, {}]  # one recording at a time per thread
+    key = (tuple(words), phones)
+    if key not in cache[1]:
+        cache[1][key] = _analyse(wave, words, phones)
+    return cache[1][key]
+
+
+def _analyse(wave: np.ndarray, words: list[str], phones: bool = True) -> SphinxResult | None:
     """Align `words` (already normalised) to `wave` (float32, 16 kHz).
 
     Word-level GOP comes from the word alignment pass (robust — it succeeds on ~100 % of recordings and
@@ -358,9 +540,9 @@ def analyse(wave: np.ndarray, words: list[str], phones: bool = True) -> SphinxRe
     # ---- pass 1: grammar decode with optional fillers → which fillers were spoken, and where
     seq = list(words)
     grammar_ok = False
-    for wide in (False, True):
+    for level in range(2):
         try:
-            d = _prepare(wide, words)
+            d = _prepare(level, words, grammar=True)
             d.add_jsgf_string("g", _grammar(words))
             d.activate_search("g")
             d.start_utt()
@@ -381,9 +563,10 @@ def analyse(wave: np.ndarray, words: list[str], phones: bool = True) -> SphinxRe
     d = None
     # Pronunciation is judged against the plain expected words: letting the aligner insert fillers would let it
     # "explain away" badly pronounced stretches as fillers. Fillers are counted from pass 1 instead.
-    for attempt, wide in ((list(words), False), (list(words), True), (seq, True)):
+    attempts = [(list(words), lv) for lv in range(len(LEVELS))] + ([(seq, lv) for lv in range(2)] if seq != list(words) else [])
+    for attempt, level in attempts:
         try:
-            d = _prepare(wide, attempt)
+            d = _prepare(level, attempt)
             d.set_align_text(" ".join(attempt))
             d.start_utt()
             d.process_raw(raw, full_utt=True)
@@ -430,10 +613,10 @@ def analyse(wave: np.ndarray, words: list[str], phones: bool = True) -> SphinxRe
     return res
 
 
-def _align_segs(raw: bytes, words: list[str]) -> tuple[list, float] | None:
-    for wide in (False, True):
+def _align_segs(raw: bytes, words: list[str], levels: int = len(LEVELS)) -> tuple[list, float] | None:
+    for level in range(levels):
         try:
-            d = _prepare(wide, words)
+            d = _prepare(level, words)
             d.set_align_text(" ".join(words))
             d.start_utt()
             d.process_raw(raw, full_utt=True)
@@ -442,8 +625,10 @@ def _align_segs(raw: bytes, words: list[str]) -> tuple[list, float] | None:
                 sg = _segs(d)
                 if not _covers(sg, words):
                     continue
+                # score every frame (words AND silences): comparing hypotheses on the same clip must not favour
+                # a shorter word just because it leaves more of the clip to "free" silence
                 frames = sum(max(1, int(round((en - st) / FRAME))) for _, st, en, _ in sg)
-                total = sum(g * max(1, int(round((en - st) / FRAME))) for w, st, en, g in sg if not w.startswith("<"))
+                total = sum(g * max(1, int(round((en - st) / FRAME))) for w, st, en, g in sg)
                 return sg, total / max(1, frames)
         except Exception:
             pass
@@ -483,11 +668,11 @@ def _chunked_alignment(wave: np.ndarray, words: list[str]) -> list[tuple[str, fl
             while est < len(words) and acc + syl[est] <= share:
                 acc += syl[est]
                 est += 1
-            cands = sorted({min(len(words), max(i + 1, est + d)) for d in range(-3, 4)})
+            cands = sorted({min(len(words), max(i + 1, est + d)) for d in range(-2, 3)})
         best = None
         chunk_end = (hi - lo) / 16000
         for j in cands:
-            r = _align_segs(raw, words[i:j])
+            r = _align_segs(raw, words[i:j], levels=2)
             if not r:
                 continue
             last_word_end = max((en for w, st, en, _ in r[0] if not w.startswith("<") and not w.startswith("[")), default=0.0)
@@ -508,7 +693,7 @@ def _align(raw: bytes, seq: list[str], wide: bool = False) -> list[AlignedWord]:
     if not seq:
         return []
     try:
-        d = _decoder(beam=1e-100, pbeam=1e-100, wbeam=1e-80) if wide else _decoder(beam=1e-80, pbeam=1e-80, wbeam=1e-60)
+        d = _decoder(**LEVELS[2]) if wide else _decoder()
         _ensure_words(d, seq)
         d.set_align_text(" ".join(seq))
         d.start_utt()

@@ -387,15 +387,29 @@ def score(task: str, q: dict, audio: bytes | None, client_transcript: str | None
     # ---------------- content
     intended: list[str] = [t for t in tokens(text) if t not in FILLERS]
     word_acc = None
+    ref_text, heard_text = q.get("text", ""), text
+    if task in ("read_aloud", "repeat_sentence") and wave is not None:
+        # Don't trust the browser transcript on its own: let the audio decide wherever it disagrees with the text.
+        heard = sphinx.reconcile(wave, tokens(q["text"]), [t for t in tokens(text) if t not in FILLERS])
+        if heard is not None:
+            ref_text = " ".join(sphinx.normalise_words(tokens(q["text"]))[0])
+            heard_text = " ".join(heard)
+            detail["browser_transcript"] = text
+            detail["transcript"] = heard_text
+            detail["content_engine"] = "acoustic"
+        elif text:
+            detail["content_engine"] = "browser"
+            feedback.append("The word-by-word check used your browser's transcript, which sometimes mishears correct words. "
+                            "If a word you read correctly is marked, it's likely a recognition error.")
     if task == "read_aloud":
-        c, cd = _ra_content(q["text"], text)
+        c, cd = _ra_content(ref_text, heard_text)
         content = _t("Content", c, 5, f"{cd['correct']}/{cd['total']} words correct, {cd['errors']} error(s)", c)
         word_acc = cd["correct"] / max(1, cd["total"])
         detail.update(cd)
         if cd["errors"]:
             feedback.append("Read every word exactly as written. Each omission, insertion or substitution is an error.")
     elif task == "repeat_sentence":
-        c, cd = _rs_content(q["text"], text)
+        c, cd = _rs_content(ref_text, heard_text)
         content = _t("Content", c, 3, f"{cd['in_sequence']}/{cd['total']} words in sequence", c)
         word_acc = cd["in_sequence"] / max(1, cd["total"])
         detail.update(cd)
@@ -427,7 +441,7 @@ def score(task: str, q: dict, audio: bytes | None, client_transcript: str | None
         raise ValueError(f"unknown speaking task {task}")
 
     if task in ("read_aloud", "repeat_sentence"):
-        intended = _intended_words([type("A", (), x) for x in detail["alignment"]]) if text else tokens(q["text"])
+        intended = _intended_words([type("A", (), x) for x in detail["alignment"]]) if heard_text else tokens(q["text"])
     else:
         factor, msg = coherence(text)
         if factor < 1:

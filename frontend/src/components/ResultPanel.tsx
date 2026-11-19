@@ -45,7 +45,7 @@ export function ResultPanel({ r, audioUrl, target }: { r: ScoreResult; audioUrl?
           </section>
         )}
 
-        {d.alignment && <Alignment words={d.alignment as AlignedWord[]} />}
+        {d.alignment && <Alignment words={d.alignment as AlignedWord[]} verified={d.content_engine === "acoustic"} browser={d.browser_transcript} />}
 
         {audioUrl && (
           <section>
@@ -166,7 +166,7 @@ export function ResultPanel({ r, audioUrl, target }: { r: ScoreResult; audioUrl?
           </section>
         )}
 
-        {(d.correct || rv.answer || rv.answers) && !d.blanks && !d.words && (
+        {(Array.isArray(d.correct) || typeof d.correct === "string" || d.correct_order || rv.answer || rv.answers) && !d.blanks && !d.words && !d.alignment && (
           <p className="text-[15.5px]">
             Correct answer: <b className="text-ok">{[].concat(d.correct_order ?? d.correct ?? rv.answer ?? rv.answers).join(", ")}</b>
             {d.chosen !== undefined && <span className="text-ink-soft"> · You chose {[].concat(d.chosen ?? []).join(", ") || "nothing"}</span>}
@@ -231,10 +231,15 @@ function FluencyEvidence({ f }: { f: Record<string, number> }) {
   );
 }
 
-function Alignment({ words }: { words: AlignedWord[] }) {
+function Alignment({ words, verified, browser }: { words: AlignedWord[]; verified?: boolean; browser?: string }) {
   return (
     <section>
-      <h3 className="mb-2 font-display text-lg font-semibold">Word by word</h3>
+      <h3 className="mb-1 font-display text-lg font-semibold">Word by word</h3>
+      <p className="mb-2 text-[13.5px] text-ink-mute">
+        {verified
+          ? "Every word was checked against your recording, so browser recognition mistakes don't count against you."
+          : "Based on your browser's transcript, which can mishear correct words."}
+      </p>
       <p className="text-[17px] leading-[2.1]">
         {words.map((w, i) => (
           <span key={i}>
@@ -254,6 +259,12 @@ function Alignment({ words }: { words: AlignedWord[] }) {
         <span><span className="rounded bg-marigold-tint px-1">word</span> said differently</span>
         <span><span className="rounded bg-paper-sunk px-1 italic">+word</span> extra</span>
       </p>
+      {verified && browser && (
+        <details className="mt-2 text-[13.5px] text-ink-mute">
+          <summary className="cursor-pointer">What your browser thought it heard</summary>
+          <p className="mt-1 italic">{browser}</p>
+        </details>
+      )}
     </section>
   );
 }
